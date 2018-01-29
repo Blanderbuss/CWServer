@@ -12,6 +12,7 @@ public class ServerService implements ServerServiceIF {
 
     static ArrayList<User> clients = new ArrayList<>();
     static ArrayList<FighterA> fighters = new ArrayList<>();
+    private final int type = 2;
 
     @Override
     public boolean register(User user) throws UserException {
@@ -34,10 +35,7 @@ public class ServerService implements ServerServiceIF {
         //TODO Check database for fighter
         fighter.setStatus(FighterA.Status.REGISTERED);
         fighters.add(fighter);
+        if(fighters.size()==type)new Thread(new BattleField(fighters)).start();
         return true;
-    }
-
-    private void startFight() {
-
     }
 }
