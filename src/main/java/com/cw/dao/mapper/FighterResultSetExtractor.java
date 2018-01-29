@@ -1,8 +1,6 @@
-package codw.dao.mapper;
+/*package com.cw.dao.mapper;
 
-import codw.models.Fighter;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.ResultSetExtractor;
+
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,3 +15,4 @@ public class FighterResultSetExtractor implements ResultSetExtractor<Fighter> {
         return fighter;
     }
 }
+*/

@@ -1,4 +1,4 @@
 package com.cw.exceptions;
 
-public class FighterException extends Exception{
+public class FighterException extends Exception {
 }

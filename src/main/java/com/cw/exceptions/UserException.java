@@ -1,4 +1,4 @@
 package com.cw.exceptions;
 
-public class UserException extends Exception{
+public class UserException extends Exception {
 }

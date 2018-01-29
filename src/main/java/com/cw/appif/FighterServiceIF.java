@@ -1,7 +1,9 @@
 package com.cw.appif;
 
-public interface FighterServiceIF{
+import com.cw.models.FighterIF;
 
-    models.FighterIF sendFighter();
+public interface FighterServiceIF {
+
+    FighterIF sendFighter();
 
 }

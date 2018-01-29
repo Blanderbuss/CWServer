@@ -1,7 +1,6 @@
-package codw.dao.mapper;
+/*package com.cw.dao.mapper;
 
 import codw.models.Fighter;
-import codw.models.User;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -15,3 +14,4 @@ public class FighterRowMapper implements RowMapper<Fighter> {
         return extractor.extractData(resultSet);
     }
 }
+*/

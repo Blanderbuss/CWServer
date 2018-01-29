@@ -1,6 +1,6 @@
 package com.cw.models;
 
-public abstract class FighterA{
+public abstract class FighterA {
 
     public enum Action {
         ATTACK,
@@ -43,9 +43,13 @@ public abstract class FighterA{
         this.equipped = equipped;
     }
 
-    public Status getStatus() {return status;}
+    public Status getStatus() {
+        return status;
+    }
 
-    public void setStatus(Status status) {this.status = status;}
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     public Action doAction() {
         //User writes his code here

@@ -1,4 +1,4 @@
-package codw.dao;
+/*package codw.dao;
 
 import codw.dao.mapper.FighterRowMapper;
 import codw.models.Fighter;
@@ -17,7 +17,7 @@ public class FighterDao {
         this.dataSource = dataSource;
     }
 
-    public List<Fighter> checkUser(User user){
+    public List<Fighter> checkUser(User user) {
         JdbcTemplate transform = new JdbcTemplate(dataSource);
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("login", user.getLogin());
@@ -25,6 +25,7 @@ public class FighterDao {
         return transform.query("SELECT login, weapons.name, weapons.stats " +
                 "FROM (users INNER JOIN usersweapons on users.id = usersweapons.userid " +
                 "          ) INNER JOIN weapons on userweapons.weaponid = weapons.id " +
-                "WHERE users.login = :login AND users.pass = :pass",new FighterRowMapper(),parameters);
+                "WHERE users.login = :login AND users.pass = :pass", new FighterRowMapper(), parameters);
     }
 }
+*/
