@@ -8,7 +8,7 @@ public class Fighter1 extends FighterA{
 
 
     @Override
-    public actTarget doAction(ArrayList<FighterA> fighters) {
-        return new actTarget(Action.DEFEND, null);
+    public ActTarget doAction(ArrayList<FighterA> fighters) {
+        return new ActTarget(Action.DEFEND, null);
     }
 }

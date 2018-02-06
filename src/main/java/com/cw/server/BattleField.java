@@ -1,9 +1,11 @@
 package com.cw.server;
 
+import com.cw.models.ActionResult;
 import com.cw.models.FighterA;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 public class BattleField implements Runnable{
 
@@ -35,8 +37,9 @@ public class BattleField implements Runnable{
             while (iter.hasNext() && notFinished) {
                 FighterA cur = iter.next();
                 if(cur.rest()) {
-                    cur.doAction(fighters);
-                    notFinished = allAlive();
+                    //TODO client must get res
+                    ActionResult res = calcAction(fighters.indexOf(cur),cur.doAction(fighters));
+                    notFinished = finishCondition();
                 }
             }
         }
@@ -44,7 +47,52 @@ public class BattleField implements Runnable{
         //TODO Out results of fight
     }
 
-    boolean allAlive(){
+    private ActionResult calcAction(int curIndex, FighterA.ActTarget at){
+        FighterA.Action action = at.getAction();
+        int targetIndex = at.getTarget();
+        FighterA cur = fighters.get(curIndex);
+        FighterA target = fighters.get(targetIndex);
+        ActionResult res = new ActionResult();
+
+        switch (action){
+
+            case DEFEND:
+                cur.setState(FighterA.State.DEFENDING);
+                //TODO reduce stamina for cur
+                fighters.set(curIndex,cur);
+                res.set(true,"You are in defending position now");
+                break;
+
+            case ATTACK:
+                Random rand = new Random();
+                if(target.getState()==FighterA.State.DEFENDING){
+                    if(rand.nextInt(10)<5){
+                        res.result = false;
+                        res.msg += "Your opponent blocked your attack\n";
+                    }else{
+                        res.msg += "Your opponent failed to block your attack\n";
+                    }
+                }
+                if(res.result){
+                    //TODO do something better with attack calculator
+                    int dmg = cur.getLvl()*2+3;
+                    target.setCurHp(target.getCurHp()-dmg);
+                    //TODO reduce stamina for cur
+                    fighters.set(curIndex,cur);
+                    fighters.set(targetIndex,target);
+                    res.msg += "You hit your opponent for " + dmg + " hp!";
+                }
+                break;
+            default:
+                res.result = false;
+                res.msg = "Something went wrong";
+
+        }
+
+        return res;
+    }
+
+    private boolean finishCondition(){
         for (FighterA fighter:fighters) if(fighter.getCurHp() <= 0) return false;
         return true;
     }

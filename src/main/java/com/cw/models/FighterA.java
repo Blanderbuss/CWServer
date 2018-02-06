@@ -1,18 +1,38 @@
 package com.cw.models;
 
 
+import jdk.internal.jline.internal.Nullable;
+
 import java.util.ArrayList;
 
 public abstract class FighterA {
     //TODO More properties
-    public class actTarget{
+    public class ActTarget{
         private Action action;
-        private String target;
+        @Nullable
+        private int target;
 
-        public actTarget(Action action, String target) {
+        public ActTarget(Action action, int target) {
             this.action = action;
             this.target = target;
         }
+
+        public Action getAction() {
+            return action;
+        }
+
+        public void setAction(Action action) {
+            this.action = action;
+        }
+
+        public int getTarget() {
+            return target;
+        }
+
+        public void setTarget(int target) {
+            this.target = target;
+        }
+
     }
 
     public enum Action {
@@ -27,11 +47,17 @@ public abstract class FighterA {
         FIGHTING
     }
 
+    public enum State {
+        FREE,
+        DEFENDING
+    }
+
     private String name;
 
     private int lvl;
     private String equipped;
     private Status status = Status.UNREGISTERED;
+    private State state = State.FREE;
 
     private int curHp;
     private int curSpeed;
@@ -91,10 +117,18 @@ public abstract class FighterA {
         this.curSpeed = curSpeed;
     }
 
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
     public final boolean rest(){
         setCurSpeed(getCurSpeed() - 1);
         return getCurSpeed() == 0;
     }
 
-    public abstract actTarget doAction(ArrayList<FighterA> fighters);
+    public abstract ActTarget doAction(ArrayList<FighterA> fighters);
 }
