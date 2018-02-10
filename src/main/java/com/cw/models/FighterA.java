@@ -3,6 +3,8 @@ package com.cw.models;
 
 import jdk.internal.jline.internal.Nullable;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 
 public abstract class FighterA {
@@ -53,7 +55,6 @@ public abstract class FighterA {
     }
 
     private String name;
-
     private int lvl;
     private String equipped;
     private Status status = Status.UNREGISTERED;
