@@ -1,17 +1,21 @@
 package com.cw.models;
 
 
-import jdk.internal.jline.internal.Nullable;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
+
 import java.util.ArrayList;
 
 public abstract class FighterA {
     //TODO More properties
     public class ActTarget{
+    	@NotNull
         private Action action;
-        @Nullable
+        @Min(0)
         private int target;
 
         public ActTarget(Action action, int target) {
@@ -54,13 +58,24 @@ public abstract class FighterA {
         DEFENDING
     }
 
+    @Size(min=3, max=80)
+    @NotNull
     private String name;
+    @Min(0)
+    @Max(80) // TODO revise
     private int lvl;
+    
+    @Size(min=3)
+    @NotNull
     private String equipped;
+    @NotNull
     private Status status = Status.UNREGISTERED;
+    @NotNull
     private State state = State.FREE;
 
+    @Min(0)
     private int curHp;
+    @Min(0)
     private int curSpeed;
 
     public FighterA() { }

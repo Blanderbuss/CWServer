@@ -1,10 +1,13 @@
 package com.cw.models.db;
 
-public class Artifact {
+import javax.validation.constraints.Min;
 
+public class Artefact {
+	
+	@Min(0)
     private long id;
 
-    public Artifact(long id){
+    public Artefact(long id){
         this.id = id;
     }
 
@@ -13,7 +16,7 @@ public class Artifact {
     }
 
     // Getters must be here.
-    public Artifact getArtifact(){
+    public Artefact getArtifact(){
         return this;
     }
 

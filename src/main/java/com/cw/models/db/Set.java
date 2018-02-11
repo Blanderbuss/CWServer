@@ -35,7 +35,7 @@ public class Set {
         return 0;
     }
 
-    ArrayList<Artifact> getAllArts(String name){
+    ArrayList<Artefact> getAllArts(String name){
         return null;
     }
 }
