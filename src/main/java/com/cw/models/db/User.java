@@ -34,4 +34,48 @@ public class User implements Serializable {
         this.lvl = lvl;
     }
 
+    private void setLogin(String login) {
+        this.login = login;
+    }
+
+    private void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    private void setEmail(String email) {
+        this.email = email;
+    }
+
+    private void setExperience(int experience) {
+        this.experience = experience;
+    }
+
+    private void setLvl(int lvl) {
+        this.lvl = lvl;
+    }
+
+    public static long getSerialVersionUID() {
+
+        return serialVersionUID;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public int getLvl() {
+        return lvl;
+    }
 }

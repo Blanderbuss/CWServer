@@ -3,7 +3,7 @@ package com.cw.models.db.services;
 /**
  * Created by denysmelnychenko on 2/11/18.
  */
-public interface User {
+public interface UserService {
     public String getLogin();
 
     public void setLogin(String login);

@@ -3,10 +3,10 @@ package com.cw.models.db.services;
 /**
  * Created by denysmelnychenko on 2/11/18.
  */
-public interface BattleType {
+public interface BattleTypeService {
 
     // Getters must be here.
-    public BattleType getBT();
+    public BattleTypeService getBT();
 
     public boolean update(long id);
 

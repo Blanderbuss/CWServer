@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by denysmelnychenko on 2/11/18.
  */
-public interface Set {
+public interface SetService {
     public String getName();
 
     public boolean update();
@@ -16,5 +16,5 @@ public interface Set {
 
     public int getLvl(String name);
 
-    ArrayList<Artifact> getAllArts(String name);
+    ArrayList<ArtifactService> getAllArts(String name);
 }

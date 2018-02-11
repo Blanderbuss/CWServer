@@ -3,12 +3,12 @@ package com.cw.models.db.services;
 /**
  * Created by denysmelnychenko on 2/11/18.
  */
-public interface Artifact {
+public interface ArtifactService {
 
     public boolean update(String id);
 
     // Getters must be here.
-    public Artifact getArtifact();
+    public ArtifactService getArtifact();
 
     public boolean delete();
 
