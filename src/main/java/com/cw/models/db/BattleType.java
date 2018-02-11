@@ -1,12 +1,16 @@
 package com.cw.models.db;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class BattleType {
 
     @NotNull
+    @Min(0)
     private long id;
     @NotNull
+    @Max(10)
     private long playersCount;
     @NotNull
     private String battleground;
