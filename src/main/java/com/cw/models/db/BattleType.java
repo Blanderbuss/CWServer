@@ -1,9 +1,14 @@
 package com.cw.models.db;
 
+import javax.validation.constraints.NotNull;
+
 public class BattleType {
 
+    @NotNull
     private long id;
+    @NotNull
     private long playersCount;
+    @NotNull
     private String battleground;
 
     private void setId(long id) {

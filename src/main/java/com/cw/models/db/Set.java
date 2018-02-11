@@ -1,5 +1,7 @@
 package com.cw.models.db;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
@@ -8,15 +10,28 @@ public class Set {
     @NotNull
     @Pattern(regexp = "[a-zA-Z0-9_-]{3,15}")
     private String name;
+    @NotNull
     private long id;
 
+    @NotNull
     private String code;
+    @NotNull
     private int hp;
+    @NotNull
     private int mana;
+    @NotNull
     private int stamina;
+    @NotNull
+    @Max(value=500)
+    @Min(value=(-500))
     private int hpRegen;
+    @NotNull
+    @Max(value=500)
+    @Min(value=(-500))
     private int manaRegen;
+    @NotNull
     private double evasion;
+    @NotNull
     private int armor;
 
     private void setName(String name) {

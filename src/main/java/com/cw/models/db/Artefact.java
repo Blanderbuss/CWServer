@@ -1,17 +1,30 @@
 package com.cw.models.db;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 public class Artefact {
 	
 	@Min(0)
     private long id;
+    @NotNull
     private int hpBoost;
+    @NotNull
     private int staminaBoost;
+    @NotNull
+    @Max(value=500)
+    @Min(value=(-500))
     private int hpRegenBoost;
+    @NotNull
+    @Max(value=500)
+    @Min(value=(-500))
     private int manaRegenBoost;
+    @NotNull
     private int evasionBoost;
+    @NotNull
     private int armorBoost;
+    @NotNull
     private String skin;
 
     private void setSkin(String skin) {
