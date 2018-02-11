@@ -10,32 +10,27 @@ public class Set {
     private String name;
     private long id;
 
-    public Set(long id, String name){
+    private String code;
+    private int hp;
+    private int mana;
+    private int stamina;
+    private int hpRegen;
+    private int manaRegen;
+    private double evasion;
+    private int armor;
+
+    public Set(long id, String name, String code, int hp, int mana, int stamina,
+               int hpRegen, int manaRegen, double evasion, int armor){
         this.id = id;
         this.name = name;
-    }
 
-    public String getName(){
-        return name;
-    }
-
-    public boolean update(){
-        return true;
-    }
-
-    public boolean delete(){
-        return true;
-    }
-
-    public boolean checkCode(String code){
-        return true;
-    }
-
-    public int getLvl(String name){
-        return 0;
-    }
-
-    ArrayList<Artefact> getAllArts(String name){
-        return null;
+        this.code = code;
+        this.hp = hp;
+        this.mana = mana;
+        this.stamina = stamina;
+        this.hpRegen = hpRegen;
+        this.manaRegen = manaRegen;
+        this.evasion = evasion;
+        this.armor = armor;
     }
 }
