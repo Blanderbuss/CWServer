@@ -24,12 +24,14 @@ public class BattleField implements Runnable{
     private ArrayList<FighterA> fighters;
 
     public BattleField(ArrayList<FighterA> fighters){
+        System.out.println("Battlefield created");
         this.fighters = fighters;
         this.status = Status.INITIALIZED;
     }
 
     @Override
     public void run() {
+        System.out.println("Battlefield started");
         this.status = Status.FIGHTING;
         boolean notFinished = true;
         while(notFinished){
@@ -39,6 +41,7 @@ public class BattleField implements Runnable{
                 if(cur.rest()) {
                     //TODO client must get res
                     ActionResult res = calcAction(fighters.indexOf(cur),cur.doAction(fighters));
+                    System.out.println(res.msg + " " + res.result);
                     notFinished = finishCondition();
                 }
             }
@@ -58,6 +61,8 @@ public class BattleField implements Runnable{
 
             case DEFEND:
                 cur.setState(FighterA.State.DEFENDING);
+                //TODO calcute curSpeed from lvl
+                cur.setCurSpeed(10);
                 //TODO reduce stamina for cur
                 fighters.set(curIndex,cur);
                 res.set(true,"You are in defending position now");
@@ -82,6 +87,8 @@ public class BattleField implements Runnable{
                     fighters.set(targetIndex,target);
                     res.msg += "You hit your opponent for " + dmg + " hp!";
                 }
+                //TODO calcute curSpeed from lvl
+                cur.setCurSpeed(10);
                 break;
             default:
                 res.result = false;
@@ -93,7 +100,10 @@ public class BattleField implements Runnable{
     }
 
     private boolean finishCondition(){
-        for (FighterA fighter:fighters) if(fighter.getCurHp() <= 0) return false;
+        for (FighterA fighter:fighters) if(fighter.getCurHp() <= 0){
+            System.out.println("Fighter "+ fighter.getName() + " is now dead");
+            return false;
+        }
         return true;
     }
 }

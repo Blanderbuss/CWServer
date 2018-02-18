@@ -8,12 +8,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class FighterA {
+public abstract class FighterA implements Serializable{
+    private static final long serialVersionUID = 1L;
     //TODO More properties
     public class ActTarget{
-    	@NotNull
+        @NotNull
         private Action action;
         @Min(0)
         private int target;
@@ -64,7 +66,7 @@ public abstract class FighterA {
     @Min(0)
     @Max(80) // TODO revise
     private int lvl;
-    
+
     @Size(min=3)
     @NotNull
     private String equipped;

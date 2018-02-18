@@ -18,7 +18,7 @@ public class ServerService implements ServerServiceIF {
     public boolean register(User user) throws UserException {
         //TODO Verify data and add to db
         clients.add(user);
-        System.out.println("User " + user + " registered");
+        System.out.println("User " + user.getEmail() + " registered");
         return true;
     }
 
@@ -26,7 +26,7 @@ public class ServerService implements ServerServiceIF {
     public boolean auth(User user) throws UserException {
         //TODO Check database for user
         clients.add(user);
-        System.out.println("User " + user + " authed");
+        System.out.println("User " + user.getEmail() + " authed");
         return true;
     }
 
@@ -35,6 +35,7 @@ public class ServerService implements ServerServiceIF {
         //TODO Check database for fighter
         fighter.setStatus(FighterA.Status.REGISTERED);
         fighters.add(fighter);
+        System.out.println("Fighter " + fighter.getName() + " registered");
         if(fighters.size()==type)new Thread(new BattleField(fighters)).start();
         return true;
     }
