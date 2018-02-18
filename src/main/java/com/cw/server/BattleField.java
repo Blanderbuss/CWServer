@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+
 public class BattleField implements Runnable{
 
     //TODO Count and set cur stats
@@ -41,7 +42,8 @@ public class BattleField implements Runnable{
                 if(cur.rest()) {
                     //TODO client must get res
                     ActionResult res = calcAction(fighters.indexOf(cur),cur.doAction(fighters));
-                    System.out.println(res.msg + " " + res.result);
+                    System.out.println(res.msg);
+                    outAll();
                     notFinished = finishCondition();
                 }
             }
@@ -62,41 +64,48 @@ public class BattleField implements Runnable{
             case DEFEND:
                 cur.setState(FighterA.State.DEFENDING);
                 //TODO calcute curSpeed from lvl
-                cur.setCurSpeed(10);
+                cur.setCurSpeed(cur.getMaxSpeed());
                 //TODO reduce stamina for cur
                 fighters.set(curIndex,cur);
-                res.set(true,"You are in defending position now");
+                res.set(true,cur.getName() + " is in defending position now");
                 break;
 
             case ATTACK:
                 Random rand = new Random();
                 if(target.getState()==FighterA.State.DEFENDING){
+                    //TODO calculate blocking chances better
+                    //TODO reduce stamina for cur !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     if(rand.nextInt(10)<5){
                         res.result = false;
-                        res.msg += "Your opponent blocked your attack\n";
+                        res.msg += target.getName() + " attack of " + cur.getName();
                     }else{
-                        res.msg += "Your opponent failed to block your attack\n";
+                        res.msg += target.getName() + " failed to block attack of " + cur.getName()+"\n";
                     }
                 }
                 if(res.result){
-                    //TODO do something better with attack calculator
+                    //TODO do something better with attack calculator?
                     int dmg = cur.getLvl()*2+3;
                     target.setCurHp(target.getCurHp()-dmg);
-                    //TODO reduce stamina for cur
+                    //TODO reduce stamina for cur !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     fighters.set(curIndex,cur);
                     fighters.set(targetIndex,target);
-                    res.msg += "You hit your opponent for " + dmg + " hp!";
+                    res.msg += cur.getName() + " hit " + target.getName() +" for " + dmg + " hp!";
                 }
                 //TODO calcute curSpeed from lvl
-                cur.setCurSpeed(10);
+                cur.setCurSpeed(cur.getMaxSpeed());
                 break;
             default:
                 res.result = false;
                 res.msg = "Something went wrong";
 
         }
-
         return res;
+    }
+
+    void outAll(){
+        for(FighterA fighter:fighters){
+            System.out.println("Fighter "+ fighter.getName() + ": State[" + fighter.getState() + "] HP[" + fighter.getCurHp()+"]");
+        }
     }
 
     private boolean finishCondition(){
@@ -106,4 +115,5 @@ public class BattleField implements Runnable{
         }
         return true;
     }
+
 }
