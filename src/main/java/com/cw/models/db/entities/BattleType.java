@@ -1,4 +1,4 @@
-package com.cw.models.db;
+package com.cw.models.db.entities;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -8,26 +8,31 @@ public class BattleType {
 
     @NotNull
     @Min(0)
-    private long id;
+    private int id;
     @NotNull
     @Max(10)
     private long playersCount;
     @NotNull
     private String battleground;
 
-    private void setId(long id) {
-        this.id = id;
-    }
-
-    private void setPlayersCount(long playersCount) {
+    public BattleType(long playersCount, String battleground){
         this.playersCount = playersCount;
-    }
-
-    private void setBattleground(String battleground) {
         this.battleground = battleground;
     }
 
-    public long getId() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setPlayersCount(long playersCount) {
+        this.playersCount = playersCount;
+    }
+
+    public void setBattleground(String battleground) {
+        this.battleground = battleground;
+    }
+
+    public int getId() {
 
         return id;
     }
@@ -39,12 +44,4 @@ public class BattleType {
     public String getBattleground() {
         return battleground;
     }
-
-    public BattleType(long id, long playersCount, String battleground){
-        this.id = id;
-        this.playersCount = playersCount;
-        this.battleground = battleground;
-
-    }
-
 }
