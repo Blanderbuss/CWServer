@@ -12,6 +12,6 @@ public interface ServerServiceIF {
 
     boolean auth(User user) throws UserException;
 
-    boolean regFighter(FighterA fighter) throws FighterException;
+    boolean regFighter(String fighter) throws FighterException;
 
 }

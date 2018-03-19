@@ -170,6 +170,4 @@ public abstract class FighterA implements Serializable{
         setCurSpeed(getCurSpeed() - 1);
         return getCurSpeed() == 0;
     }
-
-    public abstract ActTarget doAction(ArrayList<FighterA> fighters);
 }

@@ -2,10 +2,10 @@ package com.cw.server;
 
 import com.cw.models.ActionResult;
 import com.cw.models.FighterA;
+import com.cw.models.GameEnvironment;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class BattleField implements Runnable{
@@ -23,8 +23,14 @@ public class BattleField implements Runnable{
     private Status status;
 
     private ArrayList<FighterA> fighters;
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
 
     public BattleField(ArrayList<FighterA> fighters){
+        date = new Date();
         System.out.println("Battlefield created");
         this.fighters = fighters;
         this.status = Status.INITIALIZED;
@@ -41,7 +47,9 @@ public class BattleField implements Runnable{
                 FighterA cur = iter.next();
                 if(cur.rest()) {
                     //TODO client must get res
-                    ActionResult res = calcAction(fighters.indexOf(cur),cur.doAction(fighters));
+                    ActionResult res = calcAction(fighters.indexOf(cur),cur.doAction(
+                            new GameEnvironment(getDate(),new ArrayList<FighterA>(Arrays.asList(cur)),fighters.stream().filter(f -> !f.equals(cur)).collect(Collectors.toList()))
+                    ));
                     System.out.println(res.msg);
                     outAll();
                     notFinished = finishCondition();

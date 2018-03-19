@@ -5,6 +5,7 @@ import com.cw.exceptions.FighterException;
 import com.cw.exceptions.UserException;
 import com.cw.models.FighterA;
 import com.cw.models.db.entities.User;
+import com.cw.server.factory.FighterFactory;
 
 import java.util.ArrayList;
 
@@ -31,8 +32,9 @@ public class ServerService implements ServerServiceIF {
     }
 
     @Override
-    public boolean regFighter(FighterA fighter) throws FighterException {
+    public boolean regFighter(String strfighter) throws FighterException {
         //TODO Check database for fighter
+        FighterA fighter = FighterFactory.getFighter(strfighter);
         fighter.setStatus(FighterA.Status.REGISTERED);
         fighters.add(fighter);
         System.out.println("Fighter " + fighter.getName() + " registered");
