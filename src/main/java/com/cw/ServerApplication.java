@@ -1,6 +1,7 @@
-package com.cw.server;
+package com.cw;
 
 import com.cw.appif.ServerServiceIF;
+import com.cw.server.ServerService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

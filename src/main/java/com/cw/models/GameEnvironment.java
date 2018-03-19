@@ -11,19 +11,19 @@ import java.util.List;
 */ 
 public class GameEnvironment {
 	private Date startDatetime;
-	private List<FighterA> allies;
-	private List<FighterA> enemies;
+	private List<Fighter> allies;
+	private List<Fighter> enemies;
 
-	public GameEnvironment(Date startDatetime, List<FighterA> allies, List<FighterA> enemies) {
+	public GameEnvironment(Date startDatetime, List<Fighter> allies, List<Fighter> enemies) {
 		this.startDatetime = startDatetime;
 		this.allies = allies;
 		this.enemies = enemies;
 	}
 
-	public List<FighterA> getAllies() {
+	public List<Fighter> getAllies() {
 		return allies;
 	}
-	public List<FighterA> getEnemies() {
+	public List<Fighter> getEnemies() {
 		return enemies;
 	}
 	public Date getStartDatetime() {

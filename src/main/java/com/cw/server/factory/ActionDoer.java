@@ -1,7 +1,9 @@
 package com.cw.server.factory;
-import com.cw.models.FighterA;
+import com.cw.models.Fighter;
 import com.cw.models.GameEnvironment;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface ActionDoer {
-    public void doAction(FighterA self, GameEnvironment env);
+    Fighter.ActTarget doAction(Fighter self, GameEnvironment env);
 }

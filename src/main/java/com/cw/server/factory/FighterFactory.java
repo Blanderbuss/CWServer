@@ -28,12 +28,12 @@ public class FighterFactory {
 		}
 	}
 	private static final String templateFighter =
-			"import com.cw.models.FighterA;\n" +
+			"import com.cw.models.Fighter;\n" +
 			"import com.cw.models.GameEnvironment;\n" +
 			"import com.cw.server.factory.ActionDoer;\n" +
 			"\n" +
 			"public class %s implements ActionDoer {\n" +
-			"    public void doAction(FighterA self, GameEnvironment env) {\n" +
+			"    public void doAction(Fighter self, GameEnvironment env) {\n" +
 			"        %s\n" +
 			"    }\n" +
 			"}\n";
@@ -42,7 +42,7 @@ public class FighterFactory {
 			"import com.cw.codetoaction.CertainFighter;\r\n" +
 			"import com.cw.codetoaction.GameEnvironment;\r\n" +
 			"import com.cw.codetoaction.ActionDoer;\r\n" +
-			"import com.cw.models.FighterA;\r\n" +
+			"import com.cw.models.Fighter;\r\n" +
 			"public class %s extends ActionDoer {\r\n" + 
 			"    public void execute(CertainFighter self, GameEnvironment env) {\r\n" + 
 			"        %s\r\n" + 

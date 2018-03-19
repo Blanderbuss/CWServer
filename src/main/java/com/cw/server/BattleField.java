@@ -1,7 +1,7 @@
 package com.cw.server;
 
 import com.cw.models.ActionResult;
-import com.cw.models.FighterA;
+import com.cw.models.Fighter;
 import com.cw.models.GameEnvironment;
 
 import java.util.*;
@@ -22,14 +22,14 @@ public class BattleField implements Runnable{
 
     private Status status;
 
-    private ArrayList<FighterA> fighters;
+    private ArrayList<Fighter> fighters;
     private Date date;
 
     public Date getDate() {
         return date;
     }
 
-    public BattleField(ArrayList<FighterA> fighters){
+    public BattleField(ArrayList<Fighter> fighters){
         date = new Date();
         System.out.println("Battlefield created");
         this.fighters = fighters;
@@ -42,13 +42,14 @@ public class BattleField implements Runnable{
         this.status = Status.FIGHTING;
         boolean notFinished = true;
         while(notFinished){
-            Iterator<FighterA> iter = fighters.iterator();
+            Iterator<Fighter> iter = fighters.iterator();
             while (iter.hasNext() && notFinished) {
-                FighterA cur = iter.next();
+                Fighter cur = iter.next();
                 if(cur.rest()) {
                     //TODO client must get res
-                    ActionResult res = calcAction(fighters.indexOf(cur),cur.doAction(
-                            new GameEnvironment(getDate(),new ArrayList<FighterA>(Arrays.asList(cur)),fighters.stream().filter(f -> !f.equals(cur)).collect(Collectors.toList()))
+                    ActionResult res = calcAction(fighters.indexOf(cur),cur.getActionDoer().doAction(
+                            cur,
+                            new GameEnvironment(getDate(),new ArrayList<Fighter>(Arrays.asList(cur)),fighters.stream().filter(f -> !f.equals(cur)).collect(Collectors.toList()))
                     ));
                     System.out.println(res.msg);
                     outAll();
@@ -60,17 +61,17 @@ public class BattleField implements Runnable{
         //TODO Out results of fight
     }
 
-    private ActionResult calcAction(int curIndex, FighterA.ActTarget at){
-        FighterA.Action action = at.getAction();
+    private ActionResult calcAction(int curIndex, Fighter.ActTarget at){
+        Fighter.Action action = at.getAction();
         int targetIndex = at.getTarget();
-        FighterA cur = fighters.get(curIndex);
-        FighterA target = fighters.get(targetIndex);
+        Fighter cur = fighters.get(curIndex);
+        Fighter target = fighters.get(targetIndex);
         ActionResult res = new ActionResult();
 
         switch (action){
 
             case DEFEND:
-                cur.setState(FighterA.State.DEFENDING);
+                cur.setState(Fighter.State.DEFENDING);
                 //TODO calcute curSpeed from lvl
                 cur.setCurSpeed(cur.getMaxSpeed());
                 //TODO reduce stamina for cur
@@ -80,7 +81,7 @@ public class BattleField implements Runnable{
 
             case ATTACK:
                 Random rand = new Random();
-                if(target.getState()==FighterA.State.DEFENDING){
+                if(target.getState()== Fighter.State.DEFENDING){
                     //TODO calculate blocking chances better
                     //TODO reduce stamina for cur !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     if(rand.nextInt(10)<5){
@@ -111,13 +112,13 @@ public class BattleField implements Runnable{
     }
 
     void outAll(){
-        for(FighterA fighter:fighters){
+        for(Fighter fighter:fighters){
             System.out.println("Fighter "+ fighter.getName() + ": State[" + fighter.getState() + "] HP[" + fighter.getCurHp()+"]");
         }
     }
 
     private boolean finishCondition(){
-        for (FighterA fighter:fighters) if(fighter.getCurHp() <= 0){
+        for (Fighter fighter:fighters) if(fighter.getCurHp() <= 0){
             System.out.println("Fighter "+ fighter.getName() + " is now dead");
             return false;
         }

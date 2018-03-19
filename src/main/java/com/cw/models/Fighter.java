@@ -2,6 +2,10 @@ package com.cw.models;
 
 
 
+import com.cw.models.db.entities.Artefact;
+import com.cw.models.db.entities.Set;
+import com.cw.server.factory.ActionDoer;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -10,8 +14,9 @@ import javax.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-public abstract class FighterA implements Serializable{
+public class Fighter implements Serializable{
     private static final long serialVersionUID = 1L;
     //TODO More properties
     public class ActTarget{
@@ -67,9 +72,6 @@ public abstract class FighterA implements Serializable{
     @Max(80) // TODO revise
     private int lvl;
 
-    @Size(min=3)
-    @NotNull
-    private String equipped;
     @NotNull
     private Status status = Status.UNREGISTERED;
     @NotNull
@@ -83,14 +85,22 @@ public abstract class FighterA implements Serializable{
     @Min(0)
     private int curSpeed;
 
-    public FighterA() {
+    private ActionDoer actionDoer;
+
+    private List<Artefact> artefacts;
+
+    public Fighter() {
     }
 
     /**
      * @param name is given through user input
      * @param lvl is given through getting it from user
      */
-    public FighterA(String name, int lvl) {
+    public Fighter(Set set, ActionDoer actionDoer){
+        //TODO
+    }
+
+    public Fighter(String name, int lvl) {
         this.name = name;
         this.lvl = lvl;
         //Calculatin` initial stats
@@ -116,12 +126,20 @@ public abstract class FighterA implements Serializable{
         this.lvl = lvl;
     }
 
-    public final String getEquipped() {
-        return equipped;
+    public ActionDoer getActionDoer() {
+        return actionDoer;
     }
 
-    public final void setEquipped(String equipped) {
-        this.equipped = equipped;
+    public void setActionDoer(ActionDoer actionDoer) {
+        this.actionDoer = actionDoer;
+    }
+
+    public List<Artefact> getArtefacts() {
+        return artefacts;
+    }
+
+    public void setArtefacts(List<Artefact> artefacts) {
+        this.artefacts = artefacts;
     }
 
     public final Status getStatus() {
