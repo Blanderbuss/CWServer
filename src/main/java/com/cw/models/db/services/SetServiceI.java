@@ -1,10 +1,9 @@
 package com.cw.models.db.services;
 
-import com.cw.models.db.entities.Set;
-import com.cw.models.db.entities.User;
+import com.cw.models.entities.Set;
+import com.cw.models.entities.User;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

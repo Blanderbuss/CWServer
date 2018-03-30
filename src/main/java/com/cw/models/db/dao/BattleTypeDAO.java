@@ -1,6 +1,6 @@
 package com.cw.models.db.dao;
 
-import com.cw.models.db.entities.BattleType;
+import com.cw.models.entities.BattleType;
 
 /**
  * Created by Макс on 09.03.2018.

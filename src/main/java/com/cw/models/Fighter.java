@@ -2,18 +2,16 @@ package com.cw.models;
 
 
 
-import com.cw.models.db.entities.Artefact;
-import com.cw.models.db.entities.Set;
+import com.cw.models.entities.Artefact;
+import com.cw.models.entities.Set;
 import com.cw.server.factory.ActionDoer;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Fighter implements Serializable{
@@ -92,10 +90,6 @@ public class Fighter implements Serializable{
     public Fighter() {
     }
 
-    /**
-     * @param name is given through user input
-     * @param lvl is given through getting it from user
-     */
     public Fighter(Set set, ActionDoer actionDoer){
         //TODO
     }

@@ -2,7 +2,7 @@ package com.cw.models.db.services.impl;
 
 import com.cw.models.db.connectionFactory.ConnectionFactory;
 import com.cw.models.db.dao.impl.JDBCBattleTypeDAO;
-import com.cw.models.db.entities.BattleType;
+import com.cw.models.entities.BattleType;
 import com.cw.models.db.services.BattleTypeServiceI;
 
 import java.sql.Connection;

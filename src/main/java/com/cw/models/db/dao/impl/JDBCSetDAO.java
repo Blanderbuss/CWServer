@@ -1,15 +1,13 @@
 package com.cw.models.db.dao.impl;
 
 import com.cw.models.db.dao.SetDao;
-import com.cw.models.db.entities.Set;
-import com.cw.models.db.entities.User;
+import com.cw.models.entities.Set;
+import com.cw.models.entities.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Макс on 09.03.2018.

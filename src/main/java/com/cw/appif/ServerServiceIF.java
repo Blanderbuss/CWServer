@@ -2,8 +2,8 @@ package com.cw.appif;
 
 import com.cw.exceptions.FighterException;
 import com.cw.exceptions.UserException;
-import com.cw.models.db.entities.Artefact;
-import com.cw.models.db.entities.User;
+import com.cw.models.entities.Artefact;
+import com.cw.models.entities.User;
 
 import java.util.List;
 
@@ -16,5 +16,5 @@ public interface ServerServiceIF {
 
     boolean addSet(String name, int lvl, List<Artefact> artefacts) throws FighterException;
 
-    boolean regSet(int id) throws FighterException;
+    boolean readyForFight(int id) throws FighterException;
 }

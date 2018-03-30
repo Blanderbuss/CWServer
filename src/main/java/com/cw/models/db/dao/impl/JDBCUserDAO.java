@@ -1,7 +1,7 @@
 package com.cw.models.db.dao.impl;
 
 import com.cw.models.db.dao.UserDAO;
-import com.cw.models.db.entities.User;
+import com.cw.models.entities.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

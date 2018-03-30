@@ -1,9 +1,7 @@
 package com.cw.models.db.services;
 
-import com.cw.models.db.entities.User;
+import com.cw.models.entities.User;
 import org.springframework.stereotype.Service;
-
-import java.sql.SQLException;
 
 /**
  * Created by denysmelnychenko on 2/11/18.

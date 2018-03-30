@@ -1,6 +1,6 @@
 package com.cw.models.db.dao;
 
-import com.cw.models.db.entities.User;
+import com.cw.models.entities.User;
 
 /**
  * Created by Макс on 09.03.2018.

@@ -1,7 +1,7 @@
 package com.cw.models.db.dao.impl;
 
 import com.cw.models.db.dao.BattleTypeDAO;
-import com.cw.models.db.entities.BattleType;
+import com.cw.models.entities.BattleType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +20,7 @@ public class JDBCBattleTypeDAO implements BattleTypeDAO {
 
     private static final String GET_BATTLETYPE_BY_ID_SQL = "SELECT * FROM `battles_type` WHERE `id` = ?";
 
-    private static final String ADD_ARTIFACT_SQL = "INSERT INTO `battles_type` (`players_count`, `battleground`), VALUES (?, ?)";
+    private static final String ADD_ARTIFACT_SQL = "INSERT INTO `battles_type` (`players_count`, `battleground`) VALUES (?, ?)";
 
     private static final String UPDATE_ARTIFACT_BY_ID_SQL = "UPDATE `battles_type` SET `players_count` = ?, `battleground` = ?";
 

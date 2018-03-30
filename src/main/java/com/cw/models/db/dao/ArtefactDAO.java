@@ -1,8 +1,6 @@
 package com.cw.models.db.dao;
 
-import com.cw.models.db.entities.Artefact;
-
-import java.util.List;
+import com.cw.models.entities.Artefact;
 
 /**
  * Created by Макс on 09.03.2018.

@@ -1,14 +1,12 @@
 package com.cw.models.db.dao.impl;
 
 import com.cw.models.db.dao.ArtefactDAO;
-import com.cw.models.db.entities.Artefact;
+import com.cw.models.entities.Artefact;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Макс on 10.03.2018.
@@ -22,7 +20,7 @@ public class JDBCArtefactDAO implements ArtefactDAO {
 
     private static final String GET_ARTEFACT_BY_ID_SQL = "SELECT * FROM `artefacts` WHERE `id` = ?";
 
-    private static final String ADD_ARTIFACT_SQL = "INSERT INTO `artefacts` (`name`, `type`, `hp_boost`, `mana_boost`, `stamina_boost`, `hp_regen_boost`, `mana_regen_boost`, `evasion_boost`, `armor_boost`, `skin`), VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String ADD_ARTIFACT_SQL = "INSERT INTO `artefacts` (`name`, `type`, `hp_boost`, `mana_boost`, `stamina_boost`, `hp_regen_boost`, `mana_regen_boost`, `evasion_boost`, `armor_boost`, `skin`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     private static final String UPDATE_ARTIFACT_BY_ID_SQL = "UPDATE `artefacts` SET `name` = ?, `type` = ?, `hp_boost` = ?, `mana_boost` = ?, `stamina_boost` = ?, `hp_regen_boost` = ?, `mana_regen_boost` = ?, `evasion_boost` = ?, `armor_boost` = ?, `skin` = ?";
 

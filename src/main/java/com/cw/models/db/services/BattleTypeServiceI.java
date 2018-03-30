@@ -1,6 +1,6 @@
 package com.cw.models.db.services;
 
-import com.cw.models.db.entities.BattleType;
+import com.cw.models.entities.BattleType;
 import org.springframework.stereotype.Service;
 
 /**

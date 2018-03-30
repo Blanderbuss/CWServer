@@ -2,7 +2,7 @@ package com.cw.models.db.services.impl;
 
 import com.cw.models.db.connectionFactory.ConnectionFactory;
 import com.cw.models.db.dao.impl.JDBCArtefactDAO;
-import com.cw.models.db.entities.Artefact;
+import com.cw.models.entities.Artefact;
 import com.cw.models.db.services.ArtefactServiceI;
 
 import java.sql.Connection;

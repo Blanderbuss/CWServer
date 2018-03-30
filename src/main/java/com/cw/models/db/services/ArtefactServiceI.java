@@ -1,6 +1,6 @@
 package com.cw.models.db.services;
 
-import com.cw.models.db.entities.Artefact;
+import com.cw.models.entities.Artefact;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

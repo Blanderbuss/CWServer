@@ -1,9 +1,7 @@
 package com.cw.models.db.dao;
 
-import com.cw.models.db.entities.Set;
-import com.cw.models.db.entities.User;
-
-import java.util.List;
+import com.cw.models.entities.Set;
+import com.cw.models.entities.User;
 
 /**
  * Created by Макс on 09.03.2018.

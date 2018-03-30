@@ -1,4 +1,4 @@
-package com.cw.models.db.entities;
+package com.cw.models.entities;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

@@ -1,11 +1,10 @@
 package com.cw.models.db.services.impl;
 
 import com.cw.models.db.connectionFactory.ConnectionFactory;
-import com.cw.models.db.dao.impl.JDBCArtefactDAO;
 import com.cw.models.db.dao.impl.JDBCSetDAO;
-import com.cw.models.db.entities.Artefact;
-import com.cw.models.db.entities.Set;
-import com.cw.models.db.entities.User;
+import com.cw.models.entities.Artefact;
+import com.cw.models.entities.Set;
+import com.cw.models.entities.User;
 import com.cw.models.db.services.SetServiceI;
 
 import java.sql.Connection;
