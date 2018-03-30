@@ -30,9 +30,9 @@ public class FighterFactory {
 	private static final String templateFighter =
 			"import com.cw.models.Fighter;\n" +
 			"import com.cw.models.GameEnvironment;\n" +
-			"import com.cw.server.factory.ActionDoer;\n" +
+			"import com.cw.server.factory.ActionExecutor;\n" +
 			"\n" +
-			"public class %s implements ActionDoer {\n" +
+			"public class %s implements ActionExecutor {\n" +
 			"    public void doAction(Fighter self, GameEnvironment env) {\n" +
 			"        %s\n" +
 			"    }\n" +
@@ -41,15 +41,15 @@ public class FighterFactory {
 	private static final String templateContent = "" +
 			"import com.cw.codetoaction.CertainFighter;\r\n" +
 			"import com.cw.codetoaction.GameEnvironment;\r\n" +
-			"import com.cw.codetoaction.ActionDoer;\r\n" +
+			"import com.cw.codetoaction.ActionExecutor;\r\n" +
 			"import com.cw.models.Fighter;\r\n" +
-			"public class %s extends ActionDoer {\r\n" + 
+			"public class %s extends ActionExecutor {\r\n" +
 			"    public void execute(CertainFighter self, GameEnvironment env) {\r\n" + 
 			"        %s\r\n" + 
 			"    }\r\n" + 
 			"}\r\n";
 	
-	public static ActionDoer getActionDoer(String suffix, String code) {
+	public static ActionExecutor getActionDoer(String suffix, String code) {
 		//System.out.println(templateContent);
 		if (isSafeCode(code)) {
 			if (writeActionDoer(suffix, code)) {
@@ -61,7 +61,7 @@ public class FighterFactory {
 					return null; // TODO check
 				}
 			} else
-				System.out.println("failed to write ActionDoer");
+				System.out.println("failed to write ActionExecutor");
 		} else {
 			System.out.println("aborted: your code is not safe, your actions "
 					+ "will be reported");
@@ -81,10 +81,10 @@ public class FighterFactory {
 		return 0 == compiler.run(null, null, null, sourceFile.getPath());
 	}
 
-	private static ActionDoer getActionDoer(String suffix) {
-		ActionDoer res = null;
+	private static ActionExecutor getActionDoer(String suffix) {
+		ActionExecutor res = null;
 		try {
-			Class<ActionDoer> cls = (Class<ActionDoer>) Class.forName( getClassName(suffix) , true, classLoader);
+			Class<ActionExecutor> cls = (Class<ActionExecutor>) Class.forName( getClassName(suffix) , true, classLoader);
 			res = cls.newInstance();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -116,11 +116,11 @@ public class FighterFactory {
 	}
 	
 	private static String getClassName(String suffix) { 
-		return String.format("ActionDoer%s", suffix); 
+		return String.format("ActionExecutor%s", suffix);
 	}
 	
 	private static String getFilePath(String suffix) { 
-		return String.format(root.getPath() + File.separator + "ActionDoer%s.java", suffix); 
+		return String.format(root.getPath() + File.separator + "ActionExecutor%s.java", suffix);
 	}
 	
 	private static boolean isSafeCode(String code) {

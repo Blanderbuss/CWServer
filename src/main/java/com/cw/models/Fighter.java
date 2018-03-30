@@ -4,7 +4,7 @@ package com.cw.models;
 
 import com.cw.models.entities.Artefact;
 import com.cw.models.entities.Set;
-import com.cw.server.factory.ActionDoer;
+import com.cw.server.factory.ActionExecutor;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -15,7 +15,6 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Fighter implements Serializable{
-    private static final long serialVersionUID = 1L;
     //TODO More properties
     public class ActTarget{
         @NotNull
@@ -67,7 +66,7 @@ public class Fighter implements Serializable{
     @NotNull
     private String name;
     @Min(0)
-    @Max(80) // TODO revise
+    @Max(80)
     private int lvl;
 
     @NotNull
@@ -83,14 +82,14 @@ public class Fighter implements Serializable{
     @Min(0)
     private int curSpeed;
 
-    private ActionDoer actionDoer;
+    private ActionExecutor actionExecutor;
 
     private List<Artefact> artefacts;
 
     public Fighter() {
     }
 
-    public Fighter(Set set, ActionDoer actionDoer){
+    public Fighter(Set set, ActionExecutor actionExecutor){
         //TODO
     }
 
@@ -120,12 +119,12 @@ public class Fighter implements Serializable{
         this.lvl = lvl;
     }
 
-    public ActionDoer getActionDoer() {
-        return actionDoer;
+    public ActionExecutor getActionExecutor() {
+        return actionExecutor;
     }
 
-    public void setActionDoer(ActionDoer actionDoer) {
-        this.actionDoer = actionDoer;
+    public void setActionExecutor(ActionExecutor actionExecutor) {
+        this.actionExecutor = actionExecutor;
     }
 
     public List<Artefact> getArtefacts() {

@@ -3,7 +3,7 @@ package com.cw.server;
 import com.cw.models.ActionResult;
 import com.cw.models.Fighter;
 import com.cw.models.GameEnvironment;
-import com.cw.server.factory.ActionDoer;
+import com.cw.server.factory.ActionExecutor;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -52,8 +52,8 @@ public class BattleField implements Runnable {
                     ArrayList<Fighter> curAllies = new ArrayList<Fighter>(Arrays.asList(cur));
                     ArrayList<Fighter> curEnemies = new ArrayList<Fighter>(fighters.stream().filter(f -> !f.equals(cur)).collect(Collectors.toList()));
                     GameEnvironment env = new GameEnvironment(getDate(), curAllies, curEnemies);
-                    ActionDoer curActionDoer = cur.getActionDoer();
-                    Fighter.ActTarget curActTarget = curActionDoer.doAction(cur, env);
+                    ActionExecutor curActionExecutor = cur.getActionExecutor();
+                    Fighter.ActTarget curActTarget = curActionExecutor.doAction(cur, env);
                     ActionResult res = calcAction(fighters.indexOf(cur), curActTarget);
                     System.out.println(res.msg);
                     outAll();

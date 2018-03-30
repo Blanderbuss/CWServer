@@ -11,7 +11,7 @@ import com.cw.models.db.services.ArtefactServiceI;
 import com.cw.models.db.services.BattleTypeServiceI;
 import com.cw.models.db.services.SetServiceI;
 import com.cw.models.db.services.UserServiceI;
-import com.cw.server.factory.ActionDoer;
+import com.cw.server.factory.ActionExecutor;
 import com.cw.server.factory.FighterFactory;
 
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ public class ServerService implements ServerServiceIF {
 
     static ArrayList<User> clients = new ArrayList<>();
     static ArrayList<Fighter> fighters = new ArrayList<>();
+    //TODO do BattlerType from entities
     private final int type = 2;
 
     @Override
@@ -56,8 +57,8 @@ public class ServerService implements ServerServiceIF {
     public boolean readyForFight(int id) throws FighterException {
         //TODO Check database for fighter
         Set set = setService.getSetById(id);
-        ActionDoer actionDoer = FighterFactory.getActionDoer(String.valueOf(id),set.getCode());
-        Fighter fighter = new Fighter(set, actionDoer);
+        ActionExecutor actionExecutor = FighterFactory.getActionDoer(String.valueOf(id),set.getCode());
+        Fighter fighter = new Fighter(set, actionExecutor);
         fighter.setStatus(Fighter.Status.REGISTERED);
         fighters.add(fighter);
         System.out.println("Fighter " + fighter.getName() + " registered");
