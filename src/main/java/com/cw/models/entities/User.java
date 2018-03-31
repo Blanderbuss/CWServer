@@ -103,4 +103,16 @@ public class User implements Serializable {
     public void setUserArtefacts(List<Artefact> userArtefacts) {
         this.userArtefacts = userArtefacts;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", pass='" + pass + '\'' +
+                ", email='" + email + '\'' +
+                ", experience=" + experience +
+                ", lvl=" + lvl +
+                '}';
+    }
 }

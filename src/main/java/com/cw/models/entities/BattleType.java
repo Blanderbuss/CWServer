@@ -44,4 +44,13 @@ public class BattleType {
     public String getBattleground() {
         return battleground;
     }
+
+    @Override
+    public String toString() {
+        return "BattleType{" +
+                "id=" + id +
+                ", playersCount=" + playersCount +
+                ", battleground='" + battleground + '\'' +
+                '}';
+    }
 }

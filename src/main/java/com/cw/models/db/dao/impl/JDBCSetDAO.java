@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Макс on 09.03.2018.
@@ -21,9 +23,11 @@ public class JDBCSetDAO implements SetDao {
 
     private static final String GET_SET_BY_ID_SQL = "SELECT * FROM `sets` WHERE `id` = ?";
 
+    private static final String GET_ALL_SETS_BY_USER_ID_SQL = "SELECT * FROM `sets` WHERE `user_id` = ?";
+
     private static final String ADD_SET_SQL = "INSERT INTO `sets` (`name`, `code`, `user_id`) VALUES (?, ?, ?)";
 
-    private static final String UPDATE_SET_SQL = "UPDATE `sets` SET `name` = ?, `code` = ?";
+    private static final String UPDATE_SET_SQL = "UPDATE `sets` SET `name` = ?, `code` = ? WHERE `id` = ?";
 
     private static final String DELETE_SET_BY_ID_SQL = "DELETE FROM `sets` WHERE `id` = ?";
 
@@ -36,13 +40,13 @@ public class JDBCSetDAO implements SetDao {
             preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            set = new Set(resultSet.getString("name"), resultSet.getString("code"));
-            set.setId(resultSet.getInt("id"));
-
+            boolean isNotEmpty = resultSet.next();
+            if (isNotEmpty) {
+                set = new Set(resultSet.getString("name"), resultSet.getString("code"));
+                set.setId(resultSet.getInt("id"));
+            }
             resultSet.close();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -50,17 +54,54 @@ public class JDBCSetDAO implements SetDao {
     }
 
     @Override
-    public boolean addSet(Set set, int userId) {
+    public List<Set> getAllSetsByUserId(int id) {
+        Set set = null;
+        List<Set> sets = new ArrayList<Set>();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCSetDAO.GET_ALL_SETS_BY_USER_ID_SQL);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                set = new Set(resultSet.getString("name"), resultSet.getString("code"));
+                set.setId(resultSet.getInt("id"));
+
+                sets.add(set);
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sets;
+    }
+
+    @Override
+    public boolean addSet(Set set, User user) {
 //        this.connection = ConnectionFactory.getConnection();
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCSetDAO.ADD_SET_SQL);
             preparedStatement.setString(1, set.getName());
             preparedStatement.setString(2, set.getCode());
-            preparedStatement.setInt(3, userId);
+            preparedStatement.setInt(3, user.getId());
 
-            preparedStatement.execute();
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating set failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    set.setId(generatedKeys.getInt(1));
+                    List<Set> newSets = user.getSets();
+                    newSets.add(set);
+                    user.setSets(newSets);
+                }
+                else {
+                    throw new SQLException("Creating set failed, no ID obtained.");
+                }
+            }
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -75,10 +116,10 @@ public class JDBCSetDAO implements SetDao {
             PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCSetDAO.UPDATE_SET_SQL);
             preparedStatement.setString(1, set.getName());
             preparedStatement.setString(2, set.getCode());
+            preparedStatement.setInt(3, set.getId());
 
             preparedStatement.execute();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -95,27 +136,10 @@ public class JDBCSetDAO implements SetDao {
 
             preparedStatement.execute();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
         return true;
-    }
-
-    @Override
-    public Set deleteSet(Set set) {
-//        this.connection = ConnectionFactory.getConnection();
-        try {
-            PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCSetDAO.DELETE_SET_BY_ID_SQL);
-            preparedStatement.setInt(1, set.getId());
-
-            preparedStatement.execute();
-            preparedStatement.close();
-            this.connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return set;
     }
 }

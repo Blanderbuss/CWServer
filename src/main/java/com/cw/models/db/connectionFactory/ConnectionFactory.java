@@ -1,6 +1,7 @@
 package com.cw.models.db.connectionFactory;
 
 import com.mysql.jdbc.Driver;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,7 +10,6 @@ import java.sql.SQLException;
 /**
  * Created by Макс on 10.03.2018.
  */
-
 
 public class ConnectionFactory {
     private static Connection connection = null;

@@ -23,8 +23,6 @@ public class SetService implements SetServiceI {
     private Connection connection = null;
     private JDBCSetDAO jdbcSetDAO = null;
 
-    private static final String GET_ALL_SETS_BY_USER_ID_SQL = "SELECT * FROM `sets` WHERE `user_id` = ?";
-
     public SetService() {
         this.connection = ConnectionFactory.getConnection();
         jdbcSetDAO = new JDBCSetDAO(this.connection);
@@ -38,36 +36,27 @@ public class SetService implements SetServiceI {
     @Override
     public Set getSetById(int id) {
         Set set = this.jdbcSetDAO.getSetById(id);
-        set.setArtefacts(this.getAllSetArtefacts(set));
+        if (set != null)
+            set.setArtefacts(this.getAllSetArtefacts(set));
         return set;
     }
 
     @Override
     public List<Set> getAllSetsByUserId(int id) {
-        Set set = null;
-        List<Set> sets = new ArrayList<Set>();
-        try {
-            PreparedStatement preparedStatement = this.connection.prepareStatement(SetService.GET_ALL_SETS_BY_USER_ID_SQL);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                set = new Set(resultSet.getString("name"), resultSet.getString("credits"));
-                set.setId(resultSet.getInt("id"));
-
-                sets.add(set);
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-            this.connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return sets;
+        return this.jdbcSetDAO.getAllSetsByUserId(id);
     }
 
     @Override
-    public boolean addSet(Set set, int userId) {
-        return this.jdbcSetDAO.addSet(set, userId);
+    public User addSet(Set set, int userId) {
+        UserService userService = new UserService();
+        User user = userService.getUserById(userId);
+        this.addSet(set, user);
+        return user;
+    }
+
+    @Override
+    public boolean addSet(Set set, User user) {
+        return this.jdbcSetDAO.addSet(set, user);
     }
 
     @Override
@@ -82,7 +71,8 @@ public class SetService implements SetServiceI {
 
     @Override
     public Set deleteSet(Set set) {
-        return this.jdbcSetDAO.deleteSet(set);
+        this.deleteSetById(set.getId());
+        return set;
     }
 
     @Override

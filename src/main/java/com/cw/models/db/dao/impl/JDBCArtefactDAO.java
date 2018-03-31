@@ -2,11 +2,15 @@ package com.cw.models.db.dao.impl;
 
 import com.cw.models.db.dao.ArtefactDAO;
 import com.cw.models.entities.Artefact;
+import com.cw.models.entities.Set;
+import com.cw.models.entities.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Макс on 10.03.2018.
@@ -21,9 +25,15 @@ public class JDBCArtefactDAO implements ArtefactDAO {
 
     private static final String GET_ARTEFACT_BY_ID_SQL = "SELECT * FROM `artefacts` WHERE `id` = ?";
 
-    private static final String ADD_ARTIFACT_SQL = "INSERT INTO `artefacts` (`name`, `type`, `hp_boost`, `mana_boost`, `stamina_boost`, `hp_regen_boost`, `mana_regen_boost`, `evasion_boost`, `armor_boost`, `skin`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String GET_ARTEFACT_BY_SET_ID_SQL = "SELECT * FROM `artefact_in_set` INNER JOIN `artefacts` ON `artefact_in_set`.`id_artefact` = `artefacts`.`id` WHERE `artefact_in_set`.`id_set` = ?";
+    private static final String GET_ARTEFACT_BY_USER_ID_SQL = "SELECT * FROM `backpack` INNER JOIN `artefacts` ON `backpack`.`artefact_id` = `artefacts`.`id` WHERE `backpack`.`user_id` = ?";
 
-    private static final String UPDATE_ARTIFACT_BY_ID_SQL = "UPDATE `artefacts` SET `name` = ?, `type` = ?, `hp_boost` = ?, `mana_boost` = ?, `stamina_boost` = ?, `hp_regen_boost` = ?, `mana_regen_boost` = ?, `evasion_boost` = ?, `armor_boost` = ?, `skin` = ?";
+    private static final String ADD_ARTIFACT_SQL = "INSERT INTO `artefacts` (`name`, `type`, `hp_boost`, `mana_boost`, `stamina_boost`, `hp_regen_boost`, `mana_regen_boost`, `stamina_regen_boost`, `evasion_boost`, `armor_boost`, `skin`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    private static final String ADD_ARTIFACT_TO_USER_BACKPACK_SQL = "INSERT INTO `backpack` (`user_id`, `artefact_id`) VALUES (?, ?)";
+    private static final String ADD_ARTIFACT_TO_SET_SQL = "INSERT INTO `artefact_in_set` (`id_set`, `id_artefact`) VALUES (?, ?)";
+
+    private static final String UPDATE_ARTIFACT_BY_ID_SQL = "UPDATE `artefacts` SET `name` = ?, `type` = ?, `hp_boost` = ?, `mana_boost` = ?, `stamina_boost` = ?, `hp_regen_boost` = ?, `mana_regen_boost` = ?, `stamina_regen_boost` = ?, `evasion_boost` = ?, `armor_boost` = ?, `skin` = ? WHERE `id` = ?";
 
     private static final String DELETE_ARTIFACT_BY_ID_SQL = "DELETE FROM `artefacts` WHERE `id` = ?";
 
@@ -36,17 +46,65 @@ public class JDBCArtefactDAO implements ArtefactDAO {
             preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            artefact = new Artefact(resultSet.getString("name"), resultSet.getString("type"), resultSet.getInt("hp_boost"), resultSet.getInt("mana_boost"), resultSet.getInt("stamina_boost"), resultSet.getInt("hp_regen_boost"), resultSet.getInt("mana_regen_boost"), resultSet.getInt("evasion_boost"), resultSet.getInt("armor_boost"), resultSet.getString("skin"));
-            artefact.setId(resultSet.getInt("id"));
-
+            boolean isNotEmpty = resultSet.next();
+            if (isNotEmpty) {
+                artefact = new Artefact(resultSet.getString("name"), resultSet.getString("type"), resultSet.getInt("hp_boost"), resultSet.getInt("mana_boost"), resultSet.getInt("stamina_boost"), resultSet.getInt("hp_regen_boost"), resultSet.getInt("mana_regen_boost"), resultSet.getInt("stamina_regen_boost"), resultSet.getInt("evasion_boost"), resultSet.getInt("armor_boost"), resultSet.getString("skin"));
+                artefact.setId(resultSet.getInt("id"));
+            }
             resultSet.close();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return artefact;
+    }
+
+    @Override
+    public List<Artefact> getAllArtefactsBySetId(int id) {
+        Artefact artefact = null;
+        List<Artefact> artefacts = new ArrayList<Artefact>();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCArtefactDAO.GET_ARTEFACT_BY_SET_ID_SQL);
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                artefact = new Artefact(resultSet.getString("name"), resultSet.getString("type"), resultSet.getInt("hp_boost"), resultSet.getInt("mana_boost"), resultSet.getInt("stamina_boost"), resultSet.getInt("hp_regen_boost"), resultSet.getInt("mana_regen_boost"), resultSet.getInt("stamina_regen_boost"), resultSet.getInt("evasion_boost"), resultSet.getInt("armor_boost"), resultSet.getString("skin"));
+                artefact.setId(resultSet.getInt("id_artefact"));
+
+                artefacts.add(artefact);
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return artefacts;
+    }
+
+    @Override
+    public List<Artefact> getAllArtefactByUserId(int id) {
+        Artefact artefact = null;
+        List<Artefact> artefacts = new ArrayList<Artefact>();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCArtefactDAO.GET_ARTEFACT_BY_USER_ID_SQL);
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                artefact = new Artefact(resultSet.getString("name"), resultSet.getString("type"), resultSet.getInt("hp_boost"), resultSet.getInt("mana_boost"), resultSet.getInt("stamina_boost"), resultSet.getInt("hp_regen_boost"), resultSet.getInt("mana_regen_boost"), resultSet.getInt("stamina_regen_boost"), resultSet.getInt("evasion_boost"), resultSet.getInt("armor_boost"), resultSet.getString("skin"));
+                artefact.setId(resultSet.getInt("artefact_id"));
+
+                artefacts.add(artefact);
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return artefacts;
     }
 
     @Override
@@ -61,13 +119,25 @@ public class JDBCArtefactDAO implements ArtefactDAO {
             preparedStatement.setInt(5, artefact.getStaminaBoost());
             preparedStatement.setInt(6, artefact.getHpRegenBoost());
             preparedStatement.setInt(7, artefact.getManaRegenBoost());
-            preparedStatement.setInt(8, artefact.getEvasionBoost());
-            preparedStatement.setInt(9, artefact.getArmorBoost());
-            preparedStatement.setString(10, artefact.getSkin());
+            preparedStatement.setInt(8, artefact.getStaminaRegenBoost());
+            preparedStatement.setInt(9, artefact.getEvasionBoost());
+            preparedStatement.setInt(10, artefact.getArmorBoost());
+            preparedStatement.setString(11, artefact.getSkin());
 
-            preparedStatement.execute();
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating artefact failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    artefact.setId(generatedKeys.getInt(1));
+                }
+                else {
+                    throw new SQLException("Creating artefact failed, no ID obtained.");
+                }
+            }
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -75,6 +145,72 @@ public class JDBCArtefactDAO implements ArtefactDAO {
         return true;
     }
 
+    @Override
+    public boolean addArtefactToUserBackpack(User user, Artefact artefact) {
+//        this.connection = ConnectionFactory.getConnection();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCArtefactDAO.ADD_ARTIFACT_TO_USER_BACKPACK_SQL);
+            preparedStatement.setInt(1, user.getId());
+            preparedStatement.setInt(2, artefact.getId());
+
+            preparedStatement.execute();
+            List<Artefact> newArtefacts = user.getUserArtefacts();
+            newArtefacts.add(artefact);
+            user.setUserArtefacts(newArtefacts);
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean addArtefactToSet(Set set, Artefact artefact) {
+//        this.connection = ConnectionFactory.getConnection();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCArtefactDAO.ADD_ARTIFACT_TO_SET_SQL);
+            preparedStatement.setInt(1, set.getId());
+            preparedStatement.setInt(2, artefact.getId());
+
+            preparedStatement.execute();
+            List<Artefact> newArtefacts = set.getArtefacts();
+            newArtefacts.add(artefact);
+            set.setArtefacts(newArtefacts);
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean addArtefactsToSet(Set set, List<Integer> artefactsId) {
+        String sql = "INSERT INTO `artefact_in_set` (`id_set`, `id_artefact`) VALUES";
+
+        for (int i = 0; i < artefactsId.size(); ++i) {
+            sql += " (?, ?),";
+        }
+        sql = sql.substring(0, sql.length() - 1);
+
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
+            int indexes = 1;
+            for (int i = 0; i < artefactsId.size(); ++i) {
+                preparedStatement.setInt(indexes, set.getId());
+                preparedStatement.setInt(indexes + 1, artefactsId.get(i));
+                indexes += 2;
+            }
+
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+    }
 
 
     @Override
@@ -89,13 +225,14 @@ public class JDBCArtefactDAO implements ArtefactDAO {
             preparedStatement.setInt(5, artefact.getStaminaBoost());
             preparedStatement.setInt(6, artefact.getHpRegenBoost());
             preparedStatement.setInt(7, artefact.getManaRegenBoost());
-            preparedStatement.setInt(8, artefact.getEvasionBoost());
-            preparedStatement.setInt(9, artefact.getArmorBoost());
-            preparedStatement.setString(10, artefact.getSkin());
+            preparedStatement.setInt(8, artefact.getStaminaRegenBoost());
+            preparedStatement.setInt(9, artefact.getEvasionBoost());
+            preparedStatement.setInt(10, artefact.getArmorBoost());
+            preparedStatement.setString(11, artefact.getSkin());
+            preparedStatement.setInt(12, artefact.getId());
 
             preparedStatement.execute();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -112,27 +249,10 @@ public class JDBCArtefactDAO implements ArtefactDAO {
 
             preparedStatement.execute();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
         return true;
-    }
-
-    @Override
-    public Artefact deleteArtefact(Artefact artefact) {
-        //        this.connection = ConnectionFactory.getConnection();
-        try {
-            PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCArtefactDAO.DELETE_ARTIFACT_BY_ID_SQL);
-            preparedStatement.setInt(1, artefact.getId());
-
-            preparedStatement.execute();
-            preparedStatement.close();
-            this.connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return artefact;
     }
 }

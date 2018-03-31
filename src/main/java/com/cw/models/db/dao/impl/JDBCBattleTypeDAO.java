@@ -41,7 +41,6 @@ public class JDBCBattleTypeDAO implements BattleTypeDAO {
 
             resultSet.close();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,7 +57,6 @@ public class JDBCBattleTypeDAO implements BattleTypeDAO {
 
             preparedStatement.execute();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -76,7 +74,6 @@ public class JDBCBattleTypeDAO implements BattleTypeDAO {
 
             preparedStatement.execute();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -93,27 +90,10 @@ public class JDBCBattleTypeDAO implements BattleTypeDAO {
 
             preparedStatement.execute();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
         return true;
-    }
-
-    @Override
-    public BattleType deleteBattleType(BattleType battleType) {
-//        this.connection = ConnectionFactory.getConnection();
-        try {
-            PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCBattleTypeDAO.DELETE_ARTIFACT_BY_ID_SQL);
-            preparedStatement.setInt(1, battleType.getId());
-
-            preparedStatement.execute();
-            preparedStatement.close();
-            this.connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return battleType;
     }
 }

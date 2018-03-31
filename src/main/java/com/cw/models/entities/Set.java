@@ -78,4 +78,14 @@ public class Set {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "Set{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", user=" + user +
+                '}';
+    }
 }

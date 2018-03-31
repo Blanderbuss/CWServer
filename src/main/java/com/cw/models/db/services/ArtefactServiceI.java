@@ -1,6 +1,8 @@
 package com.cw.models.db.services;
 
 import com.cw.models.entities.Artefact;
+import com.cw.models.entities.Set;
+import com.cw.models.entities.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +18,12 @@ public interface ArtefactServiceI {
     List<Artefact> getAllArtefactByUserId(int id);
 
     boolean addArtefact(Artefact artefact);
-    boolean addArtefactToUserBackpack(int user_id, int artefact_id);
-    boolean addArtefactToUserBackpack(int user_id, Artefact artefact);
-    boolean addArtefactToSet(int set_id, int artefact_id);
-    boolean addArtefactToSet(int set_id, Artefact artefact);
-    boolean addArtefactsToSet(int set_id, List<Integer> artefactsId);
+    boolean addArtefactToUserBackpack(Artefact artefact, User user);
+    User addArtefactToUserBackpack(Artefact artefact, int user_id);
+    boolean addArtefactToSet(Set set, Artefact artefact);
+    Set addArtefactToSet(int set_id, Artefact artefact);
+    boolean addArtefactsToSet(Set set, List<Integer> artefactsId);
+    Set addArtefactsToSet(int set_id, List<Integer> artefactsId);
 
     boolean updateArtefact(Artefact artefact);
 
