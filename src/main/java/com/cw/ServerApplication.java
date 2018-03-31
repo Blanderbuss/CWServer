@@ -3,11 +3,14 @@ package com.cw;
 import com.cw.appif.ServerServiceIF;
 import com.cw.server.ServerService;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.remoting.rmi.RmiServiceExporter;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.cw"})
+@EntityScan("com.cw")
 public class ServerApplication {
 
     @Bean

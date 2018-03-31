@@ -4,65 +4,104 @@ import com.cw.appif.ServerServiceIF;
 import com.cw.exceptions.FighterException;
 import com.cw.exceptions.UserException;
 import com.cw.models.Fighter;
-import com.cw.models.entities.Artefact;
 import com.cw.models.entities.Set;
 import com.cw.models.entities.User;
 import com.cw.models.db.services.ArtefactServiceI;
 import com.cw.models.db.services.BattleTypeServiceI;
 import com.cw.models.db.services.SetServiceI;
 import com.cw.models.db.services.UserServiceI;
-import com.cw.server.factory.ActionExecutor;
-import com.cw.server.factory.FighterFactory;
+import com.cw.server.battlefieldImpl.DuelBattleField;
+import com.cw.server.battlefieldImpl.FFABattleField;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ServerService implements ServerServiceIF {
 
-    private ArtefactServiceI artefactService;
+    @Autowired
+    private static ArtefactServiceI artefactService;
 
-    private BattleTypeServiceI battleTypeServiceI;
+    @Autowired
+    private static BattleTypeServiceI battleTypeServiceI;
 
-    private SetServiceI setService;
+    @Autowired
+    private static SetServiceI setService;
 
-    private UserServiceI userService;
+    @Autowired
+    private static UserServiceI userService;
 
-    static ArrayList<User> clients = new ArrayList<>();
-    static ArrayList<Fighter> fighters = new ArrayList<>();
-    //TODO do BattlerType from entities
-    private final int type = 2;
+    private ArrayList<DuelBattleField> duelBattleFields = new ArrayList<>();
+    private ArrayList<FFABattleField> ffaBattleFields = new ArrayList<>();
+
+    private static ArrayList<Fighter> duelQueue = new ArrayList<>();
+    private static ArrayList<Fighter> ffaQueue = new ArrayList<>();
+
+    private final static int NUMBER_OF_FIGHTERS_IN_DUEL=2;
+    private final static int NUMBER_OF_FIGHTERS_IN_FFA=4;
 
     @Override
     public boolean register(User user) throws UserException {
-        //TODO Verify data and add to db
-        clients.add(user);
+        userService.addUser(user);
         System.out.println("User " + user.getEmail() + " registered");
         return true;
     }
 
     @Override
-    public boolean auth(User user) throws UserException {
-        //TODO Check database for user
-        clients.add(user);
+    public boolean authentificate(User user){
+        userService.authentificate(user);
         System.out.println("User " + user.getEmail() + " authed");
         return true;
     }
 
     @Override
-    public boolean addSet(String name, int lvl, List<Artefact> artefacts) throws FighterException {
-        return false;
+    public boolean addSet(Set set, User user){
+        setService.addSet(set, user.getId());
+        return true;
     }
 
     @Override
-    public boolean readyForFight(int id) throws FighterException {
-        //TODO Check database for fighter
+    public int readyForFight(int id, String stringBattleFieldType) throws NoSuchElementException {
         Set set = setService.getSetById(id);
-        ActionExecutor actionExecutor = FighterFactory.getActionDoer(String.valueOf(id),set.getCode());
-        Fighter fighter = new Fighter(set, actionExecutor);
-        fighter.setStatus(Fighter.Status.REGISTERED);
-        fighters.add(fighter);
-        System.out.println("Fighter " + fighter.getName() + " registered");
-        if(fighters.size()==type)new Thread(new BattleField(fighters)).start();
-        return true;
+        Fighter fighter = new Fighter(set);
+        switch (stringBattleFieldType){
+            case "Duel":
+                duelQueue.add(fighter);
+                int duelIndex = duelBattleFields.size();
+                if(duelQueue.size()==NUMBER_OF_FIGHTERS_IN_DUEL){
+                    ArrayList<Fighter> fighters = new ArrayList<>(duelQueue);
+                    DuelBattleField newDuelBattleField = new DuelBattleField(fighters);
+                    duelBattleFields.add(newDuelBattleField);
+                    new Thread(newDuelBattleField).start();
+                    duelQueue.clear();
+                }
+                return duelIndex;
+            case "FFA":
+                ffaQueue.add(fighter);
+                int ffaIndex = ffaBattleFields.size();
+                if(ffaQueue.size()==NUMBER_OF_FIGHTERS_IN_FFA){
+                    ArrayList<Fighter> fighters = new ArrayList<>(ffaQueue);
+                    FFABattleField newFFABattleField = new FFABattleField(fighters);
+                    ffaBattleFields.add(newFFABattleField);
+                    new Thread(newFFABattleField).start();
+                    ffaQueue.clear();
+                }
+                return ffaIndex;
+            default:
+                throw new NoSuchElementException();
+        }
     }
+
+    @Override
+    public String getResult(int indexOfBattleField, String typeOfBattleField) {
+        switch (typeOfBattleField){
+            case "Duel":
+                return duelBattleFields.get(indexOfBattleField).getResult();
+            case "FFA":
+                return ffaBattleFields.get(indexOfBattleField).getResult();
+            default:
+                throw new NoSuchElementException();
+        }
+    }
+
 }

@@ -4,6 +4,7 @@ import com.cw.models.db.connectionFactory.ConnectionFactory;
 import com.cw.models.db.dao.impl.JDBCArtefactDAO;
 import com.cw.models.entities.Artefact;
 import com.cw.models.db.services.ArtefactServiceI;
+import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +16,8 @@ import java.util.List;
 /**
  * Created by Макс on 10.03.2018.
  */
+
+@Service
 public class ArtefactService implements ArtefactServiceI {
     private Connection connection = null;
     private JDBCArtefactDAO jdbcArtefactDAO = null;

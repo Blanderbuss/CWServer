@@ -25,12 +25,17 @@ public class Artefact {
     @Max(value=500)
     @Min(value=(-500))
     private int manaRegenBoost;
+    //TODO
+    /*
+    private int staminaRegenBoost;
+     */
     @NotNull
     private int evasionBoost;
     @NotNull
     private int armorBoost;
     @NotNull
     private String skin;
+
 
     public Artefact(String name, String type, int hpBoost, int manaBoost, int staminaBoost, int hpRegenBoost, int manaRegenBoost, int evasionBoost, int armorBoost, String skin) {
         this.name = name;

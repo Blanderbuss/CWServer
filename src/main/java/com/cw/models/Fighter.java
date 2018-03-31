@@ -5,6 +5,7 @@ package com.cw.models;
 import com.cw.models.entities.Artefact;
 import com.cw.models.entities.Set;
 import com.cw.server.factory.ActionExecutor;
+import com.cw.server.factory.FighterFactory;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 public class Fighter implements Serializable{
@@ -50,13 +52,6 @@ public class Fighter implements Serializable{
         DEFEND
     }
 
-    public enum Status {
-        UNREGISTERED,
-        REGISTERED,
-        READY,
-        FIGHTING
-    }
-
     public enum State {
         FREE,
         DEFENDING
@@ -70,15 +65,29 @@ public class Fighter implements Serializable{
     private int lvl;
 
     @NotNull
-    private Status status = Status.UNREGISTERED;
-    @NotNull
-    private State state = State.FREE;
+    private State state;
     @Min(0)
     private int maxHp;
+    @Min(0)
+    private int maxMana;
+    @Min(0)
+    private int maxStamina;
+    private int regenHp;
+    private int regenMana;
+    private int regenStamina;
+    @Min(0)
+    @Max(100)
+    private int evasion;
+    @Min(0)
+    private int armor;
     @Min(0)
     private int maxSpeed;
     @Min(0)
     private int curHp;
+    @Min(0)
+    private int curMana;
+    @Min(0)
+    private int curStamina;
     @Min(0)
     private int curSpeed;
 
@@ -89,18 +98,44 @@ public class Fighter implements Serializable{
     public Fighter() {
     }
 
-    public Fighter(Set set, ActionExecutor actionExecutor){
-        //TODO
+    public Fighter(Set set){
+        this.name=set.getName();
+        this.lvl=/*set.getLvl()*/1;
+        this.state=State.FREE;
+        this.calculateStats();
+        this.artefacts.addAll(set.getArtefacts());
+        this.actionExecutor = FighterFactory.getActionDoer(String.valueOf(set.getId()),set.getCode());
     }
 
-    public Fighter(String name, int lvl) {
-        this.name = name;
-        this.lvl = lvl;
-        //Calculatin` initial stats
-        setMaxSpeed((int) (20-getLvl()*0.1));
-        setMaxHp(50+getLvl()*2);
-        setCurHp(getMaxHp());
-        setCurSpeed(getMaxSpeed());
+    private void calculateStats() {
+        this.setMaxSpeed((int) (20-getLvl()*0.1));
+        this.setMaxHp((int) (50+getLvl()*1.1));
+        this.setMaxMana((int) (50+getLvl()*1.1));
+        this.setMaxStamina((int) (50+getLvl()*1.1));
+        this.setEvasion(5);
+        this.setArmor(0);
+        this.setRegenHp(1);
+        this.setRegenMana(1);
+        this.setRegenStamina(1);
+        for(Artefact artefact:this.getArtefacts()){
+            this.setMaxHp(this.getMaxHp()+artefact.getHpBoost());
+            this.setMaxMana(this.getMaxMana()+artefact.getManaBoost());
+            this.setMaxStamina(this.getMaxStamina()+artefact.getStaminaBoost());
+            this.setEvasion(this.getEvasion()+artefact.getEvasionBoost());
+            this.setArmor(this.getArmor()+artefact.getArmorBoost());
+            this.setRegenHp(this.getRegenHp()+artefact.getHpRegenBoost());
+            this.setRegenMana(this.getRegenMana()+artefact.getManaRegenBoost());
+            //TODO
+            this.setRegenStamina(this.getRegenStamina()/*+artefact.getStaminaRegenBoost()*/);
+        }
+        this.setCurHp(this.getMaxHp());
+        this.setCurMana(this.getMaxMana());
+        this.setCurStamina(this.getMaxStamina());
+        this.setCurSpeed(this.getMaxSpeed());
+    }
+
+    public boolean isAlive(){
+        return this.getCurHp()<=0;
     }
 
     public final String getName() {
@@ -133,14 +168,6 @@ public class Fighter implements Serializable{
 
     public void setArtefacts(List<Artefact> artefacts) {
         this.artefacts = artefacts;
-    }
-
-    public final Status getStatus() {
-        return status;
-    }
-
-    public final void setStatus(Status status) {
-        this.status = status;
     }
 
     public int getMaxHp() {
@@ -176,6 +203,78 @@ public class Fighter implements Serializable{
     public State getState() { return state; }
 
     public void setState(State state) {this.state = state;}
+
+    public int getMaxMana() {
+        return maxMana;
+    }
+
+    public void setMaxMana(int maxMana) {
+        this.maxMana = maxMana;
+    }
+
+    public int getMaxStamina() {
+        return maxStamina;
+    }
+
+    public void setMaxStamina(int maxStamina) {
+        this.maxStamina = maxStamina;
+    }
+
+    public int getRegenHp() {
+        return regenHp;
+    }
+
+    public void setRegenHp(int regenHp) {
+        this.regenHp = regenHp;
+    }
+
+    public int getRegenMana() {
+        return regenMana;
+    }
+
+    public void setRegenMana(int regenMana) {
+        this.regenMana = regenMana;
+    }
+
+    public int getRegenStamina() {
+        return regenStamina;
+    }
+
+    public void setRegenStamina(int regenStamina) {
+        this.regenStamina = regenStamina;
+    }
+
+    public int getEvasion() {
+        return evasion;
+    }
+
+    public void setEvasion(int evasion) {
+        this.evasion = evasion;
+    }
+
+    public int getArmor() {
+        return armor;
+    }
+
+    public void setArmor(int armor) {
+        this.armor = armor;
+    }
+
+    public int getCurMana() {
+        return curMana;
+    }
+
+    public void setCurMana(int curMana) {
+        this.curMana = curMana;
+    }
+
+    public int getCurStamina() {
+        return curStamina;
+    }
+
+    public void setCurStamina(int curStamina) {
+        this.curStamina = curStamina;
+    }
 
     public final boolean rest(){
         setCurSpeed(getCurSpeed() - 1);

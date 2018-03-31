@@ -6,6 +6,7 @@ import com.cw.models.entities.Artefact;
 import com.cw.models.entities.Set;
 import com.cw.models.entities.User;
 import com.cw.models.db.services.SetServiceI;
+import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Created by Макс on 10.03.2018.
  */
+@Service
 public class SetService implements SetServiceI {
     private Connection connection = null;
     private JDBCSetDAO jdbcSetDAO = null;

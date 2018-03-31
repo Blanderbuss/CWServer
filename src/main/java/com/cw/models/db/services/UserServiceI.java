@@ -20,4 +20,7 @@ public interface UserServiceI {
     User deleteUser(User user);
 
     void closeConnection();
+
+    //TODO this method. Add "throws AuthentificationException"
+    void authentificate(User user);
 }

@@ -6,6 +6,7 @@ import com.cw.models.entities.Artefact;
 import com.cw.models.entities.Set;
 import com.cw.models.entities.User;
 import com.cw.models.db.services.UserServiceI;
+import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * Created by Макс on 10.03.2018.
  */
+@Service
 public class UserService implements UserServiceI {
 
     private JDBCUserDAO jdbcUserDAO;
@@ -30,6 +32,12 @@ public class UserService implements UserServiceI {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    //TODO this method. Add "throws AuthentificationException"
+    public void authentificate(User user) {
+
     }
 
     private List<Set> getUserSets(User user) {
@@ -74,6 +82,7 @@ public class UserService implements UserServiceI {
         return user;
     }
 
+    //TODO user verification
     @Override
     public boolean addUser(User user) {
         return this.jdbcUserDAO.addUser(user);

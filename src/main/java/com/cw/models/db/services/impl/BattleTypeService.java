@@ -4,6 +4,7 @@ import com.cw.models.db.connectionFactory.ConnectionFactory;
 import com.cw.models.db.dao.impl.JDBCBattleTypeDAO;
 import com.cw.models.entities.BattleType;
 import com.cw.models.db.services.BattleTypeServiceI;
+import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 /**
  * Created by Макс on 10.03.2018.
  */
+@Service
 public class BattleTypeService implements BattleTypeServiceI {
     private Connection connection = null;
     private JDBCBattleTypeDAO jdbcBattleTypeDAO = null;

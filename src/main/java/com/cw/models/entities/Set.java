@@ -5,6 +5,7 @@ import javax.validation.constraints.Pattern;
 import java.util.List;
 
 public class Set {
+    //TODO field lvl from table users
     @NotNull
     private int id;
 
