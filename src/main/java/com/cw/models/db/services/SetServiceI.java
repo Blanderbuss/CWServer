@@ -14,7 +14,8 @@ public interface SetServiceI {
     Set getSetById(int id);
     List<Set> getAllSetsByUserId(int id);
 
-    boolean addSet(Set set, int userId);
+    User addSet(Set set, int userId);
+    boolean addSet(Set set, User user);
 
     boolean updateSet(Set set);
 

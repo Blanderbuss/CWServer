@@ -26,13 +26,15 @@ public class Artefact {
     @Min(value=(-500))
     private int manaRegenBoost;
     @NotNull
+    private int staminaRegenBoost;
+    @NotNull
     private int evasionBoost;
     @NotNull
     private int armorBoost;
     @NotNull
     private String skin;
 
-    public Artefact(String name, String type, int hpBoost, int manaBoost, int staminaBoost, int hpRegenBoost, int manaRegenBoost, int evasionBoost, int armorBoost, String skin) {
+    public Artefact(String name, String type, int hpBoost, int manaBoost, int staminaBoost, int hpRegenBoost, int manaRegenBoost, int staminaRegenBoost, int evasionBoost, int armorBoost, String skin) {
         this.name = name;
         this.type = type;
         this.hpBoost = hpBoost;
@@ -40,6 +42,7 @@ public class Artefact {
         this.staminaBoost = staminaBoost;
         this.hpRegenBoost = hpRegenBoost;
         this.manaRegenBoost = manaRegenBoost;
+        this.staminaRegenBoost = staminaRegenBoost;
         this.evasionBoost = evasionBoost;
         this.armorBoost = armorBoost;
         this.skin = skin;
@@ -131,5 +134,31 @@ public class Artefact {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getStaminaRegenBoost() {
+        return staminaRegenBoost;
+    }
+
+    public void setStaminaRegenBoost(int staminaRegenBoost) {
+        this.staminaRegenBoost = staminaRegenBoost;
+    }
+
+    @Override
+    public String toString() {
+        return "Artefact{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", hpBoost=" + hpBoost +
+                ", manaBoost=" + manaBoost +
+                ", staminaBoost=" + staminaBoost +
+                ", hpRegenBoost=" + hpRegenBoost +
+                ", manaRegenBoost=" + manaRegenBoost +
+                ", staminaRegenBoost=" + staminaRegenBoost +
+                ", evasionBoost=" + evasionBoost +
+                ", armorBoost=" + armorBoost +
+                ", skin='" + skin + '\'' +
+                '}';
     }
 }

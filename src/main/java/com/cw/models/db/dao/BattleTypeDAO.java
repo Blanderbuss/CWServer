@@ -13,5 +13,4 @@ public interface BattleTypeDAO {
     boolean updateBattleType(BattleType battleType);
 
     boolean deleteBattleTypeById(int id);
-    BattleType deleteBattleType(BattleType battleType);
 }

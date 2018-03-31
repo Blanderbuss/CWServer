@@ -45,32 +45,40 @@ public class UserService implements UserServiceI {
     @Override
     public User getUserById(int id) {
         User user = this.jdbcUserDAO.getUserById(id);
-        user.setSets(this.getUserSets(user));
-        user.setUserArtefacts(this.getUserArtefacts(user));
+        if(user != null) {
+            user.setSets(this.getUserSets(user));
+            user.setUserArtefacts(this.getUserArtefacts(user));
+        }
         return user;
     }
 
     @Override
     public User getUserByUsername(String username) {
         User user = this.jdbcUserDAO.getUserByUsername(username);
-        user.setSets(this.getUserSets(user));
-        user.setUserArtefacts(this.getUserArtefacts(user));
+        if (user != null) {
+            user.setSets(this.getUserSets(user));
+            user.setUserArtefacts(this.getUserArtefacts(user));
+        }
         return user;
     }
 
     @Override
     public User getUserByEmail(String email) {
         User user = this.jdbcUserDAO.getUserByEmail(email);
-        user.setSets(this.getUserSets(user));
-        user.setUserArtefacts(this.getUserArtefacts(user));
+        if (user != null) {
+            user.setSets(this.getUserSets(user));
+            user.setUserArtefacts(this.getUserArtefacts(user));
+        }
         return user;
     }
 
     @Override
     public User getUserByEmailAndPassword(String email, String password) {
         User user = this.jdbcUserDAO.getUserByEmailAndPassword(email, password);
-        user.setSets(this.getUserSets(user));
-        user.setUserArtefacts(this.getUserArtefacts(user));
+        if (user != null) {
+            user.setSets(this.getUserSets(user));
+            user.setUserArtefacts(this.getUserArtefacts(user));
+        }
         return user;
     }
 
@@ -91,6 +99,7 @@ public class UserService implements UserServiceI {
 
     @Override
     public User deleteUser(User user) {
-        return this.jdbcUserDAO.deleteUser(user);
+        this.deleteUserById(user.getId());
+        return user;
     }
 }

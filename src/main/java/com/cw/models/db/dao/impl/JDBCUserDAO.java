@@ -3,10 +3,7 @@ package com.cw.models.db.dao.impl;
 import com.cw.models.db.dao.UserDAO;
 import com.cw.models.entities.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Created by Макс on 09.03.2018.
@@ -25,7 +22,7 @@ public class JDBCUserDAO implements UserDAO {
 
     private static final String ADD_USER_SQL = "INSERT INTO `users` (`username`, `email`, `password`, `experience`, `level`) VALUES (?, ?, ?, ?, ?)";
 
-    private static final String UPDATE_USER_SQL = "UPDATE `users` SET `username` = ?, `email` = ?, `password` = ?, `experience` = ?, `level` = ?";
+    private static final String UPDATE_USER_SQL = "UPDATE `users` SET `username` = ?, `email` = ?, `password` = ?, `experience` = ?, `level` = ? WHERE `id` = ?";
 
     private static final String DELETE_USER_BY_ID_SQL = "DELETE FROM `users` WHERE `id` = ?";
 
@@ -38,13 +35,13 @@ public class JDBCUserDAO implements UserDAO {
             preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            user = new User(resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"), resultSet.getInt("experience"), resultSet.getInt("level"));
-            user.setId(resultSet.getInt("id"));
-
+            boolean isNotEmpty = resultSet.next();
+            if (isNotEmpty) {
+                user = new User(resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"), resultSet.getInt("experience"), resultSet.getInt("level"));
+                user.setId(resultSet.getInt("id"));
+            }
             resultSet.close();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -59,13 +56,13 @@ public class JDBCUserDAO implements UserDAO {
             preparedStatement.setString(1, username);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            user = new User(resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"), resultSet.getInt("experience"), resultSet.getInt("level"));
-            user.setId(resultSet.getInt("id"));
-
+            boolean isNotEmpty = resultSet.next();
+            if (isNotEmpty) {
+                user = new User(resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"), resultSet.getInt("experience"), resultSet.getInt("level"));
+                user.setId(resultSet.getInt("id"));
+            }
             resultSet.close();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -80,13 +77,13 @@ public class JDBCUserDAO implements UserDAO {
             preparedStatement.setString(1, email);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            user = new User(resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"), resultSet.getInt("experience"), resultSet.getInt("level"));
-            user.setId(resultSet.getInt("id"));
-
+            boolean isNotEmpty = resultSet.next();
+            if (isNotEmpty) {
+                user = new User(resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"), resultSet.getInt("experience"), resultSet.getInt("level"));
+                user.setId(resultSet.getInt("id"));
+            }
             resultSet.close();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -102,13 +99,14 @@ public class JDBCUserDAO implements UserDAO {
             preparedStatement.setString(2, password);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            user = new User(resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"), resultSet.getInt("experience"), resultSet.getInt("level"));
-            user.setId(resultSet.getInt("id"));
+            boolean isNotEmpty = resultSet.next();
+            if (isNotEmpty) {
+                user = new User(resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"), resultSet.getInt("experience"), resultSet.getInt("level"));
+                user.setId(resultSet.getInt("id"));
+            }
 
             resultSet.close();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -119,16 +117,27 @@ public class JDBCUserDAO implements UserDAO {
     public boolean addUser(User user) {
 //        this.connection = ConnectionFactory.getConnection();
         try {
-            PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCUserDAO.ADD_USER_SQL);
+            PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCUserDAO.ADD_USER_SQL, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2, user.getEmail());
             preparedStatement.setString(3, user.getPass());
             preparedStatement.setInt(4, user.getExperience());
             preparedStatement.setInt(5, user.getLvl());
 
-            preparedStatement.execute();
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    user.setId(generatedKeys.getInt(1));
+                }
+                else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -146,10 +155,10 @@ public class JDBCUserDAO implements UserDAO {
             preparedStatement.setString(3, user.getPass());
             preparedStatement.setInt(4, user.getExperience());
             preparedStatement.setInt(5, user.getLvl());
+            preparedStatement.setInt(6, user.getId());
 
             preparedStatement.execute();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -166,27 +175,10 @@ public class JDBCUserDAO implements UserDAO {
 
             preparedStatement.execute();
             preparedStatement.close();
-            this.connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
         return true;
-    }
-
-    @Override
-    public User deleteUser(User user) {
-//        this.connection = ConnectionFactory.getConnection();
-        try {
-            PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCUserDAO.DELETE_USER_BY_ID_SQL);
-            preparedStatement.setInt(1, user.getId());
-
-            preparedStatement.execute();
-            preparedStatement.close();
-            this.connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return user;
     }
 }

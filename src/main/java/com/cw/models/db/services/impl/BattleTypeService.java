@@ -22,27 +22,28 @@ public class BattleTypeService implements BattleTypeServiceI {
 
     @Override
     public BattleType getBattleTypeById(int id) {
-        return this.getBattleTypeById(id);
+        return this.jdbcBattleTypeDAO.getBattleTypeById(id);
     }
 
     @Override
     public boolean addBattleType(BattleType battleType) {
-        return this.addBattleType(battleType);
+        return this.jdbcBattleTypeDAO.addBattleType(battleType);
     }
 
     @Override
     public boolean updateBattleType(BattleType battleType) {
-        return this.updateBattleType(battleType);
+        return this.jdbcBattleTypeDAO.updateBattleType(battleType);
     }
 
     @Override
     public boolean deleteBattleTypeById(int id) {
-        return this.deleteBattleTypeById(id);
+        return this.jdbcBattleTypeDAO.deleteBattleTypeById(id);
     }
 
     @Override
     public BattleType deleteBattleType(BattleType battleType) {
-        return this.deleteBattleType(battleType);
+        this.deleteBattleTypeById(battleType.getId());
+        return battleType;
     }
 
     @Override
