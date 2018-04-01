@@ -15,6 +15,10 @@ public interface ServerServiceIF {
 
     boolean authentificate(User user) throws UserException;
 
+    boolean logOut(User user);
+
+    String getAllSets(User user);
+
     boolean addSet(Set set, User user) throws FighterException;
 
     int readyForFight(int id, String battleFieldType) throws FighterException;

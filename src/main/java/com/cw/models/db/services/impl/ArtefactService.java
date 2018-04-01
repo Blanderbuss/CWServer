@@ -7,6 +7,7 @@ import com.cw.models.db.services.ArtefactServiceI;
 import com.cw.models.entities.Set;
 import com.cw.models.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +19,7 @@ import java.util.List;
 /**
  * Created by Макс on 10.03.2018.
  */
+@Service
 public class ArtefactService implements ArtefactServiceI {
     private Connection connection = null;
     private JDBCArtefactDAO jdbcArtefactDAO = null;
