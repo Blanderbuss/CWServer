@@ -40,6 +40,12 @@ public class UserService implements UserServiceI {
 
     }
 
+    @Override
+    //TODO this method. Add "throws AuthentificationException"
+    public void register(User user) {
+
+    }
+
     private List<Set> getUserSets(User user) {
         SetService setService = new SetService();
         return setService.getAllSetsByUserId(user.getId());

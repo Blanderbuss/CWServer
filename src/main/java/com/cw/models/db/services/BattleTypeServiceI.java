@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 /**
  * Created by denysmelnychenko on 2/11/18.
  */
-@Service
 public interface BattleTypeServiceI {
 
     BattleType getBattleTypeById(int id);

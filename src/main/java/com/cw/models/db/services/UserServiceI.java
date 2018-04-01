@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 /**
  * Created by denysmelnychenko on 2/11/18.
  */
-@Service
 public interface UserServiceI {
     User getUserById(int id);
     User getUserByUsername(String username);
@@ -23,4 +22,6 @@ public interface UserServiceI {
 
     //TODO this method. Add "throws AuthentificationException"
     void authentificate(User user);
+    //TODO this method. Add "throws AuthentificationException"
+    void register(User user);
 }

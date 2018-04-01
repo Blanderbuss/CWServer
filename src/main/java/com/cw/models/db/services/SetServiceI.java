@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * Created by denysmelnychenko on 2/11/18.
  */
-@Service
 public interface SetServiceI {
     Set getSetById(int id);
     List<Set> getAllSetsByUserId(int id);

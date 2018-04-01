@@ -13,10 +13,14 @@ import com.cw.models.db.services.UserServiceI;
 import com.cw.server.battlefieldImpl.DuelBattleField;
 import com.cw.server.battlefieldImpl.FFABattleField;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.remoting.rmi.RmiServiceExporter;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+@Service
 public class ServerService implements ServerServiceIF {
 
     @Autowired
@@ -39,26 +43,6 @@ public class ServerService implements ServerServiceIF {
 
     private final static int NUMBER_OF_FIGHTERS_IN_DUEL=2;
     private final static int NUMBER_OF_FIGHTERS_IN_FFA=4;
-
-    @Override
-    public boolean register(User user) throws UserException {
-        userService.addUser(user);
-        System.out.println("User " + user.getEmail() + " registered");
-        return true;
-    }
-
-    @Override
-    public boolean authentificate(User user){
-        userService.authentificate(user);
-        System.out.println("User " + user.getEmail() + " authed");
-        return true;
-    }
-
-    @Override
-    public boolean addSet(Set set, User user){
-        setService.addSet(set, user.getId());
-        return true;
-    }
 
     @Override
     public int readyForFight(int id, String stringBattleFieldType) throws NoSuchElementException {
