@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 public class User implements Serializable {
     @NotNull
@@ -114,5 +115,24 @@ public class User implements Serializable {
                 ", experience=" + experience +
                 ", lvl=" + lvl +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                experience == user.experience &&
+                lvl == user.lvl &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(pass, user.pass) &&
+                Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, username, pass, email, experience, lvl, sets, userArtefacts);
     }
 }
