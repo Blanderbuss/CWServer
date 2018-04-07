@@ -113,8 +113,7 @@ public class UserService implements UserServiceI {
     }
 
     @Override
-    public User deleteUser(User user) {
-        this.deleteUserById(user.getId());
-        return user;
+    public boolean deleteUser(User user) {
+        return this.deleteUserById(user.getId());
     }
 }

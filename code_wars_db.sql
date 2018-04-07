@@ -134,8 +134,8 @@ INSERT INTO `sets` (`id`, `name`, `user_id`, `code`) VALUES
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
+  `username` varchar(50) UNIQUE NOT NULL,
+  `email` varchar(50) UNIQUE NOT NULL,
   `password` varchar(255) NOT NULL,
   `experience` int(11) NOT NULL DEFAULT '0',
   `level` int(11) NOT NULL DEFAULT '1'

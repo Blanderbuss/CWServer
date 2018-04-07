@@ -4,6 +4,7 @@ import com.cw.models.db.services.UserServiceI;
 import com.cw.models.entities.Artefact;
 import com.cw.models.entities.Set;
 import com.cw.models.entities.User;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,9 +40,21 @@ public class UserServiceTests {
         userSimple = new User("asdfgh", "12345", "qwe2@asd.cs", 10, 11);
     }
 
+    @After
+    public void cleanUpATest() {
+        // during user creation an error could happen so that User object's id is not set!
+        // it as important to note because User gets deleted by his id
+        User userSimplePulled = us.getUserByEmail(userSimple.getEmail());
+        if (userSimplePulled != null)
+            us.deleteUser(userSimplePulled);
+        User userComplexPulled = us.getUserByEmail(userComplex.getEmail());
+        if (userComplexPulled != null)
+            us.deleteUser(userComplexPulled);
+    }
+
     @Test
     public void verifyExistingUserDeletion() {
-        us.addUser(userSimple);
+        assertTrue( us.addUser(userSimple) );
         int id = us.getUserByEmail(userSimple.getEmail()).getId();
         assertTrue( us.deleteUserById(id) );
         User pulledUser = us.getUserById(id);
@@ -61,7 +74,7 @@ public class UserServiceTests {
     // complex user with sets and artefacts
     @Test
     public void verifyComplexUserCreationIdentity() {
-        us.addUser(userComplex);
+        assertTrue( us.addUser(userComplex) );
         User pulledUser = us.getUserByEmail(userComplex.getEmail());
         userComplex.setId(pulledUser.getId()); // refresh user id
         assertEquals(userComplex, us.getUserById(userComplex.getId()));
@@ -70,13 +83,12 @@ public class UserServiceTests {
         assertEquals(userComplex, us.getUserByEmailAndPassword(userComplex.getEmail(), userComplex.getPass()));
         assertEquals(userComplex.getUserArtefacts(), us.getUserById(userComplex.getId()).getUserArtefacts());
         assertEquals(userComplex.getSets(), us.getUserById(userComplex.getId()).getSets());
-        us.deleteUserById(userComplex.getId());
     }
 
     // simple user WITH NO sets and artefacts
     @Test
     public void verifySimpleUserCreationIdentity() {
-        us.addUser(userSimple);
+        assertTrue( us.addUser(userSimple) );
         User pulledUser = us.getUserByEmail(userSimple.getEmail());
         userSimple.setId(pulledUser.getId()); // refresh user id
         assertEquals(userSimple, us.getUserById(userSimple.getId()));
@@ -85,7 +97,43 @@ public class UserServiceTests {
         assertEquals(userSimple, us.getUserByEmailAndPassword(userSimple.getEmail(), userSimple.getPass()));
         assertEquals(userSimple.getUserArtefacts(), us.getUserById(userSimple.getId()).getUserArtefacts());
         assertEquals(userSimple.getSets(), us.getUserById(userSimple.getId()).getSets());
-        us.deleteUserById(userSimple.getId());
+    }
+
+    // should not allow adding users with equal name
+    @Test
+    public void verifyUserNameUniqueConstraint() {
+        assertTrue( us.addUser(userSimple) );
+        User anotherUserWithEqualName = new User(userSimple.getUsername(), "anotherPwd", "another@em.ail", 0, 0);
+        assertEquals(userSimple.getUsername(), anotherUserWithEqualName.getUsername());
+        boolean added = us.addUser(anotherUserWithEqualName);
+        if (added) // if added, perform a clean-up
+            assertTrue(us.deleteUser(anotherUserWithEqualName));
+        assertFalse( added );
+    }
+
+
+    // should not allow adding users with equal email
+    @Test
+    public void verifyUserEmailUniqueConstraint() {
+        assertTrue( us.addUser(userSimple) );
+        User anotherUserWithEqualEmail = new User("anotherName", "anotherPwd", userSimple.getEmail(), 0, 0);
+        assertEquals(userSimple.getEmail(), anotherUserWithEqualEmail.getEmail());
+        boolean added = us.addUser(anotherUserWithEqualEmail);
+        if (added) // if added, perform a clean-up
+            assertTrue(us.deleteUser(anotherUserWithEqualEmail));
+        assertFalse( added );
+    }
+
+    // should not allow adding invalid users
+    @Test
+    public void verifyInvalidUserCreation() {
+        assertTrue(false);
+        // TODO think about what should happen when one tries to add a user created with a default constructor
+    }
+
+    @Test
+    public void verifyUserUpdate() {
+        assertTrue(false); // TODO
     }
 
 }
