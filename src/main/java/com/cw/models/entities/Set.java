@@ -85,7 +85,7 @@ public class Set {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", code='" + code + '\'' +
-                ", user=" + user +
+                ", user=" + user.getEmail() +
                 '}';
     }
 }

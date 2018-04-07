@@ -28,7 +28,6 @@ public class JDBCUserDAO implements UserDAO {
 
     @Override
     public User getUserById(int id) {
-//        this.connection = ConnectionFactory.getConnection();
         User user = null;
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCUserDAO.GET_USER_BY_ID_SQL);
@@ -116,7 +115,6 @@ public class JDBCUserDAO implements UserDAO {
     //TODO user verification
     @Override
     public boolean addUser(User user) {
-//        this.connection = ConnectionFactory.getConnection();
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCUserDAO.ADD_USER_SQL, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getUsername());
@@ -148,7 +146,7 @@ public class JDBCUserDAO implements UserDAO {
 
     @Override
     public boolean updateUser(User user) {
-//        this.connection = ConnectionFactory.getConnection();
+        boolean success = false;
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCUserDAO.UPDATE_USER_SQL);
             preparedStatement.setString(1, user.getUsername());
@@ -159,27 +157,27 @@ public class JDBCUserDAO implements UserDAO {
             preparedStatement.setInt(6, user.getId());
 
             preparedStatement.execute();
+            success = 0 < preparedStatement.getUpdateCount();
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
+        return success;
     }
 
     @Override
     public boolean deleteUserById(int id) {
-//        this.connection = ConnectionFactory.getConnection();
+        boolean success = false;
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCUserDAO.DELETE_USER_BY_ID_SQL);
             preparedStatement.setInt(1, id);
 
             preparedStatement.execute();
+            success = 0 < preparedStatement.getUpdateCount();
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
+        return success;
     }
 }

@@ -4,6 +4,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,9 +27,9 @@ public class User implements Serializable {
     @Max(value = 80)
     private int lvl;
 
-    List<Set> sets;
+    List<Set> sets = new LinkedList<>();
 
-    List<Artefact> userArtefacts;
+    List<Artefact> userArtefacts = new LinkedList<>();
 
     public User() {
     }
@@ -114,6 +115,8 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", experience=" + experience +
                 ", lvl=" + lvl +
+                ", sets=" + sets +
+                ", userArtefacts=" + userArtefacts +
                 '}';
     }
 
@@ -127,7 +130,9 @@ public class User implements Serializable {
                 lvl == user.lvl &&
                 Objects.equals(username, user.username) &&
                 Objects.equals(pass, user.pass) &&
-                Objects.equals(email, user.email);
+                Objects.equals(email, user.email) &&
+                Objects.equals(sets, user.sets) &&
+                Objects.equals(userArtefacts, user.userArtefacts);
     }
 
     @Override
