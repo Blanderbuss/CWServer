@@ -30,14 +30,14 @@ public class UserServiceTests {
 
     @BeforeClass
     public static void initTests() {
-        userComplex = new User("qwerty", "12345", "qwe@asd.cs", 10, 11);
+        userComplex = new User("qwerty", "123456", "qwe@asd.cs", 10, 11);
         List<Set> sets = new LinkedList<>();
         sets.add(new Set("setname", "code:0xdeadbeef", userComplex));
         userComplex.setSets(sets);
         List<Artefact> artefacts = new LinkedList<>();
         artefacts.add(new Artefact("artname", "clothes", 10, 10, 10, 10, 10, 10, 10, 10, "Skin"));
         userComplex.setUserArtefacts(artefacts);
-        userSimple = new User("asdfgh", "12345", "qwe2@asd.cs", 10, 11);
+        userSimple = new User("asdfgh", "asdfgh", "qwe2@asd.cs", 10, 11);
     }
 
     @After
@@ -124,11 +124,28 @@ public class UserServiceTests {
         assertFalse( added );
     }
 
-    // should not allow adding invalid users
+    // should not allow adding invalid users to database
     @Test
     public void verifyInvalidUserCreation() {
-        assertTrue(false);
-        // TODO think about what should happen when one tries to add a user created with a default constructor
+        User[] invalidUsers = {
+                new User(),
+                new User("a", "b", "c", 0, 0),
+                new User( "ww", "asdsf", "valid@em.ail", 0, 0),
+                new User( "validName", "validPwd", "invalid@email", 0, 0),
+                new User( "validName", "validPwd", "invalid@.email", 0, 0),
+                new User( "validName", "validPwd", "invalid@email.", 0, 0),
+                new User( "validName", "validPwd", "invalid@emai.l", 0, 0),
+                new User( "validName", "validPwd", "@invalidema.il", 0, 0),
+                new User( "validName", "validPwd", "invalid@emai.l", 0, 81),
+                new User( "thisIsAnInvalidName", "validPwd", "invalid@emai.l", 0, 0),
+                new User( "thisIsAnInvalidName", "validPwd", "invalid@emai.l", 0, 0)
+        };
+        for (User u : invalidUsers) {
+            boolean added = us.addUser(u);
+            if (added) // clean-up
+                assertTrue(us.deleteUser(u));
+            assertFalse(added);
+        }
     }
 
     @Test

@@ -19,7 +19,7 @@ public class User implements Serializable {
     @Pattern(regexp = "[a-zA-Z0-9_.%+-]{6,30}")
     private String pass;
     @NotNull
-    @Pattern(regexp = "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}")
+    @Pattern(regexp = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
     private String email;
     @NotNull
     private int experience;

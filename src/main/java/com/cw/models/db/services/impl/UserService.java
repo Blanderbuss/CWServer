@@ -8,6 +8,10 @@ import com.cw.models.entities.User;
 import com.cw.models.db.services.UserServiceI;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -20,10 +24,12 @@ public class UserService implements UserServiceI {
 
     private JDBCUserDAO jdbcUserDAO;
     private Connection connection;
+    private ValidatorFactory factory;
 
     public UserService() {
         this.connection = ConnectionFactory.getConnection();
         this.jdbcUserDAO = new JDBCUserDAO(this.connection);
+        factory = Validation.buildDefaultValidatorFactory();
     }
 
     public void closeConnection() {
@@ -96,10 +102,18 @@ public class UserService implements UserServiceI {
         return user;
     }
 
-    //TODO user verification
     @Override
     public boolean addUser(User user) {
-        return this.jdbcUserDAO.addUser(user);
+        Validator validator = factory.getValidator();
+        java.util.Set<ConstraintViolation<User>> set = validator.validate( user );
+        if (set.isEmpty())
+            return this.jdbcUserDAO.addUser(user);
+        else {
+            // TODO refactor printing to logging
+            System.out.println("constrains failed for object: " + user);
+            set.forEach(c -> System.out.println(c));
+            return false;
+        }
     }
 
     @Override
