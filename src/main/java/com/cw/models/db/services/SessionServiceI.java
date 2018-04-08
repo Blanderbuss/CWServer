@@ -1,5 +1,6 @@
 package com.cw.models.db.services;
 
+import com.cw.models.entities.Artefact;
 import com.cw.models.entities.Set;
 import com.cw.models.entities.User;
 
@@ -26,6 +27,9 @@ public interface SessionServiceI {
 
     void addNewSet(Set set);
 
+    // artefact should be present in user backpack (user artifact list)
+    boolean addArtefactFromBackpackToCurrentSet(Artefact artefact);
+
     void chooseSetAsCurrent(Set set);
 
     //TODO add methods to modify and delete user sets
@@ -37,6 +41,7 @@ public interface SessionServiceI {
 
     String getMyUserStatus();
 
+    // all users that are online whose status is ready-to-fight
     List<User> getUsersReadyToFight();
 
     String getFightStatistics();

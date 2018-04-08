@@ -1,6 +1,7 @@
 package com.cw.models.db.services.impl;
 
 import com.cw.models.db.services.*;
+import com.cw.models.entities.Artefact;
 import com.cw.models.entities.Set;
 import com.cw.models.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class SessionService implements SessionServiceI {
     @Override
     public User getUser() {
         if (isLoggedIn())
-            return new User(user); // safe: user can do anything, yet he will brake nothing
+            return new User(user); // safe: client can do anything, yet he will brake nothing
         else
             return null;
     }
@@ -61,15 +62,33 @@ public class SessionService implements SessionServiceI {
 
     @Override
     public void addNewSet(Set set) {
-
+        setService.addSet(set, user);
     }
 
+    // artefact should be present in user backpack (user artifact list)
+    // TODO link user.currentSet to database
+    @Override
+    public boolean addArtefactFromBackpackToCurrentSet(Artefact artefact) {
+        boolean artifactIsInUserBackpack = user.getUserArtefacts().contains(artefact);
+        if (!artifactIsInUserBackpack)
+            return false;
+        boolean artefactIsAlreadyInSet = user.getCurrentSet().getArtefacts().contains(artefact);
+        if (artefactIsAlreadyInSet)
+            return false;
+        boolean currentSetExistsInDBAmongUserSets =
+                setService.getAllSetsByUserId(user.getId()).contains(user.getCurrentSet());
+        if (!currentSetExistsInDBAmongUserSets)
+            return false; // TODO change
+        return artService.addArtefactToSet(user.getCurrentSet(), artefact);
+    }
 
     @Override
     public void chooseSetAsCurrent(Set set) {
-
+        boolean presentInUserSets = user.getSets().contains(set);
+        if (!presentInUserSets)
+            addNewSet(set);
+        // TODO here add some db query to set user.currentSet
     }
-
 
     @Override
     public void startFightAgainstBot() {
