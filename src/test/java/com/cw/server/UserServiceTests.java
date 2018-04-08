@@ -1,5 +1,7 @@
 package com.cw.server;
 
+import com.cw.models.db.services.ArtefactServiceI;
+import com.cw.models.db.services.SetServiceI;
 import com.cw.models.db.services.UserServiceI;
 import com.cw.models.entities.Artefact;
 import com.cw.models.entities.Set;
@@ -15,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -26,19 +29,25 @@ public class UserServiceTests {
     private ApplicationContext ctx;
     @Autowired
     private UserServiceI us;
+    @Autowired
+    private SetServiceI ss;
+    @Autowired
+    private ArtefactServiceI as;
     private static User userComplex, userSimple;
+    // is meant to be added to userComplex;
+    private static List<Artefact> artefacts;
+    // is meant to be added to userComplex;
+    private static List<Set> sets;
 
     @BeforeClass
     public static void initTests() {
-        userComplex = new User("qwerty", "123456", "qwe@asd.cs", 10, 11);
-        List<Set> sets = new LinkedList<>();
+        userComplex = new User("qwertywerwr", "123456", "qwesadf@asd.cs", 10, 11);
+        sets = new LinkedList<>();
         sets.add(new Set("setname", "code:0xdeadbeef", userComplex));
         sets.add(new Set("setname2", "code:0xbeef", userComplex));
-        userComplex.setSets(sets);
-        List<Artefact> artefacts = new LinkedList<>();
+        artefacts = new LinkedList<>();
         artefacts.add(new Artefact("artname", "clothes", 10, 10, 10, 10, 10, 10, 10, 10, "Skin"));
         artefacts.add(new Artefact("artname2", "arm", 20, 20, 10, 10, 10, 10, 10, 10, "Skin"));
-        userComplex.setUserArtefacts(artefacts);
         userSimple = new User("asdfgh", "asdfgh", "qwe2@asd.cs", 10, 11);
     }
 
@@ -52,6 +61,7 @@ public class UserServiceTests {
         User userComplexPulled = us.getUserByEmail(userComplex.getEmail());
         if (userComplexPulled != null)
             us.deleteUser(userComplexPulled);
+        artefacts.forEach(as::deleteArtefact);
     }
 
     @Test
@@ -77,8 +87,13 @@ public class UserServiceTests {
     @Test
     public void verifyComplexUserCreationIdentity() {
         assertTrue( us.addUser(userComplex) );
-        User pulledUser = us.getUserByEmail(userComplex.getEmail());
-        userComplex.setId(pulledUser.getId()); // refresh user id
+        for (Artefact a : artefacts) {
+            assertTrue(as.addArtefact(a));
+            assertTrue(as.addArtefactToUserBackpack(a, userComplex));
+        }
+        for (Set s : sets)
+            assertTrue(ss.addSet(s, userComplex));
+        as.addArtefactsToSet(sets.get(0), artefacts.stream().map(a -> a.getId()).collect(Collectors.toList()));
         assertEquals(userComplex, us.getUserById(userComplex.getId()));
         assertEquals(userComplex, us.getUserByEmail(userComplex.getEmail()));
         assertEquals(userComplex, us.getUserByUsername(userComplex.getUsername()));
@@ -91,8 +106,6 @@ public class UserServiceTests {
     @Test
     public void verifySimpleUserCreationIdentity() {
         assertTrue( us.addUser(userSimple) );
-        User pulledUser = us.getUserByEmail(userSimple.getEmail());
-        userSimple.setId(pulledUser.getId()); // refresh user id
         assertEquals(userSimple, us.getUserById(userSimple.getId()));
         assertEquals(userSimple, us.getUserByEmail(userSimple.getEmail()));
         assertEquals(userSimple, us.getUserByUsername(userSimple.getUsername()));
@@ -118,6 +131,7 @@ public class UserServiceTests {
     @Test
     public void verifyUserEmailUniqueConstraint() {
         assertTrue( us.addUser(userSimple) );
+
         User anotherUserWithEqualEmail = new User("anotherName", "anotherPwd", userSimple.getEmail(), 0, 0);
         assertEquals(userSimple.getEmail(), anotherUserWithEqualEmail.getEmail());
         boolean added = us.addUser(anotherUserWithEqualEmail);

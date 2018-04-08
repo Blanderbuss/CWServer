@@ -32,11 +32,12 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `artefacts` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
+  `name` varchar(100) UNIQUE NOT NULL,
   `type` varchar(50) NOT NULL,
   `hp_boost` int(11) DEFAULT NULL,
   `mana_boost` int(11) DEFAULT NULL,
   `stamina_boost` int(11) DEFAULT NULL,
+  `stamina_regen_boost` int(11) DEFAULT NULL,
   `hp_regen_boost` int(11) DEFAULT NULL,
   `mana_regen_boost` int(11) DEFAULT NULL,
   `evasion_boost` int(11) DEFAULT NULL,
@@ -236,21 +237,21 @@ ALTER TABLE `users`
 -- Ограничения внешнего ключа таблицы `artefact_in_set`
 --
 ALTER TABLE `artefact_in_set`
-  ADD CONSTRAINT `artefact_in_set_ibfk_1` FOREIGN KEY (`id_set`) REFERENCES `sets` (`id`),
+  ADD CONSTRAINT `artefact_in_set_ibfk_1` FOREIGN KEY (`id_set`) REFERENCES `sets` (`id`)  ON DELETE CASCADE,
   ADD CONSTRAINT `artefact_in_set_ibfk_2` FOREIGN KEY (`id_artefact`) REFERENCES `artefacts` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `backpack`
 --
 ALTER TABLE `backpack`
-  ADD CONSTRAINT `backpack_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `backpack_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)  ON DELETE CASCADE,
   ADD CONSTRAINT `backpack_ibfk_2` FOREIGN KEY (`artefact_id`) REFERENCES `artefacts` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `sets`
 --
 ALTER TABLE `sets`
-  ADD CONSTRAINT `sets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `sets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
