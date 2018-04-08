@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class User implements Serializable {
     @NotNull
@@ -27,6 +28,8 @@ public class User implements Serializable {
     @Max(value = 80)
     private int lvl;
 
+    Set currentSet; // TODO
+
     List<Set> sets = new LinkedList<>();
 
     List<Artefact> userArtefacts = new LinkedList<>();
@@ -40,6 +43,22 @@ public class User implements Serializable {
         this.email = email;
         this.experience = experience;
         this.lvl = lvl;
+    }
+
+    public User(User other) {
+        this.id = other.id;
+        this.username = other.username;
+        this.pass = other.pass;
+        this.email = other.email;
+        this.experience = other.experience;
+        this.lvl = other.lvl;
+        this.sets = other.sets.stream()
+                .map(s -> new Set(s))
+                .collect(Collectors.toList());
+        this.sets.forEach(s -> s.setUser(this));
+        this.userArtefacts = other.userArtefacts.stream()
+                .map(art -> new Artefact(art))
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 
     public int getId() {

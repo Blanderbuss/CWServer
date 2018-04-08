@@ -3,6 +3,7 @@ package com.cw.models.entities;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 public class Artefact {
 	@Min(0)
@@ -46,6 +47,21 @@ public class Artefact {
         this.evasionBoost = evasionBoost;
         this.armorBoost = armorBoost;
         this.skin = skin;
+    }
+
+    public Artefact(Artefact other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.type = other.type;
+        this.hpBoost = other.hpBoost;
+        this.manaBoost = other.manaBoost;
+        this.staminaBoost = other.staminaBoost;
+        this.hpRegenBoost = other.hpRegenBoost;
+        this.manaRegenBoost = other.manaRegenBoost;
+        this.staminaRegenBoost = other.staminaRegenBoost;
+        this.evasionBoost = other.evasionBoost;
+        this.armorBoost = other.armorBoost;
+        this.skin = other.skin;
     }
 
     public void setSkin(String skin) {
@@ -142,6 +158,31 @@ public class Artefact {
 
     public void setStaminaRegenBoost(int staminaRegenBoost) {
         this.staminaRegenBoost = staminaRegenBoost;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Artefact artefact = (Artefact) o;
+        return id == artefact.id &&
+                hpBoost == artefact.hpBoost &&
+                manaBoost == artefact.manaBoost &&
+                staminaBoost == artefact.staminaBoost &&
+                hpRegenBoost == artefact.hpRegenBoost &&
+                manaRegenBoost == artefact.manaRegenBoost &&
+                staminaRegenBoost == artefact.staminaRegenBoost &&
+                evasionBoost == artefact.evasionBoost &&
+                armorBoost == artefact.armorBoost &&
+                Objects.equals(name, artefact.name) &&
+                Objects.equals(type, artefact.type) &&
+                Objects.equals(skin, artefact.skin);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, type, hpBoost, manaBoost, staminaBoost, hpRegenBoost, manaRegenBoost, staminaRegenBoost, evasionBoost, armorBoost, skin);
     }
 
     @Override
