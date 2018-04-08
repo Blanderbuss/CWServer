@@ -25,6 +25,8 @@ public class UserService implements UserServiceI {
     private JDBCUserDAO jdbcUserDAO;
     private Connection connection;
     private ValidatorFactory factory;
+    private SetService setService = new SetService();
+    private ArtefactService artefactService = new ArtefactService();
 
     public UserService() {
         this.connection = ConnectionFactory.getConnection();
@@ -53,12 +55,12 @@ public class UserService implements UserServiceI {
     }
 
     private List<Set> getUserSets(User user) {
-        SetService setService = new SetService();
-        return setService.getAllSetsByUserId(user.getId());
+        List<Set> res = setService.getAllSetsByUserId(user.getId());
+        res.forEach(s -> s.setUser(user));
+        return res;
     }
 
     private List<Artefact> getUserArtefacts(User user) {
-        ArtefactService artefactService = new ArtefactService();
         return artefactService.getAllArtefactByUserId(user.getId());
     }
 

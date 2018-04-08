@@ -112,7 +112,6 @@ public class JDBCUserDAO implements UserDAO {
         return user;
     }
 
-    //TODO user verification
     @Override
     public boolean addUser(User user) {
         try {

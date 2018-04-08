@@ -55,7 +55,7 @@ public class ArtefactService implements ArtefactServiceI {
 
     @Override
     public boolean addArtefactToUserBackpack(Artefact artefact, User user) {
-        return this.addArtefactToUserBackpack(artefact, user);
+        return this.jdbcArtefactDAO.addArtefactToUserBackpack(user, artefact);
     }
 
     @Override
