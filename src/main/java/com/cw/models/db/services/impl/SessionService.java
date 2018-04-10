@@ -7,6 +7,7 @@ import com.cw.models.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /*
@@ -17,7 +18,7 @@ import java.util.List;
 @Service
 public class SessionService implements SessionServiceI {
 
-    private User user = null;
+    private List<User> users = new LinkedList<User>();
     @Autowired
     private ArtefactServiceI artService;
     @Autowired
@@ -27,28 +28,39 @@ public class SessionService implements SessionServiceI {
     @Autowired
     private UserServiceI userService;
 
+    //TODO Add exceptions
     @Override
-    public boolean login(String email, String pwd) {
+    public User login(String email, String pwd) {
         System.out.println("User " + email + " tries to log in");
-        if (isLoggedIn())
-            return false;
-        user = userService.getUserByEmailAndPassword(email, pwd);
-        return isLoggedIn();
+        User userFromDb = userService.getUserByEmailAndPassword(email, pwd);
+        if(!isLoggedIn(userFromDb))
+            users.add(userFromDb);
+        return userFromDb;
     }
 
     @Override
-    public void logout() {
-        user = null;
+    public void logout(User user) {
+        if(isLoggedIn(user))
+            users.remove(user);
     }
 
     @Override
-    public boolean isLoggedIn() {
-        return user != null;
+    public boolean isLoggedIn(User user) {
+        return users.contains(user);
     }
 
     @Override
-    public User getUser() {
-        if (isLoggedIn())
+    public boolean isLoggedIn(String userEmail) {
+        for (User user:users) {
+            if(user.getEmail().equals(userEmail))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public User getUser(User user) {
+        if (isLoggedIn(user))
             return new User(user); // safe: client can do anything, yet he will brake nothing
         else
             return null;
@@ -56,20 +68,20 @@ public class SessionService implements SessionServiceI {
 
     @Override
     public boolean register(String username, String email, String pwd) {
-        if (isLoggedIn())
+        if (isLoggedIn(email))
             return false;
         return userService.addUser(new User(username, pwd, email));
     }
 
     @Override
-    public void addNewSet(Set set) {
+    public void addNewSet(Set set, User user) {
         setService.addSet(set, user);
     }
 
     // artefact should be present in user backpack (user artifact list)
     // TODO link user.currentSet to database
     @Override
-    public boolean addArtefactFromBackpackToCurrentSet(Artefact artefact) {
+    public boolean addArtefactFromBackpackToCurrentSet(Artefact artefact, User user) {
         boolean artifactIsInUserBackpack = user.getUserArtefacts().contains(artefact);
         if (!artifactIsInUserBackpack)
             return false;
@@ -84,15 +96,15 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public void chooseSetAsCurrent(Set set) {
+    public void chooseSetAsCurrent(Set set, User user) {
         boolean presentInUserSets = user.getSets().contains(set);
         if (!presentInUserSets)
-            addNewSet(set);
+            addNewSet(set, user);
         // TODO here add some db query to set user.currentSet
     }
 
     @Override
-    public void startFightAgainstBot() {
+    public void startFightAgainstBot(User user) {
 
     }
 
@@ -102,7 +114,7 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public String getMyUserStatus() {
+    public String getMyUserStatus(User user) {
         return null;
     }
 
@@ -112,7 +124,7 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public String getFightStatistics() {
+    public String getFightStatistics(User user) {
         return null;
     }
 
