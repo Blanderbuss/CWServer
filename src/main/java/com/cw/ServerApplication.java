@@ -2,6 +2,7 @@ package com.cw;
 
 import com.cw.appif.ServerServiceIF;
 import com.cw.models.db.services.ArtefactServiceI;
+import com.cw.models.db.services.SessionServiceI;
 import com.cw.models.db.services.SetServiceI;
 import com.cw.models.db.services.UserServiceI;
 import com.cw.server.ServerService;
@@ -60,6 +61,17 @@ public class ServerApplication {
     @Bean
     RmiServiceExporter artefactServiceExporter(ArtefactServiceI implementation) {
         Class<ArtefactServiceI> serviceInterface = ArtefactServiceI.class;
+        RmiServiceExporter exporter = new RmiServiceExporter();
+        exporter.setServiceInterface(serviceInterface);
+        exporter.setService(implementation);
+        exporter.setServiceName(serviceInterface.getSimpleName());
+        exporter.setRegistryPort(1099);
+        return exporter;
+    }
+
+    @Bean
+    RmiServiceExporter sessionServiceExporter(SessionServiceI implementation) {
+        Class<SessionServiceI> serviceInterface = SessionServiceI.class;
         RmiServiceExporter exporter = new RmiServiceExporter();
         exporter.setServiceInterface(serviceInterface);
         exporter.setService(implementation);

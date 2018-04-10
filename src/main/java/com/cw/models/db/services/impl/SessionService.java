@@ -29,6 +29,7 @@ public class SessionService implements SessionServiceI {
 
     @Override
     public boolean login(String email, String pwd) {
+        System.out.println("User " + email + " tries to log in");
         if (isLoggedIn())
             return false;
         user = userService.getUserByEmailAndPassword(email, pwd);
