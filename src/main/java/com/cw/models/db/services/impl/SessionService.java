@@ -7,8 +7,11 @@ import com.cw.models.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /*
 * This class lists all operations available to client side.
@@ -18,6 +21,7 @@ import java.util.List;
 @Service
 public class SessionService implements SessionServiceI {
 
+    private Map<User, String> usersToTokens = new HashMap<>(); //TODO migrate here
     private List<User> users = new LinkedList<User>();
     @Autowired
     private ArtefactServiceI artService;
@@ -30,11 +34,20 @@ public class SessionService implements SessionServiceI {
 
     //TODO Add exceptions
     @Override
+    // TODO consider whether we should return Map.Entry<User, String> ???
     public User login(String email, String pwd) {
         System.out.println("User " + email + " tries to log in");
         User userFromDb = userService.getUserByEmailAndPassword(email, pwd);
-        if(!isLoggedIn(userFromDb))
-            users.add(userFromDb);
+        if(userFromDb != null && !isLoggedIn(userFromDb)) {
+            String token = "";
+            // loop until unique token is found; ensures absence of hash collisions
+            do {
+                token = TokenGenerator.generateToken(userFromDb.getUsername());
+                System.out.println("Generated token: " + token);
+            } while (!usersToTokens.values().contains(token));
+            usersToTokens.put(userFromDb, token);
+            users.add(userFromDb); // TODO delete this line
+        }
         return userFromDb;
     }
 
@@ -51,11 +64,7 @@ public class SessionService implements SessionServiceI {
 
     @Override
     public boolean isLoggedIn(String userEmail) {
-        for (User user:users) {
-            if(user.getEmail().equals(userEmail))
-                return true;
-        }
-        return false;
+        return users.stream().anyMatch(u -> u.getEmail().equals(userEmail));
     }
 
     @Override
@@ -128,4 +137,15 @@ public class SessionService implements SessionServiceI {
         return null;
     }
 
+    // author: https://github.com/davidadale
+    private static class TokenGenerator {
+
+        protected static SecureRandom random = new SecureRandom();
+
+        public synchronized static String generateToken( String username ) {
+            long longToken = Math.abs( random.nextLong() );
+            String random = Long.toString( longToken, 16 );
+            return ( username + ":" + random );
+        }
+    }
 }
