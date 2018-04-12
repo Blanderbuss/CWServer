@@ -1,5 +1,6 @@
 package com.cw.models.db.services;
 
+import com.cw.exceptions.UserNotFoundException;
 import com.cw.models.entities.User;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ public interface UserServiceI {
     User getUserById(int id);
     User getUserByUsername(String username);
     User getUserByEmail(String email);
-    User getUserByEmailAndPassword(String email, String password);
+    User getUserByEmailAndPassword(String email, String password) throws UserNotFoundException;
 
     boolean addUser(User user);
     boolean updateUser(User user);

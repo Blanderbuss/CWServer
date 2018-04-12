@@ -1,5 +1,6 @@
 package com.cw.models.db.services.impl;
 
+import com.cw.exceptions.UserNotFoundException;
 import com.cw.models.db.services.*;
 import com.cw.models.entities.Artefact;
 import com.cw.models.entities.Set;
@@ -35,7 +36,7 @@ public class SessionService implements SessionServiceI {
     //TODO Add exceptions
     @Override
     // TODO consider whether we should return Map.Entry<User, String> ???
-    public User login(String email, String pwd) {
+    public User login(String email, String pwd) throws UserNotFoundException{
         System.out.println("User " + email + " tries to log in");
         User userFromDb = userService.getUserByEmailAndPassword(email, pwd);
         if(userFromDb != null && !isLoggedIn(userFromDb)) {

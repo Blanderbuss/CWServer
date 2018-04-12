@@ -1,5 +1,6 @@
 package com.cw.models.db.dao.impl;
 
+import com.cw.exceptions.UserNotFoundException;
 import com.cw.models.db.dao.UserDAO;
 import com.cw.models.entities.User;
 
@@ -90,7 +91,7 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public User getUserByEmailAndPassword(String email, String password) {
+    public User getUserByEmailAndPassword(String email, String password) throws UserNotFoundException {
         User user = null;
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCUserDAO.GET_USER_BY_EMAIL_AND_PASSWORD_SQL);
@@ -103,6 +104,7 @@ public class JDBCUserDAO implements UserDAO {
                 user = new User(resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("email"), resultSet.getInt("experience"), resultSet.getInt("level"));
                 user.setId(resultSet.getInt("id"));
             }
+            else throw new UserNotFoundException("User with such email and password does not exists");
 
             resultSet.close();
             preparedStatement.close();

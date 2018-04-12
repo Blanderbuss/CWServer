@@ -1,5 +1,6 @@
 package com.cw.models.db.services.impl;
 
+import com.cw.exceptions.UserNotFoundException;
 import com.cw.models.db.connectionFactory.ConnectionFactory;
 import com.cw.models.db.dao.impl.JDBCUserDAO;
 import com.cw.models.entities.Artefact;
@@ -95,7 +96,7 @@ public class UserService implements UserServiceI {
     }
 
     @Override
-    public User getUserByEmailAndPassword(String email, String password) {
+    public User getUserByEmailAndPassword(String email, String password) throws UserNotFoundException{
         User user = this.jdbcUserDAO.getUserByEmailAndPassword(email, password);
         if (user != null) {
             user.setSets(this.getUserSets(user));
