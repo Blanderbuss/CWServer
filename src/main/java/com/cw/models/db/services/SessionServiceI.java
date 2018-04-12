@@ -1,5 +1,6 @@
 package com.cw.models.db.services;
 
+import com.cw.exceptions.UserNotFoundException;
 import com.cw.models.entities.Artefact;
 import com.cw.models.entities.Set;
 import com.cw.models.entities.User;
@@ -12,7 +13,7 @@ public interface SessionServiceI {
     // if user with the same credentials already has an unfinished session
     // then deactivate the user's session
     // returns user object if login was successful, null otherwise
-    User login(String email, String pwd);
+    User login(String email, String pwd) throws UserNotFoundException;
 
     // finishes session
     void logout(String accessToken);
