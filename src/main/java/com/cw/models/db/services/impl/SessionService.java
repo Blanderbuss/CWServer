@@ -62,7 +62,7 @@ public class SessionService implements SessionServiceI {
         final String newToken = token;
         System.out.println("Activated token: " + newToken);
         tokensToUsers.put(newToken, userFromDb);
-        return new Tuple(token, userFromDb);
+        return new Tuple<>(token, userFromDb);
     }
 
     @Override
@@ -94,10 +94,8 @@ public class SessionService implements SessionServiceI {
 
     @Override
     public User getUser(User user, String accessToken) {
-        // TODO refactor this method
-        // TODO think maybe we should delete this method?
         if (isLoggedInByToken(accessToken))
-            return new User(user); // safe: client can do anything, yet he will brake nothing
+            return new User(userService.getUserByEmail(user.getEmail())); // safe: client can do anything, yet he will brake nothing
         else
             return null;
     }
@@ -111,42 +109,32 @@ public class SessionService implements SessionServiceI {
 
     @Override
     public void addNewSetToMyUser(Set set, String accessToken) {
-        //setService.addSet(set, user);
+        if (!isLoggedInByToken(accessToken))
+            return;
+        User user = tokensToUsers.get(accessToken);
+        setService.addSet(set, user);
     }
 
-    // TODO link user.currentSet to database
     @Override
-    public boolean addArtefactFromBackpackToCurrentSet(Artefact artefact, String accessToken) {
+    public boolean addArtefactFromBackpackToSet(Artefact artefact, Set set, String accessToken) {
         if (!isLoggedInByToken(accessToken))
             return false;
         User user = tokensToUsers.get(accessToken);
         boolean artifactIsInUserBackpack = user.getUserArtefacts().contains(artefact);
         if (!artifactIsInUserBackpack)
             return false;
-        boolean artefactIsAlreadyInSet = user.getCurrentSet().getArtefacts().contains(artefact);
+        boolean artefactIsAlreadyInSet = set.getArtefacts().contains(artefact);
         if (artefactIsAlreadyInSet)
             return false;
-        boolean currentSetExistsInDBAmongUserSets =
-                setService.getAllSetsByUserId(user.getId()).contains(user.getCurrentSet());
-        if (!currentSetExistsInDBAmongUserSets)
+        boolean chosenSetExistsInDBAmongUserSets =
+                setService.getAllSetsByUserId(user.getId()).contains(set);
+        if (!chosenSetExistsInDBAmongUserSets)
             return false;
-        return artService.addArtefactToSet(user.getCurrentSet(), artefact);
+        return artService.addArtefactToSet(set, artefact);
     }
 
     @Override
-    public void chooseSetAsCurrent(Set set, String accessToken) {
-        if (!isLoggedInByToken(accessToken))
-            return;
-        User user = tokensToUsers.get(accessToken);
-        boolean setIsPresentInUser = setService.getAllSetsByUserId(user.getId()).contains(set);
-        if (setIsPresentInUser) {
-            user.setCurrentSet(set);
-            // TODO here add some db query to set user.currentSet
-        }
-    }
-
-    @Override
-    public void startFightAgainstBot(String accessToken) {
+    public void startFightAgainstBot(Set set, String accessToken) {
         if (!isLoggedInByToken(accessToken))
             return;
         User userWhoStartsFight = tokensToUsers.get(accessToken);
@@ -154,7 +142,7 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public void startFightAgainstUser(User user, String accessToken) {
+    public void startFightAgainstUser(User user, Set set, String accessToken) {
         if (!isLoggedInByToken(accessToken))
             return;
         User userWhoStartsFight = tokensToUsers.get(accessToken);
@@ -168,6 +156,13 @@ public class SessionService implements SessionServiceI {
         User user = tokensToUsers.get(accessToken);
         //return user.getStatus(); // TODO add status linking
         return null;
+    }
+
+    // TODO test it with invalid token
+    @Override
+    public boolean deleteMyUser(String accessToken) {
+        return isLoggedInByToken(accessToken) &&
+                userService.deleteUser(tokensToUsers.get(accessToken));
     }
 
     @Override

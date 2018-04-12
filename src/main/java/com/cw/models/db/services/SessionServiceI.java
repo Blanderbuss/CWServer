@@ -31,29 +31,29 @@ public interface SessionServiceI {
 
     // create a user
     // returns true if registration was successful, false otherwise
-    boolean register(String usernme, String email, String pwd);
+    boolean register(String username, String email, String pwd);
 
     // accessToken - token of current user's session
     void addNewSetToMyUser(Set set, String accessToken);
 
     // precondition: artefact should be present in user backpack (user artifact list) and currentSet is already in database
-    boolean addArtefactFromBackpackToCurrentSet(Artefact artefact, String accessToken);
-
-    // precondition: set should be present in user sets
-    // accessToken - token of current user's session
-    void chooseSetAsCurrent(Set set, String accessToken);
+    boolean addArtefactFromBackpackToSet(Artefact artefact, Set set, String accessToken);
 
     //TODO add methods to modify and delete user sets
 
     // starts a fight
     // accessToken - token of current user's session
-    void startFightAgainstBot(String accessToken);
+    void startFightAgainstBot(Set set, String accessToken);
 
     // user - the one we want to fight against
     // accessToken - token of current user's session
-    void startFightAgainstUser(User user, String accessToken);
+    // set - set chosen by current user to use in fight
+    void startFightAgainstUser(User user, Set set, String accessToken);
 
     String getMyUserStatus(String accessToken);
+
+    // deletes user represented by accessToken; used for client unit testing
+    boolean deleteMyUser(String accessToken);
 
     // returns all users that are online whose status is ready-to-fight
     List<User> getUsersReadyToFight();
