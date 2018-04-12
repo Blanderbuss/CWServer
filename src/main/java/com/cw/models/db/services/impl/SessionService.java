@@ -26,7 +26,7 @@ public class SessionService implements SessionServiceI {
     // accessTokens -> users;
     // this map stores all users whose session is active and valid right now
     // accessTokens identifies session
-    // only one val1 is allowed per val2
+    // only one accessToken is allowed per val2
     private Map<String, User> tokensToUsers = new HashMap<>();
     @Autowired
     private ArtefactServiceI artService;
@@ -41,7 +41,7 @@ public class SessionService implements SessionServiceI {
     public Tuple<String, User> login(String email, String pwd) throws UserNotFoundException {
         System.out.println("User " + email + " tries to log in");
         User userFromDb = userService.getUserByEmailAndPassword(email, pwd);
-        // deactivate active session of current val2, who had logged in previously
+        // deactivate active session of current user, who had logged in previously
         // TODO write jUnit auto tests to verify it
         if (isLoggedIn(userFromDb)) {
             String userToken = tokensToUsers.entrySet()
@@ -111,10 +111,10 @@ public class SessionService implements SessionServiceI {
 
     @Override
     public void addNewSetToMyUser(Set set, String accessToken) {
-        //setService.addSet(set, val2);
+        //setService.addSet(set, user);
     }
 
-    // TODO link val2.currentSet to database
+    // TODO link user.currentSet to database
     @Override
     public boolean addArtefactFromBackpackToCurrentSet(Artefact artefact, String accessToken) {
         if (!isLoggedInByToken(accessToken))
@@ -141,7 +141,7 @@ public class SessionService implements SessionServiceI {
         boolean setIsPresentInUser = setService.getAllSetsByUserId(user.getId()).contains(set);
         if (setIsPresentInUser) {
             user.setCurrentSet(set);
-            // TODO here add some db query to set val2.currentSet
+            // TODO here add some db query to set user.currentSet
         }
     }
 
@@ -166,7 +166,7 @@ public class SessionService implements SessionServiceI {
         if (!isLoggedInByToken(accessToken))
             return null;
         User user = tokensToUsers.get(accessToken);
-        //return val2.getStatus(); // TODO add status linking
+        //return user.getStatus(); // TODO add status linking
         return null;
     }
 
@@ -174,7 +174,7 @@ public class SessionService implements SessionServiceI {
     public List<User> getUsersReadyToFight() {
         return tokensToUsers.values()
                 .stream()
-                //.filter(val2 -> val2.getStatus().equals("readyToFight")) // TODO add status linking
+                //.filter(user -> user.getStatus().equals("readyToFight")) // TODO add status linking
                 .collect(Collectors.toList());
     }
 
@@ -182,7 +182,7 @@ public class SessionService implements SessionServiceI {
     public String getMyUserFightStatistics(String accessToken) {
         if (!isLoggedInByToken(accessToken))
             return null;
-        //return val2.getStatistics(); // TODO add stats linking
+        //return user.getStatistics(); // TODO add stats linking
         return null;
     }
 
