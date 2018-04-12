@@ -3,6 +3,7 @@ package com.cw.models.db.services.impl;
 import com.cw.exceptions.UserNotFoundException;
 import com.cw.models.db.services.*;
 import com.cw.models.entities.Artefact;
+import com.cw.models.entities.Tuple;
 import com.cw.models.entities.Set;
 import com.cw.models.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,8 @@ public class SessionService implements SessionServiceI {
     // accessTokens -> users;
     // this map stores all users whose session is active and valid right now
     // accessTokens identifies session
-    // only one accessToken is allowed per user
-    private Map<String, User> tokensToUsers = new HashMap<>(); //TODO migrate here
-    //private List<User> users = new LinkedList<User>(); // TODO delete
+    // only one val1 is allowed per val2
+    private Map<String, User> tokensToUsers = new HashMap<>();
     @Autowired
     private ArtefactServiceI artService;
     @Autowired
@@ -37,34 +37,32 @@ public class SessionService implements SessionServiceI {
     @Autowired
     private UserServiceI userService;
 
-    // TODO consider whether we should return Map.Entry<User, String> ???
-    public User login(String email, String pwd) throws UserNotFoundException {
+    @Override
+    public Tuple<String, User> login(String email, String pwd) throws UserNotFoundException {
         System.out.println("User " + email + " tries to log in");
         User userFromDb = userService.getUserByEmailAndPassword(email, pwd);
-        if (userFromDb != null) {
-            // deactivate active session of current user, who had logged in previously
-            // TODO write jUnit auto tests to verify it
-            if (isLoggedIn(userFromDb)) {
-                String userToken = tokensToUsers.entrySet()
-                        .stream()
-                        .filter(entry -> entry.getValue().equals(userFromDb))
-                        .findFirst()
-                        .get()
-                        .getKey();
-                logout(userToken);
-                System.out.println("Deactivated token: " + userToken);
-            }
-            String newToken = "";
-            // loop until unique token is found; ensures absence of hash collisions
-            do {
-                newToken = TokenGenerator.generateToken(userFromDb.getEmail());
-                System.out.println("Generated token: " + newToken);
-            } while (!tokensToUsers.containsKey(newToken));
-            System.out.println("Activated token: " + newToken);
-            tokensToUsers.put(newToken, userFromDb);
-            //users.add(userFromDb); // TODO delete this line
+        // deactivate active session of current val2, who had logged in previously
+        // TODO write jUnit auto tests to verify it
+        if (isLoggedIn(userFromDb)) {
+            String userToken = tokensToUsers.entrySet()
+                    .stream()
+                    .filter(entry -> entry.getValue().equals(userFromDb))
+                    .findFirst()
+                    .get()
+                    .getKey();
+            logout(userToken);
+            System.out.println("Deactivated token: " + userToken);
         }
-        return userFromDb;
+        String token = "";
+        // loop until unique token is found; ensures absence of hash collisions
+        do {
+            token = TokenGenerator.generateToken(userFromDb.getEmail());
+            System.out.println("Generated token: " + token);
+        } while (tokensToUsers.containsKey(token));
+        final String newToken = token;
+        System.out.println("Activated token: " + newToken);
+        tokensToUsers.put(newToken, userFromDb);
+        return new Tuple(token, userFromDb);
     }
 
     @Override
@@ -95,10 +93,10 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public User getUser(User user) {
+    public User getUser(User user, String accessToken) {
         // TODO refactor this method
         // TODO think maybe we should delete this method?
-        if (isLoggedIn(user))
+        if (isLoggedInByToken(accessToken))
             return new User(user); // safe: client can do anything, yet he will brake nothing
         else
             return null;
@@ -113,10 +111,10 @@ public class SessionService implements SessionServiceI {
 
     @Override
     public void addNewSetToMyUser(Set set, String accessToken) {
-        //setService.addSet(set, user);
+        //setService.addSet(set, val2);
     }
 
-    // TODO link user.currentSet to database
+    // TODO link val2.currentSet to database
     @Override
     public boolean addArtefactFromBackpackToCurrentSet(Artefact artefact, String accessToken) {
         if (!isLoggedInByToken(accessToken))
@@ -143,7 +141,7 @@ public class SessionService implements SessionServiceI {
         boolean setIsPresentInUser = setService.getAllSetsByUserId(user.getId()).contains(set);
         if (setIsPresentInUser) {
             user.setCurrentSet(set);
-            // TODO here add some db query to set user.currentSet
+            // TODO here add some db query to set val2.currentSet
         }
     }
 
@@ -168,7 +166,7 @@ public class SessionService implements SessionServiceI {
         if (!isLoggedInByToken(accessToken))
             return null;
         User user = tokensToUsers.get(accessToken);
-        //return user.getStatus(); // TODO add status linking
+        //return val2.getStatus(); // TODO add status linking
         return null;
     }
 
@@ -176,7 +174,7 @@ public class SessionService implements SessionServiceI {
     public List<User> getUsersReadyToFight() {
         return tokensToUsers.values()
                 .stream()
-                //.filter(user -> user.getStatus().equals("readyToFight")) // TODO add status linking
+                //.filter(val2 -> val2.getStatus().equals("readyToFight")) // TODO add status linking
                 .collect(Collectors.toList());
     }
 
@@ -184,7 +182,7 @@ public class SessionService implements SessionServiceI {
     public String getMyUserFightStatistics(String accessToken) {
         if (!isLoggedInByToken(accessToken))
             return null;
-        //return user.getStatistics(); // TODO add stats linking
+        //return val2.getStatistics(); // TODO add stats linking
         return null;
     }
 
@@ -193,10 +191,10 @@ public class SessionService implements SessionServiceI {
 
         protected static SecureRandom random = new SecureRandom();
 
-        public synchronized static String generateToken( String username ) {
-            long longToken = Math.abs( random.nextLong() );
-            String random = Long.toString( longToken, 16 );
-            return ( username + ":" + random );
+        public synchronized static String generateToken(String username) {
+            long longToken = Math.abs(random.nextLong());
+            String random = Long.toString(longToken, 16);
+            return (username + ":" + random);
         }
     }
 }
