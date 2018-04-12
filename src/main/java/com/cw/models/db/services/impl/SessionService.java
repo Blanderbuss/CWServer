@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /*
 * This class lists all operations available to client side.
@@ -21,8 +21,12 @@ import java.util.Map;
 @Service
 public class SessionService implements SessionServiceI {
 
-    private Map<User, String> usersToTokens = new HashMap<>(); //TODO migrate here
-    private List<User> users = new LinkedList<User>();
+    // accessTokens -> users;
+    // this map stores all users whose session is active and valid right now
+    // accessTokens identifies session
+    // only one accessToken is allowed per user
+    private Map<String, User> tokensToUsers = new HashMap<>(); //TODO migrate here
+    //private List<User> users = new LinkedList<User>(); // TODO delete
     @Autowired
     private ArtefactServiceI artService;
     @Autowired
@@ -34,41 +38,66 @@ public class SessionService implements SessionServiceI {
 
     //TODO Add exceptions
     @Override
-    // TODO consider whether we should return Map.Entry<User, String> ???
     public User login(String email, String pwd) {
         System.out.println("User " + email + " tries to log in");
         User userFromDb = userService.getUserByEmailAndPassword(email, pwd);
-        if(userFromDb != null && !isLoggedIn(userFromDb)) {
-            String token = "";
+        if (userFromDb != null) {
+            // deactivate active session of current user, who had logged in previously
+            // TODO write jUnit auto tests to verify it
+            if (isLoggedIn(userFromDb)) {
+                String userToken = tokensToUsers.entrySet()
+                        .stream()
+                        .filter(entry -> entry.getValue().equals(userFromDb))
+                        .findFirst()
+                        .get()
+                        .getKey();
+                logout(userToken);
+                System.out.println("Deactivated token: " + userToken);
+            }
+            String newToken = "";
             // loop until unique token is found; ensures absence of hash collisions
             do {
-                token = TokenGenerator.generateToken(userFromDb.getUsername());
-                System.out.println("Generated token: " + token);
-            } while (!usersToTokens.values().contains(token));
-            usersToTokens.put(userFromDb, token);
-            users.add(userFromDb); // TODO delete this line
+                newToken = TokenGenerator.generateToken(userFromDb.getEmail());
+                System.out.println("Generated token: " + newToken);
+            } while (!tokensToUsers.containsKey(newToken));
+            System.out.println("Activated token: " + newToken);
+            tokensToUsers.put(newToken, userFromDb);
+            //users.add(userFromDb); // TODO delete this line
         }
         return userFromDb;
     }
 
     @Override
-    public void logout(User user) {
-        if(isLoggedIn(user))
-            users.remove(user);
+    public void logout(String accessToken) {
+        tokensToUsers.remove(accessToken);
     }
 
     @Override
     public boolean isLoggedIn(User user) {
-        return users.contains(user);
+        return tokensToUsers.containsValue(user);
+    }
+
+    // TODO delete
+    @Override
+    @Deprecated
+    public boolean isLoggedInByEmail(String userEmail) {
+        return tokensToUsers.values().stream().anyMatch(u -> u.getEmail().equals(userEmail));
     }
 
     @Override
-    public boolean isLoggedIn(String userEmail) {
-        return users.stream().anyMatch(u -> u.getEmail().equals(userEmail));
+    public boolean isLoggedInByToken(String accessToken) {
+        return tokensToUsers.containsKey(accessToken);
+    }
+
+    @Override
+    public boolean isUserRegistered(String email) {
+        return userService.getUserByEmail(email) != null;
     }
 
     @Override
     public User getUser(User user) {
+        // TODO refactor this method
+        // TODO think maybe we should delete this method?
         if (isLoggedIn(user))
             return new User(user); // safe: client can do anything, yet he will brake nothing
         else
@@ -77,20 +106,22 @@ public class SessionService implements SessionServiceI {
 
     @Override
     public boolean register(String username, String email, String pwd) {
-        if (isLoggedIn(email))
+        if (isUserRegistered(email))
             return false;
         return userService.addUser(new User(username, pwd, email));
     }
 
     @Override
-    public void addNewSet(Set set, User user) {
-        setService.addSet(set, user);
+    public void addNewSetToMyUser(Set set, String accessToken) {
+        //setService.addSet(set, user);
     }
 
-    // artefact should be present in user backpack (user artifact list)
     // TODO link user.currentSet to database
     @Override
-    public boolean addArtefactFromBackpackToCurrentSet(Artefact artefact, User user) {
+    public boolean addArtefactFromBackpackToCurrentSet(Artefact artefact, String accessToken) {
+        if (!isLoggedInByToken(accessToken))
+            return false;
+        User user = tokensToUsers.get(accessToken);
         boolean artifactIsInUserBackpack = user.getUserArtefacts().contains(artefact);
         if (!artifactIsInUserBackpack)
             return false;
@@ -100,40 +131,60 @@ public class SessionService implements SessionServiceI {
         boolean currentSetExistsInDBAmongUserSets =
                 setService.getAllSetsByUserId(user.getId()).contains(user.getCurrentSet());
         if (!currentSetExistsInDBAmongUserSets)
-            return false; // TODO change
+            return false;
         return artService.addArtefactToSet(user.getCurrentSet(), artefact);
     }
 
     @Override
-    public void chooseSetAsCurrent(Set set, User user) {
-        boolean presentInUserSets = user.getSets().contains(set);
-        if (!presentInUserSets)
-            addNewSet(set, user);
-        // TODO here add some db query to set user.currentSet
+    public void chooseSetAsCurrent(Set set, String accessToken) {
+        if (!isLoggedInByToken(accessToken))
+            return;
+        User user = tokensToUsers.get(accessToken);
+        boolean setIsPresentInUser = setService.getAllSetsByUserId(user.getId()).contains(set);
+        if (setIsPresentInUser) {
+            user.setCurrentSet(set);
+            // TODO here add some db query to set user.currentSet
+        }
     }
 
     @Override
-    public void startFightAgainstBot(User user) {
-
+    public void startFightAgainstBot(String accessToken) {
+        if (!isLoggedInByToken(accessToken))
+            return;
+        User userWhoStartsFight = tokensToUsers.get(accessToken);
+        // TODO start fight
     }
 
     @Override
-    public void startFightAgainstUser(User u) {
-
+    public void startFightAgainstUser(User user, String accessToken) {
+        if (!isLoggedInByToken(accessToken))
+            return;
+        User userWhoStartsFight = tokensToUsers.get(accessToken);
+        // TODO start fight
     }
 
     @Override
-    public String getMyUserStatus(User user) {
+    public String getMyUserStatus(String accessToken) {
+        if (!isLoggedInByToken(accessToken))
+            return null;
+        User user = tokensToUsers.get(accessToken);
+        //return user.getStatus(); // TODO add status linking
         return null;
     }
 
     @Override
     public List<User> getUsersReadyToFight() {
-        return null;
+        return tokensToUsers.values()
+                .stream()
+                //.filter(user -> user.getStatus().equals("readyToFight")) // TODO add status linking
+                .collect(Collectors.toList());
     }
 
     @Override
-    public String getFightStatistics(User user) {
+    public String getMyUserFightStatistics(String accessToken) {
+        if (!isLoggedInByToken(accessToken))
+            return null;
+        //return user.getStatistics(); // TODO add stats linking
         return null;
     }
 
