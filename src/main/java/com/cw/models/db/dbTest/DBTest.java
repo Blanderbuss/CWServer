@@ -1,5 +1,6 @@
 package com.cw.models.db.dbTest;
 
+import com.cw.exceptions.UserNotFoundException;
 import com.cw.models.db.services.impl.ArtefactService;
 import com.cw.models.db.services.impl.BattleTypeService;
 import com.cw.models.db.services.impl.SetService;
@@ -43,20 +44,23 @@ public class DBTest {
         User userByEmail_1 = userService.getUserByEmail("email3@mail.com");
         System.out.println(userByEmail_1);
 
-        // Get User By Email And Password
-        System.out.println("Get User By Email And Password (email=true,pass=true)");
-        User userByEmailAndPassword_1 = userService.getUserByEmailAndPassword("email3@mail.com", "secret");
-        System.out.println(userByEmailAndPassword_1);
-        System.out.println("Get User By Email And Password (email=false,pass=true)");
-        User userByEmailAndPassword_2 = userService.getUserByEmailAndPassword("email3_@mail.com", "secret");
-        System.out.println(userByEmailAndPassword_2);
-        System.out.println("Get User By Email And Password (email=false,pass=false)");
-        User userByEmailAndPassword_3 = userService.getUserByEmailAndPassword("email3@mail.com", "not_secret");
-        System.out.println(userByEmailAndPassword_3);
-        System.out.println("Get User By Email And Password (email=false,pass=false)");
-        User userByEmailAndPassword_4 = userService.getUserByEmailAndPassword("email3_@mail.com", "not_secret");
-        System.out.println(userByEmailAndPassword_4);
-
+        try {
+            // Get User By Email And Password
+            System.out.println("Get User By Email And Password (email=true,pass=true)");
+            User userByEmailAndPassword_1 = userService.getUserByEmailAndPassword("email3@mail.com", "secret");
+            System.out.println(userByEmailAndPassword_1);
+            System.out.println("Get User By Email And Password (email=false,pass=true)");
+            User userByEmailAndPassword_2 = userService.getUserByEmailAndPassword("email3_@mail.com", "secret");
+            System.out.println(userByEmailAndPassword_2);
+            System.out.println("Get User By Email And Password (email=false,pass=false)");
+            User userByEmailAndPassword_3 = userService.getUserByEmailAndPassword("email3@mail.com", "not_secret");
+            System.out.println(userByEmailAndPassword_3);
+            System.out.println("Get User By Email And Password (email=false,pass=false)");
+            User userByEmailAndPassword_4 = userService.getUserByEmailAndPassword("email3_@mail.com", "not_secret");
+            System.out.println(userByEmailAndPassword_4);
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+        }
         // Update User
         System.out.println("Update User");
         userById_1.setUsername("username_1:New USERNAME");

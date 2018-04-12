@@ -1,5 +1,6 @@
 package com.cw.server;
 
+import com.cw.exceptions.UserNotFoundException;
 import com.cw.models.db.services.ArtefactServiceI;
 import com.cw.models.db.services.SetServiceI;
 import com.cw.models.db.services.UserServiceI;
@@ -85,7 +86,7 @@ public class UserServiceTests {
 
     // complex user with sets and artefacts
     @Test
-    public void verifyComplexUserCreationIdentity() {
+    public void verifyComplexUserCreationIdentity() throws UserNotFoundException {
         assertTrue( us.addUser(userComplex) );
         for (Artefact a : artefacts) {
             assertTrue(as.addArtefact(a));
@@ -104,7 +105,7 @@ public class UserServiceTests {
 
     // simple user WITH NO sets and artefacts
     @Test
-    public void verifySimpleUserCreationIdentity() {
+    public void verifySimpleUserCreationIdentity() throws UserNotFoundException {
         assertTrue( us.addUser(userSimple) );
         assertEquals(userSimple, us.getUserById(userSimple.getId()));
         assertEquals(userSimple, us.getUserByEmail(userSimple.getEmail()));
