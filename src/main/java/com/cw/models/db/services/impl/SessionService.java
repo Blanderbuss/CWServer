@@ -1,5 +1,6 @@
 package com.cw.models.db.services.impl;
 
+import com.cw.exceptions.FighterException;
 import com.cw.exceptions.UserNotFoundException;
 import com.cw.models.db.services.*;
 import com.cw.models.entities.Artefact;
@@ -36,6 +37,8 @@ public class SessionService implements SessionServiceI {
     private SetServiceI setService;
     @Autowired
     private UserServiceI userService;
+    @Autowired
+    private FightServiceI fightService;
 
     @Override
     public Tuple<String, User> login(String email, String pwd) throws UserNotFoundException {
@@ -107,6 +110,12 @@ public class SessionService implements SessionServiceI {
         return userService.addUser(new User(username, pwd, email));
     }
 
+    public List<Set> getAllSetsOfMyUser(String accessToken, User user){
+        if (isLoggedInByToken(accessToken))
+            return null;
+        return setService.getAllSetsByUserId(user.getId());
+    };
+
     @Override
     public void addNewSetToMyUser(Set set, String accessToken) {
         if (!isLoggedInByToken(accessToken))
@@ -134,7 +143,7 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public void startFightAgainstBot(Set set, String accessToken) {
+    public void startFightAgainstBot(Set set, String accessToken, String stringBattleFieldType) {
         if (!isLoggedInByToken(accessToken))
             return;
         User userWhoStartsFight = tokensToUsers.get(accessToken);
@@ -142,11 +151,10 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public void startFightAgainstUser(User user, Set set, String accessToken) {
+    public void startFightAgainstUsers(Set set, String accessToken, String stringBattleFieldType) throws FighterException {
         if (!isLoggedInByToken(accessToken))
             return;
-        User userWhoStartsFight = tokensToUsers.get(accessToken);
-        // TODO start fight
+        fightService.readyForFight(set, stringBattleFieldType);
     }
 
     @Override

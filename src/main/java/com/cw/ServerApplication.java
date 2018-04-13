@@ -1,13 +1,8 @@
 package com.cw;
 
-import com.cw.appif.ServerServiceIF;
-import com.cw.models.db.services.ArtefactServiceI;
-import com.cw.models.db.services.SessionServiceI;
-import com.cw.models.db.services.SetServiceI;
-import com.cw.models.db.services.UserServiceI;
-import com.cw.server.ServerService;
+import com.cw.models.db.services.*;
+import com.cw.models.db.services.FightServiceI;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -18,16 +13,16 @@ import org.springframework.remoting.rmi.RmiServiceExporter;
 public class ServerApplication {
 
     /*@Bean
-    ServerServiceIF serverServiceIF() {
-        return new ServerService();
+    FightServiceI serverServiceIF() {
+        return new FightService();
     }*/
 
     @Bean
-    RmiServiceExporter battleServiceExporter(ServerServiceIF implementation) {
+    RmiServiceExporter battleServiceExporter(FightServiceI implementation) {
         // Expose a service via RMI. Remote object URL is:
         // rmi://<HOST>:<PORT>/<SERVICE_NAME>
         // 1099 is the default port
-        Class<ServerServiceIF> serviceInterface = ServerServiceIF.class;
+        Class<FightServiceI> serviceInterface = FightServiceI.class;
         RmiServiceExporter exporter = new RmiServiceExporter();
         exporter.setServiceInterface(serviceInterface);
         exporter.setService(implementation);

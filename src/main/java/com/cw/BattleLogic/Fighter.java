@@ -1,4 +1,4 @@
-package com.cw.models;
+package com.cw.BattleLogic;
 
 
 
@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 public class Fighter implements Serializable{
@@ -52,7 +51,7 @@ public class Fighter implements Serializable{
         DEFEND
     }
 
-    public enum State {
+    public enum Stance {
         FREE,
         DEFENDING
     }
@@ -65,7 +64,7 @@ public class Fighter implements Serializable{
     private int lvl;
 
     @NotNull
-    private State state;
+    private Stance stance;
     @Min(0)
     private int maxHp;
     @Min(0)
@@ -101,7 +100,7 @@ public class Fighter implements Serializable{
     public Fighter(Set set){
         this.name=set.getName();
         this.lvl=/*set.getLvl()*/1;
-        this.state=State.FREE;
+        this.stance = Stance.FREE;
         this.calculateStats();
         this.artefacts.addAll(set.getArtefacts());
         this.actionExecutor = FighterFactory.getActionDoer(String.valueOf(set.getId()),set.getCode());
@@ -200,9 +199,9 @@ public class Fighter implements Serializable{
 
     public final void setCurSpeed(int curSpeed) { this.curSpeed = curSpeed;  }
 
-    public State getState() { return state; }
+    public Stance getStance() { return stance; }
 
-    public void setState(State state) {this.state = state;}
+    public void setStance(Stance stance) {this.stance = stance;}
 
     public int getMaxMana() {
         return maxMana;

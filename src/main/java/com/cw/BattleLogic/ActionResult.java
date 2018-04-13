@@ -1,4 +1,4 @@
-package com.cw.models;
+package com.cw.BattleLogic;
 
 public class ActionResult {
 

@@ -1,6 +1,6 @@
 package com.cw.server.factory;
-import com.cw.models.Fighter;
-import com.cw.models.GameEnvironment;
+import com.cw.BattleLogic.Fighter;
+import com.cw.BattleLogic.GameEnvironment;
 import org.springframework.stereotype.Service;
 
 @Service

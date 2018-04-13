@@ -1,4 +1,4 @@
-package com.cw.appif;
+package com.cw.models.db.services;
 
 import com.cw.exceptions.FighterException;
 import com.cw.exceptions.UserException;
@@ -9,9 +9,9 @@ import com.cw.models.entities.User;
 import java.util.List;
 
 
-public interface ServerServiceIF {
+public interface FightServiceI {
 
-    int readyForFight(int id, String battleFieldType) throws FighterException;
+    int readyForFight(Set set, String battleFieldType) throws FighterException;
 
     String getResult(int indexOfBattleField, String typeOfBattleField);
 }

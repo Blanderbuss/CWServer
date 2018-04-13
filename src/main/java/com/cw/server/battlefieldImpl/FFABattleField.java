@@ -1,6 +1,6 @@
 package com.cw.server.battlefieldImpl;
 
-import com.cw.models.Fighter;
+import com.cw.BattleLogic.Fighter;
 import com.cw.server.BattleFieldI;
 
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
 package com.cw.server;
 
-import com.cw.models.ActionResult;
-import com.cw.models.Fighter;
-import com.cw.models.GameEnvironment;
+import com.cw.BattleLogic.ActionResult;
+import com.cw.BattleLogic.Fighter;
+import com.cw.BattleLogic.GameEnvironment;
 import com.cw.server.factory.ActionExecutor;
 
 import java.util.*;
@@ -80,7 +80,7 @@ public abstract class BattleFieldI implements Runnable {
         switch (action) {
 
             case DEFEND:
-                cur.setState(Fighter.State.DEFENDING);
+                cur.setStance(Fighter.Stance.DEFENDING);
                 cur.setCurSpeed(cur.getMaxSpeed());
                 //TODO reduce stamina for cur
                 //this.fighters.set(curIndex, cur);
@@ -89,7 +89,7 @@ public abstract class BattleFieldI implements Runnable {
 
             case ATTACK:
                 Random rand = new Random();
-                if (target.getState() == Fighter.State.DEFENDING) {
+                if (target.getStance() == Fighter.Stance.DEFENDING) {
                     //TODO calculate blocking chances better
                     //TODO reduce stamina for cur
                     if (rand.nextInt(10) < 5) {
@@ -119,7 +119,7 @@ public abstract class BattleFieldI implements Runnable {
 
     void outAll() {
         for (Fighter fighter : fighters) {
-            System.out.println("Fighter " + fighter.getName() + ": State[" + fighter.getState() + "] HP[" + fighter.getCurHp() + "]");
+            System.out.println("Fighter " + fighter.getName() + ": Stance[" + fighter.getStance() + "] HP[" + fighter.getCurHp() + "]");
         }
     }
 

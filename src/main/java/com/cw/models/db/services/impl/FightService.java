@@ -1,11 +1,8 @@
-package com.cw.server;
+package com.cw.models.db.services.impl;
 
-import com.cw.appif.ServerServiceIF;
-import com.cw.exceptions.FighterException;
-import com.cw.exceptions.UserException;
-import com.cw.models.Fighter;
+import com.cw.models.db.services.FightServiceI;
+import com.cw.BattleLogic.Fighter;
 import com.cw.models.entities.Set;
-import com.cw.models.entities.User;
 import com.cw.models.db.services.ArtefactServiceI;
 import com.cw.models.db.services.BattleTypeServiceI;
 import com.cw.models.db.services.SetServiceI;
@@ -13,15 +10,13 @@ import com.cw.models.db.services.UserServiceI;
 import com.cw.server.battlefieldImpl.DuelBattleField;
 import com.cw.server.battlefieldImpl.FFABattleField;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.remoting.rmi.RmiServiceExporter;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 @Service
-public class ServerService implements ServerServiceIF {
+public class FightService implements FightServiceI {
 
     @Autowired
     private static ArtefactServiceI artefactService;
@@ -45,8 +40,7 @@ public class ServerService implements ServerServiceIF {
     private final static int NUMBER_OF_FIGHTERS_IN_FFA=4;
 
     @Override
-    public int readyForFight(int id, String stringBattleFieldType) throws NoSuchElementException {
-        Set set = setService.getSetById(id);
+    public int readyForFight(Set set, String stringBattleFieldType) throws NoSuchElementException {
         Fighter fighter = new Fighter(set);
         switch (stringBattleFieldType){
             case "Duel":

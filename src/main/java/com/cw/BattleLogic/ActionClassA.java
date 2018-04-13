@@ -1,0 +1,120 @@
+package com.cw.BattleLogic;
+
+import com.cw.models.db.services.impl.FightService;
+
+public abstract class ActionClassA {
+
+    private Fighter actor;
+    private Fighter target;
+
+    public Fighter getActor() {
+        return actor;
+    }
+
+    public void setActor(Fighter actor) {
+        this.actor = actor;
+    }
+
+    public Fighter getTarget() {
+        return target;
+    }
+
+    public void setTarget(Fighter target) {
+        this.target = target;
+    }
+
+    //Method that does all the calculation
+    public String perform(){
+        int possibleNewActorHp = actor.getCurHp()+this.getHpChangeForActor();
+        int newActorHp = Math.min(possibleNewActorHp,actor.getMaxHp());
+
+        int possibleNewActorStamina = actor.getCurStamina()+this.getStaminaChangeForActor();
+        int newActorStamina = Math.min(possibleNewActorStamina,actor.getMaxStamina());
+
+        int possibleNewActorMana = actor.getCurMana()+this.getManaChangeForActor();
+        int newActorMana = Math.min(possibleNewActorMana,actor.getMaxMana());
+
+        //Speed is only change for the next action
+        int newActorSpeed = actor.getMaxSpeed()*this.getSpeedChangeForActor();
+
+        Fighter.Stance newActorStance = this.getNewStanceForActor();
+
+        actor.setCurHp(newActorHp);
+        actor.setCurStamina(newActorStamina);
+        actor.setCurMana(newActorMana);
+        actor.setCurSpeed(newActorSpeed);
+        actor.setStance(newActorStance);
+
+        int possibleNewTargetHp = target.getCurHp()+this.getHpChangeForTarget();
+        int newTargetHp = Math.min(possibleNewTargetHp,target.getMaxHp());
+
+        int possibleNewTargetStamina = target.getCurStamina()+this.getStaminaChangeForTarget();
+        int newTargetStamina = Math.min(possibleNewTargetStamina,target.getMaxStamina());
+
+        int possibleNewTargetMana = target.getCurMana()+this.getManaChangeForTarget();
+        int newTargetMana = Math.min(possibleNewTargetMana,target.getMaxMana());
+
+        //Speed is only change for the next action
+        int newTargetSpeed = target.getMaxSpeed()*this.getSpeedChangeForTarget();
+
+        Fighter.Stance newTargetStance = this.getNewStanceForTarget();
+
+        target.setCurHp(newTargetHp);
+        target.setCurStamina(newTargetStamina);
+        target.setCurMana(newTargetMana);
+        target.setCurSpeed(newTargetSpeed);
+        target.setStance(newTargetStance);
+
+        return this.report();
+    }
+    
+    //Must be overwritten in subclasses
+    //Returns result of action in String format to be given to user
+    protected abstract String report();
+
+    //All following methods must be overwritten in subclasses if needed
+
+    protected int getHpChangeForActor(){
+        return 0;
+    }
+
+    protected int getStaminaChangeForActor(){
+        return 0;
+    }
+
+    protected int getManaChangeForActor(){
+        return 0;
+    }
+
+    //In percents to maximum speed
+    protected int getSpeedChangeForActor(){
+        return 1;
+    }
+
+    //Default new stance - the old one
+    protected Fighter.Stance getNewStanceForActor(){
+        return actor.getStance();
+    }
+
+    protected int getHpChangeForTarget(){
+        return 0;
+    }
+
+    protected int getStaminaChangeForTarget(){
+        return 0;
+    }
+
+    protected int getManaChangeForTarget(){
+        return 0;
+    }
+
+    //In percents to maximum speed
+    protected int getSpeedChangeForTarget(){
+        return 1;
+    }
+
+    //Default new stance - the old one
+    protected Fighter.Stance getNewStanceForTarget(){
+        return actor.getStance();
+    }
+}
