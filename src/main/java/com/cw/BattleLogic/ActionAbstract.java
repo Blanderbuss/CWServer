@@ -2,10 +2,15 @@ package com.cw.BattleLogic;
 
 import com.cw.models.db.services.impl.FightService;
 
-public abstract class ActionClassA {
+public abstract class ActionAbstract {
 
     private Fighter actor;
     private Fighter target;
+
+    public ActionAbstract(Fighter actor, Fighter target) {
+        this.actor = actor;
+        this.target = target;
+    }
 
     public Fighter getActor() {
         return actor;
@@ -23,6 +28,7 @@ public abstract class ActionClassA {
         this.target = target;
     }
 
+    //TODO apply stance bonuses before performing action and remove them after
     //Method that does all the calculation
     public String perform(){
         int possibleNewActorHp = actor.getCurHp()+this.getHpChangeForActor();

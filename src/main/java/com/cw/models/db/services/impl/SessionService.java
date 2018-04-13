@@ -110,12 +110,6 @@ public class SessionService implements SessionServiceI {
         return userService.addUser(new User(username, pwd, email));
     }
 
-    public List<Set> getAllSetsOfMyUser(String accessToken, User user){
-        if (isLoggedInByToken(accessToken))
-            return null;
-        return setService.getAllSetsByUserId(user.getId());
-    };
-
     @Override
     public void addNewSetToMyUser(Set set, String accessToken) {
         if (!isLoggedInByToken(accessToken))
