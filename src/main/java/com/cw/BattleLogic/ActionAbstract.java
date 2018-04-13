@@ -39,7 +39,11 @@ public abstract class ActionAbstract {
 
         int possibleNewActorMana = actor.getCurMana()+this.getManaChangeForActor();
         int newActorMana = Math.min(possibleNewActorMana,actor.getMaxMana());
-
+        
+        int newActorHpRegen = actor.getRegenHp()+this.getHpRegenChangeForActor();
+        int newActorStaminaRegen = actor.getRegenStamina()+this.getStaminaRegenChangeForActor();
+        int newActorManaRegen = actor.getRegenMana()+this.getManaRegenChangeForActor();
+        
         //Speed is only change for the next action
         int newActorSpeed = actor.getMaxSpeed()*this.getSpeedChangeForActor();
 
@@ -48,6 +52,9 @@ public abstract class ActionAbstract {
         actor.setCurHp(newActorHp);
         actor.setCurStamina(newActorStamina);
         actor.setCurMana(newActorMana);
+        actor.setRegenHp(newActorHpRegen);
+        actor.setRegenStamina(newActorStaminaRegen);
+        actor.setRegenMana(newActorManaRegen);
         actor.setCurSpeed(newActorSpeed);
         actor.setStance(newActorStance);
 
@@ -60,6 +67,10 @@ public abstract class ActionAbstract {
         int possibleNewTargetMana = target.getCurMana()+this.getManaChangeForTarget();
         int newTargetMana = Math.min(possibleNewTargetMana,target.getMaxMana());
 
+        int newTargetHpRegen = target.getRegenHp()+this.getHpRegenChangeForTarget();
+        int newTargetStaminaRegen = target.getRegenStamina()+this.getStaminaRegenChangeForTarget();
+        int newTargetManaRegen = target.getRegenMana()+this.getManaRegenChangeForTarget();
+        
         //Speed is only change for the next action
         int newTargetSpeed = target.getMaxSpeed()*this.getSpeedChangeForTarget();
 
@@ -68,6 +79,9 @@ public abstract class ActionAbstract {
         target.setCurHp(newTargetHp);
         target.setCurStamina(newTargetStamina);
         target.setCurMana(newTargetMana);
+        target.setRegenHp(newTargetHpRegen);
+        target.setRegenStamina(newTargetStaminaRegen);
+        target.setRegenMana(newTargetManaRegen);
         target.setCurSpeed(newTargetSpeed);
         target.setStance(newTargetStance);
 
@@ -91,6 +105,18 @@ public abstract class ActionAbstract {
     protected int getManaChangeForActor(){
         return 0;
     }
+    
+    protected int getHpRegenChangeForActor(){
+        return 0;
+    }
+    
+    protected int getStaminaRegenChangeForActor(){
+        return 0;
+    }
+
+    protected int getManaRegenChangeForActor(){
+        return 0;
+    }
 
     //In percents to maximum speed
     protected int getSpeedChangeForActor(){
@@ -111,6 +137,18 @@ public abstract class ActionAbstract {
     }
 
     protected int getManaChangeForTarget(){
+        return 0;
+    }
+
+    protected int getHpRegenChangeForTarget(){
+        return 0;
+    }
+
+    protected int getStaminaRegenChangeForTarget(){
+        return 0;
+    }
+
+    protected int getManaRegenChangeForTarget(){
         return 0;
     }
 
