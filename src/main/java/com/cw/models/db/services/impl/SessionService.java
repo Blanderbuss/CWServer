@@ -160,11 +160,12 @@ public class SessionService implements SessionServiceI {
         return null;
     }
 
-    // TODO test it with invalid token
     @Override
     public boolean deleteMyUser(String accessToken) {
-        return isLoggedInByToken(accessToken) &&
-                userService.deleteUser(tokensToUsers.get(accessToken));
+        if (!isLoggedInByToken(accessToken))
+            return false;
+        User u = tokensToUsers.remove(accessToken);
+        return userService.deleteUser(u);
     }
 
     @Override
