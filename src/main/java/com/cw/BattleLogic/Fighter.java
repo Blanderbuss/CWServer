@@ -2,10 +2,10 @@ package com.cw.BattleLogic;
 
 
 
-import com.cw.models.entities.Artefact;
-import com.cw.models.entities.Set;
-import com.cw.server.factory.ActionExecutor;
-import com.cw.server.factory.FighterFactory;
+import com.cw.entities.Artefact;
+import com.cw.entities.Set;
+import com.cw.factory.ActionExecutor;
+import com.cw.factory.FighterFactory;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

@@ -1,12 +1,12 @@
 package com.cw.server;
 
 import com.cw.exceptions.UserNotFoundException;
-import com.cw.models.db.services.ArtefactServiceI;
-import com.cw.models.db.services.SetServiceI;
-import com.cw.models.db.services.UserServiceI;
-import com.cw.models.entities.Artefact;
-import com.cw.models.entities.Set;
-import com.cw.models.entities.User;
+import com.cw.services.ArtefactServiceI;
+import com.cw.services.SetServiceI;
+import com.cw.services.UserServiceI;
+import com.cw.entities.Artefact;
+import com.cw.entities.Set;
+import com.cw.entities.User;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;

@@ -1,5 +1,8 @@
 package com.cw.models.entities;
 
+import com.cw.entities.Artefact;
+import com.cw.entities.Set;
+import com.cw.entities.User;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
