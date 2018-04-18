@@ -49,7 +49,8 @@ public class Fighter implements Serializable{
     public enum Action {
         ATTACK,
         DEFEND,
-        FREE
+        FREE,
+        FIREBALL
     }
 
     public enum Stance {
@@ -117,11 +118,11 @@ public class Fighter implements Serializable{
     }
 
     private void calculateStats() {
-        this.setMaxSpeed((int) (20-getLvl()*0.1));
-        this.setMaxHp((int) (50+getLvl()*1.1));
-        this.setMaxMana((int) (50+getLvl()*1.1));
-        this.setMaxStamina((int) (50+getLvl()*1.1));
-        this.setAttack(2*getLvl()+3);
+        this.setMaxSpeed((int) (20-this.getLvl()*0.1));
+        this.setMaxHp((int) (50+this.getLvl()*1.1));
+        this.setMaxMana((int) (50+this.getLvl()*1.1));
+        this.setMaxStamina((int) (50+this.getLvl()*1.1));
+        this.setAttack(this.getLvl()*2+3);
         this.setEvasion(5);
         this.setArmor(0);
         this.setRegenHp(1);

@@ -16,7 +16,6 @@ public class ActionAttack extends ActionAbstract {
 
     public ActionAttack(Fighter actor, Fighter target) {
         super(actor, target);
-        //TODO generify this with new Stance class
         if(this.getActor().getStance()==Fighter.Stance.DEFENDING) {
             result = new StringBuilder("Fighter " + this.getActor().getName() + " tried to attack, but he is in defending position, so he can`t\n");
             //TODO throw exception
@@ -40,8 +39,7 @@ public class ActionAttack extends ActionAbstract {
             return 0;
         }
         else {
-            //Damage formula
-            double pureDamage = this.getActor().getLvl() * DAMAGE_LVL_MULTIPLIER + 3;
+            double pureDamage = this.getActor().getAttack();
             //Armor formula
             double damageReduction = this.getTarget().getArmor() * 0.05 / (1 + this.getTarget().getArmor() * 0.05);
             int damageToBeDone = (int) Math.floor(pureDamage * damageReduction);

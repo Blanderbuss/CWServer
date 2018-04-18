@@ -2,6 +2,7 @@ package com.cw.BattleLogic.Battlefield;
 
 import com.cw.BattleLogic.Action.ActionImpl.ActionAttack;
 import com.cw.BattleLogic.Action.ActionImpl.ActionDefend;
+import com.cw.BattleLogic.Action.ActionImpl.ActionFireball;
 import com.cw.BattleLogic.Action.ActionImpl.ActionFree;
 import com.cw.BattleLogic.Fighter;
 import com.cw.BattleLogic.GameEnvironment;
@@ -87,6 +88,10 @@ public abstract class BattleFieldI implements Runnable {
             case ATTACK:
                 ActionAttack actionAttack = new ActionAttack(cur, target);
                 res = actionAttack.perform();
+                break;
+            case FIREBALL:
+                ActionFireball actionFireball = new ActionFireball(cur, target);
+                res = actionFireball.perform();
                 break;
             case FREE:
                 ActionFree actionFree = new ActionFree(cur, target);

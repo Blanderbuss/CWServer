@@ -9,5 +9,6 @@ public class ActionConstants {
     public final static int DEFEND_EVASION_BOOST=20;
     //Percents
     public final static int DEFEND_ARMOR_BOOST=5;
-    //TODO ADD DAMAGE BOOST TO DB AND EVERYWHERE ELSE
+    public final static int FIREBALL_DAMAGE=8;
+    public final static int FIREBALL_MANA_COST=75;
 }
