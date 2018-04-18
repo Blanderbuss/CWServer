@@ -5,6 +5,9 @@ import com.cw.BattleLogic.Fighter;
 
 import java.util.Random;
 
+import static com.cw.BattleLogic.Action.ActionConstants.ATTACK_ACTOR_STAMINA_MODIFIER;
+import static com.cw.BattleLogic.Action.ActionConstants.DAMAGE_LVL_MULTIPLIER;
+
 public class ActionAttack extends ActionAbstract {
 
     private static Random rand = new Random();
@@ -14,10 +17,16 @@ public class ActionAttack extends ActionAbstract {
     public ActionAttack(Fighter actor, Fighter target) {
         super(actor, target);
         //TODO generify this with new Stance class
-        if(this.getActor().getStance()==Fighter.Stance.DEFENDING)
+        if(this.getActor().getStance()==Fighter.Stance.DEFENDING) {
+            result = new StringBuilder("Fighter " + this.getActor().getName() + " tried to attack, but he is in defending position, so he can`t\n");
             //TODO throw exception
             return;
+        }
         result = new StringBuilder("Fighter " + this.getActor().getName() + " tries to attack\n");
+    }
+
+    protected int getStaminaChangeForActor(){
+        return ATTACK_ACTOR_STAMINA_MODIFIER;
     }
 
     @Override
@@ -32,7 +41,7 @@ public class ActionAttack extends ActionAbstract {
         }
         else {
             //Damage formula
-            double pureDamage = this.getActor().getLvl() * 2 + 3;
+            double pureDamage = this.getActor().getLvl() * DAMAGE_LVL_MULTIPLIER + 3;
             //Armor formula
             double damageReduction = this.getTarget().getArmor() * 0.05 / (1 + this.getTarget().getArmor() * 0.05);
             int damageToBeDone = (int) Math.floor(pureDamage * damageReduction);

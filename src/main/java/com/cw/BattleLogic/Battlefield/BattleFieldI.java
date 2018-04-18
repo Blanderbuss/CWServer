@@ -2,6 +2,7 @@ package com.cw.BattleLogic.Battlefield;
 
 import com.cw.BattleLogic.Action.ActionImpl.ActionAttack;
 import com.cw.BattleLogic.Action.ActionImpl.ActionDefend;
+import com.cw.BattleLogic.Action.ActionImpl.ActionFree;
 import com.cw.BattleLogic.Fighter;
 import com.cw.BattleLogic.GameEnvironment;
 import com.cw.factory.ActionExecutor;
@@ -56,14 +57,14 @@ public abstract class BattleFieldI implements Runnable {
             while (iter.hasNext() && notFinished) {
                 Fighter cur = iter.next();
                 if (cur.rest()) {
-                    //TODO client must get res
                     ArrayList<Fighter> curAllies = getCurrentAllies(cur);
                     ArrayList<Fighter> curEnemies = getCurrentEnemies(cur);
                     GameEnvironment env = new GameEnvironment(getDate(), curAllies, curEnemies);
                     ActionExecutor curActionExecutor = cur.getActionExecutor();
                     Fighter.ActTarget curActTarget = curActionExecutor.doAction(cur, env);
                     String res = calcAction(cur, curActTarget);
-                    System.out.println(res);
+                    //Adding new info to result
+                    this.setResult(this.getResult()+res);
                     outAll();
                     notFinished = isToFinish();
                 }
@@ -76,7 +77,7 @@ public abstract class BattleFieldI implements Runnable {
         Fighter.Action action = at.getAction();
         int targetIndex = at.getTarget();
         Fighter target = fighters.get(targetIndex);
-        String res = "";
+        String res;
 
         switch (action) {
             case DEFEND:
@@ -87,8 +88,12 @@ public abstract class BattleFieldI implements Runnable {
                 ActionAttack actionAttack = new ActionAttack(cur, target);
                 res = actionAttack.perform();
                 break;
+            case FREE:
+                ActionFree actionFree = new ActionFree(cur, target);
+                res = actionFree.perform();
+                break;
             default:
-                res= "Something went wrong";
+                res= "ERROR: ILLEGAL ACTION";
         }
         return res;
     }

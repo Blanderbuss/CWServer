@@ -22,3 +22,5 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+/src/main/java/com/cw/db/connectionFactory/ConnectionFactory.java
+src/main/resources/

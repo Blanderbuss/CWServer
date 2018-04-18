@@ -7,39 +7,39 @@ import static com.cw.BattleLogic.Action.ActionConstants.DEFEND_ARMOR_BOOST;
 import static com.cw.BattleLogic.Action.ActionConstants.DEFEND_EVASION_BOOST;
 import static com.cw.BattleLogic.Action.ActionConstants.DEFEND_STAMINA_REGEN_BOOST;
 
-public class ActionDefend extends ActionAbstract{
+public class ActionFree extends ActionAbstract{
 
     private String res;
 
-    public ActionDefend(Fighter actor, Fighter target) {
+    public ActionFree(Fighter actor, Fighter target){
         super(actor, target);
         if(actor!=target){
-            this.res = "Fighter " + this.getActor() + " tried to defend somebody else, but he can defend only himself";
+            this.res = "Fighter " + this.getActor() + " tried to put in free position somebody else, but he can free only himself";
             //TODO throw exception
             return;
         }
-        this.res = "Fighter " + this.getActor() + " is in defending position now";
+        this.res = "Fighter " + this.getActor() + " is in free position now";
     }
 
     @Override
     protected int getStaminaRegenChangeForTarget(){
-        return DEFEND_STAMINA_REGEN_BOOST;
+        if(getTarget().getStance()== Fighter.Stance.DEFENDING)
+            return -DEFEND_STAMINA_REGEN_BOOST;
+        else return 0;
     }
 
     @Override
     protected int getEvasionChangeForTarget(){
-        return DEFEND_EVASION_BOOST;
+        if(getTarget().getStance()== Fighter.Stance.DEFENDING)
+            return -DEFEND_EVASION_BOOST;
+        else return 0;
     }
 
     @Override
     protected int getArmorChangeForTarget(){
-        return DEFEND_ARMOR_BOOST;
-    }
-
-    //Note: target is changed last, so only changes to him is important if actor and target re same
-    @Override
-    protected Fighter.Stance getNewStanceForTarget(){
-        return Fighter.Stance.DEFENDING;
+        if(getTarget().getStance()== Fighter.Stance.DEFENDING)
+            return -DEFEND_ARMOR_BOOST;
+        else return 0;
     }
 
     @Override

@@ -48,7 +48,8 @@ public class Fighter implements Serializable{
 
     public enum Action {
         ATTACK,
-        DEFEND
+        DEFEND,
+        FREE
     }
 
     public enum Stance {
@@ -71,8 +72,14 @@ public class Fighter implements Serializable{
     private int maxMana;
     @Min(0)
     private int maxStamina;
+    @Min(0)
+    @Max(100)
     private int regenHp;
+    @Min(0)
+    @Max(100)
     private int regenMana;
+    @Min(0)
+    @Max(100)
     private int regenStamina;
     @Min(0)
     @Max(100)
@@ -99,6 +106,7 @@ public class Fighter implements Serializable{
 
     public Fighter(Set set){
         this.name=set.getName();
+        //TODO add lvl to set
         this.lvl=/*set.getLvl()*/1;
         this.stance = Stance.FREE;
         this.calculateStats();
@@ -124,8 +132,7 @@ public class Fighter implements Serializable{
             this.setArmor(this.getArmor()+artefact.getArmorBoost());
             this.setRegenHp(this.getRegenHp()+artefact.getHpRegenBoost());
             this.setRegenMana(this.getRegenMana()+artefact.getManaRegenBoost());
-            //TODO
-            this.setRegenStamina(this.getRegenStamina()/*+artefact.getStaminaRegenBoost()*/);
+            this.setRegenStamina(this.getRegenStamina()+artefact.getStaminaRegenBoost());
         }
         this.setCurHp(this.getMaxHp());
         this.setCurMana(this.getMaxMana());

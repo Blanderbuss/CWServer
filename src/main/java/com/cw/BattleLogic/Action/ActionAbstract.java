@@ -43,7 +43,10 @@ public abstract class ActionAbstract {
         int newActorHpRegen = actor.getRegenHp()+this.getHpRegenChangeForActor();
         int newActorStaminaRegen = actor.getRegenStamina()+this.getStaminaRegenChangeForActor();
         int newActorManaRegen = actor.getRegenMana()+this.getManaRegenChangeForActor();
-        
+
+        int newActorEvasion = actor.getEvasion()+this.getEvasionChangeForActor();
+        int newActorArmor = actor.getArmor()+this.getArmorChangeForActor();
+
         //Speed is only change for the next action
         int newActorSpeed = actor.getMaxSpeed()*this.getSpeedChangeForActor();
 
@@ -55,6 +58,8 @@ public abstract class ActionAbstract {
         actor.setRegenHp(newActorHpRegen);
         actor.setRegenStamina(newActorStaminaRegen);
         actor.setRegenMana(newActorManaRegen);
+        actor.setEvasion(newActorEvasion);
+        actor.setArmor(newActorArmor);
         actor.setCurSpeed(newActorSpeed);
         actor.setStance(newActorStance);
 
@@ -70,7 +75,10 @@ public abstract class ActionAbstract {
         int newTargetHpRegen = target.getRegenHp()+this.getHpRegenChangeForTarget();
         int newTargetStaminaRegen = target.getRegenStamina()+this.getStaminaRegenChangeForTarget();
         int newTargetManaRegen = target.getRegenMana()+this.getManaRegenChangeForTarget();
-        
+
+        int newTargetEvasion = target.getEvasion()+this.getEvasionChangeForTarget();
+        int newTargetArmor = target.getArmor()+this.getArmorChangeForTarget();
+
         //Speed is only change for the next action
         int newTargetSpeed = target.getMaxSpeed()*this.getSpeedChangeForTarget();
 
@@ -82,6 +90,8 @@ public abstract class ActionAbstract {
         target.setRegenHp(newTargetHpRegen);
         target.setRegenStamina(newTargetStaminaRegen);
         target.setRegenMana(newTargetManaRegen);
+        target.setEvasion(newTargetEvasion);
+        target.setArmor(newTargetArmor);
         target.setCurSpeed(newTargetSpeed);
         target.setStance(newTargetStance);
 
@@ -118,6 +128,15 @@ public abstract class ActionAbstract {
         return 0;
     }
 
+    protected int getEvasionChangeForActor(){
+        return 0;
+    }
+
+    protected int getArmorChangeForActor(){
+        return 0;
+    }
+
+
     //In percents to maximum speed
     protected int getSpeedChangeForActor(){
         return 1;
@@ -149,6 +168,14 @@ public abstract class ActionAbstract {
     }
 
     protected int getManaRegenChangeForTarget(){
+        return 0;
+    }
+
+    protected int getEvasionChangeForTarget(){
+        return 0;
+    }
+
+    protected int getArmorChangeForTarget(){
         return 0;
     }
 
