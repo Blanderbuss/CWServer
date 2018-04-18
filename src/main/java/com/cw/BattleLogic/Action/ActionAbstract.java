@@ -44,6 +44,7 @@ public abstract class ActionAbstract {
         int newActorStaminaRegen = actor.getRegenStamina()+this.getStaminaRegenChangeForActor();
         int newActorManaRegen = actor.getRegenMana()+this.getManaRegenChangeForActor();
 
+        int newActorAttack = actor.getAttack()+this.getAttackChangeForActor();
         int newActorEvasion = actor.getEvasion()+this.getEvasionChangeForActor();
         int newActorArmor = actor.getArmor()+this.getArmorChangeForActor();
 
@@ -58,6 +59,7 @@ public abstract class ActionAbstract {
         actor.setRegenHp(newActorHpRegen);
         actor.setRegenStamina(newActorStaminaRegen);
         actor.setRegenMana(newActorManaRegen);
+        actor.setAttack(newActorAttack);
         actor.setEvasion(newActorEvasion);
         actor.setArmor(newActorArmor);
         actor.setCurSpeed(newActorSpeed);
@@ -76,6 +78,7 @@ public abstract class ActionAbstract {
         int newTargetStaminaRegen = target.getRegenStamina()+this.getStaminaRegenChangeForTarget();
         int newTargetManaRegen = target.getRegenMana()+this.getManaRegenChangeForTarget();
 
+        int newTargetAttack = target.getAttack()+this.getAttackChangeForTarget();
         int newTargetEvasion = target.getEvasion()+this.getEvasionChangeForTarget();
         int newTargetArmor = target.getArmor()+this.getArmorChangeForTarget();
 
@@ -90,6 +93,7 @@ public abstract class ActionAbstract {
         target.setRegenHp(newTargetHpRegen);
         target.setRegenStamina(newTargetStaminaRegen);
         target.setRegenMana(newTargetManaRegen);
+        target.setAttack(newTargetAttack);
         target.setEvasion(newTargetEvasion);
         target.setArmor(newTargetArmor);
         target.setCurSpeed(newTargetSpeed);
@@ -125,6 +129,10 @@ public abstract class ActionAbstract {
     }
 
     protected int getManaRegenChangeForActor(){
+        return 0;
+    }
+
+    protected int getAttackChangeForActor(){
         return 0;
     }
 
@@ -168,6 +176,10 @@ public abstract class ActionAbstract {
     }
 
     protected int getManaRegenChangeForTarget(){
+        return 0;
+    }
+
+    protected int getAttackChangeForTarget(){
         return 0;
     }
 

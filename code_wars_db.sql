@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS `artefacts` (
   `stamina_regen_boost` int(11) DEFAULT NULL,
   `hp_regen_boost` int(11) DEFAULT NULL,
   `mana_regen_boost` int(11) DEFAULT NULL,
+  `atack_boost` int(11) DEFAULT NULL,
   `evasion_boost` int(11) DEFAULT NULL,
   `armor_boost` int(11) DEFAULT NULL,
   `skin` varchar(255) NOT NULL
@@ -49,9 +50,9 @@ CREATE TABLE IF NOT EXISTS `artefacts` (
 -- Дамп данных таблицы `artefacts`
 --
 
-INSERT INTO `artefacts` (`id`, `name`, `type`, `hp_boost`, `mana_boost`, `stamina_boost`, `hp_regen_boost`, `mana_regen_boost`, `evasion_boost`, `armor_boost`, `skin`) VALUES
-(1, 'art_1', 'type1', 678, 657, 67, 67, 67, 67, 56, 'fgvdgh'),
-(2, 'art2', 'type2', 34, 43, 34, 43, 34, 34, 43, 'fvb');
+INSERT INTO `artefacts` (`id`, `name`, `type`, `hp_boost`, `mana_boost`, `stamina_boost`, `hp_regen_boost`, `mana_regen_boost`,`atack_boost`, `evasion_boost`, `armor_boost`, `skin`) VALUES
+(1, 'art_1', 'type1', 678, 657, 67, 67, 67, 0, 67, 56, 'fgvdgh'),
+(2, 'art2', 'type2', 34, 43, 34, 43, 34, 0, 34, 43, 'fvb');
 
 -- --------------------------------------------------------
 

@@ -82,6 +82,8 @@ public class Fighter implements Serializable{
     @Max(100)
     private int regenStamina;
     @Min(0)
+    private int attack;
+    @Min(0)
     @Max(100)
     private int evasion;
     @Min(0)
@@ -119,6 +121,7 @@ public class Fighter implements Serializable{
         this.setMaxHp((int) (50+getLvl()*1.1));
         this.setMaxMana((int) (50+getLvl()*1.1));
         this.setMaxStamina((int) (50+getLvl()*1.1));
+        this.setAttack(2*getLvl()+3);
         this.setEvasion(5);
         this.setArmor(0);
         this.setRegenHp(1);
@@ -128,6 +131,7 @@ public class Fighter implements Serializable{
             this.setMaxHp(this.getMaxHp()+artefact.getHpBoost());
             this.setMaxMana(this.getMaxMana()+artefact.getManaBoost());
             this.setMaxStamina(this.getMaxStamina()+artefact.getStaminaBoost());
+            this.setEvasion(this.getAttack()+artefact.getAttackBoost());
             this.setEvasion(this.getEvasion()+artefact.getEvasionBoost());
             this.setArmor(this.getArmor()+artefact.getArmorBoost());
             this.setRegenHp(this.getRegenHp()+artefact.getHpRegenBoost());
@@ -248,6 +252,14 @@ public class Fighter implements Serializable{
 
     public void setRegenStamina(int regenStamina) {
         this.regenStamina = regenStamina;
+    }
+
+    public int getAttack() {
+        return attack;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
     }
 
     public int getEvasion() {

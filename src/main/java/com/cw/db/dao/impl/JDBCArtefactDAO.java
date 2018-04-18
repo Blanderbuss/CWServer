@@ -28,12 +28,12 @@ public class JDBCArtefactDAO implements ArtefactDAO {
     private static final String GET_ARTEFACT_BY_SET_ID_SQL = "SELECT * FROM `artefact_in_set` INNER JOIN `artefacts` ON `artefact_in_set`.`id_artefact` = `artefacts`.`id` WHERE `artefact_in_set`.`id_set` = ?";
     private static final String GET_ARTEFACT_BY_USER_ID_SQL = "SELECT * FROM `backpack` INNER JOIN `artefacts` ON `backpack`.`artefact_id` = `artefacts`.`id` WHERE `backpack`.`user_id` = ?";
 
-    private static final String ADD_ARTIFACT_SQL = "INSERT INTO `artefacts` (`name`, `type`, `hp_boost`, `mana_boost`, `stamina_boost`, `hp_regen_boost`, `mana_regen_boost`, `stamina_regen_boost`, `evasion_boost`, `armor_boost`, `skin`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String ADD_ARTIFACT_SQL = "INSERT INTO `artefacts` (`name`, `type`, `hp_boost`, `mana_boost`, `stamina_boost`, `hp_regen_boost`, `mana_regen_boost`, `stamina_regen_boost`,`atack_boost`, `evasion_boost`, `armor_boost`, `skin`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     private static final String ADD_ARTIFACT_TO_USER_BACKPACK_SQL = "INSERT INTO `backpack` (`user_id`, `artefact_id`) VALUES (?, ?)";
     private static final String ADD_ARTIFACT_TO_SET_SQL = "INSERT INTO `artefact_in_set` (`id_set`, `id_artefact`) VALUES (?, ?)";
 
-    private static final String UPDATE_ARTIFACT_BY_ID_SQL = "UPDATE `artefacts` SET `name` = ?, `type` = ?, `hp_boost` = ?, `mana_boost` = ?, `stamina_boost` = ?, `hp_regen_boost` = ?, `mana_regen_boost` = ?, `stamina_regen_boost` = ?, `evasion_boost` = ?, `armor_boost` = ?, `skin` = ? WHERE `id` = ?";
+    private static final String UPDATE_ARTIFACT_BY_ID_SQL = "UPDATE `artefacts` SET `name` = ?, `type` = ?, `hp_boost` = ?, `mana_boost` = ?, `stamina_boost` = ?, `hp_regen_boost` = ?, `mana_regen_boost` = ?, `stamina_regen_boost` = ?,`atack_boost` = ?, `evasion_boost` = ?, `armor_boost` = ?, `skin` = ? WHERE `id` = ?";
 
     private static final String DELETE_ARTIFACT_BY_ID_SQL = "DELETE FROM `artefacts` WHERE `id` = ?";
 
@@ -48,7 +48,7 @@ public class JDBCArtefactDAO implements ArtefactDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             boolean isNotEmpty = resultSet.next();
             if (isNotEmpty) {
-                artefact = new Artefact(resultSet.getString("name"), resultSet.getString("type"), resultSet.getInt("hp_boost"), resultSet.getInt("mana_boost"), resultSet.getInt("stamina_boost"), resultSet.getInt("hp_regen_boost"), resultSet.getInt("mana_regen_boost"), resultSet.getInt("stamina_regen_boost"), resultSet.getInt("evasion_boost"), resultSet.getInt("armor_boost"), resultSet.getString("skin"));
+                artefact = new Artefact(resultSet.getString("name"), resultSet.getString("type"), resultSet.getInt("hp_boost"), resultSet.getInt("mana_boost"), resultSet.getInt("stamina_boost"), resultSet.getInt("hp_regen_boost"), resultSet.getInt("mana_regen_boost"), resultSet.getInt("stamina_regen_boost"), resultSet.getInt("attack_boost"),resultSet.getInt("evasion_boost"), resultSet.getInt("armor_boost"), resultSet.getString("skin"));
                 artefact.setId(resultSet.getInt("id"));
             }
             resultSet.close();
@@ -69,7 +69,7 @@ public class JDBCArtefactDAO implements ArtefactDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                artefact = new Artefact(resultSet.getString("name"), resultSet.getString("type"), resultSet.getInt("hp_boost"), resultSet.getInt("mana_boost"), resultSet.getInt("stamina_boost"), resultSet.getInt("hp_regen_boost"), resultSet.getInt("mana_regen_boost"), resultSet.getInt("stamina_regen_boost"), resultSet.getInt("evasion_boost"), resultSet.getInt("armor_boost"), resultSet.getString("skin"));
+                artefact = new Artefact(resultSet.getString("name"), resultSet.getString("type"), resultSet.getInt("hp_boost"), resultSet.getInt("mana_boost"), resultSet.getInt("stamina_boost"), resultSet.getInt("hp_regen_boost"), resultSet.getInt("mana_regen_boost"), resultSet.getInt("stamina_regen_boost"), resultSet.getInt("attack_boost"),resultSet.getInt("evasion_boost"), resultSet.getInt("armor_boost"), resultSet.getString("skin"));
                 artefact.setId(resultSet.getInt("id_artefact"));
 
                 artefacts.add(artefact);
@@ -93,9 +93,8 @@ public class JDBCArtefactDAO implements ArtefactDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                artefact = new Artefact(resultSet.getString("name"), resultSet.getString("type"), resultSet.getInt("hp_boost"), resultSet.getInt("mana_boost"), resultSet.getInt("stamina_boost"), resultSet.getInt("hp_regen_boost"), resultSet.getInt("mana_regen_boost"), resultSet.getInt("stamina_regen_boost"), resultSet.getInt("evasion_boost"), resultSet.getInt("armor_boost"), resultSet.getString("skin"));
+                artefact = new Artefact(resultSet.getString("name"), resultSet.getString("type"), resultSet.getInt("hp_boost"), resultSet.getInt("mana_boost"), resultSet.getInt("stamina_boost"), resultSet.getInt("hp_regen_boost"), resultSet.getInt("mana_regen_boost"), resultSet.getInt("stamina_regen_boost"), resultSet.getInt("attack_boost"),resultSet.getInt("evasion_boost"), resultSet.getInt("armor_boost"), resultSet.getString("skin"));
                 artefact.setId(resultSet.getInt("artefact_id"));
-
                 artefacts.add(artefact);
             }
 
@@ -120,9 +119,10 @@ public class JDBCArtefactDAO implements ArtefactDAO {
             preparedStatement.setInt(6, artefact.getHpRegenBoost());
             preparedStatement.setInt(7, artefact.getManaRegenBoost());
             preparedStatement.setInt(8, artefact.getStaminaRegenBoost());
-            preparedStatement.setInt(9, artefact.getEvasionBoost());
-            preparedStatement.setInt(10, artefact.getArmorBoost());
-            preparedStatement.setString(11, artefact.getSkin());
+            preparedStatement.setInt(9, artefact.getAttackBoost());
+            preparedStatement.setInt(10, artefact.getEvasionBoost());
+            preparedStatement.setInt(11, artefact.getArmorBoost());
+            preparedStatement.setString(12, artefact.getSkin());
 
             int affectedRows = preparedStatement.executeUpdate();
             if (affectedRows == 0) {
@@ -226,10 +226,11 @@ public class JDBCArtefactDAO implements ArtefactDAO {
             preparedStatement.setInt(6, artefact.getHpRegenBoost());
             preparedStatement.setInt(7, artefact.getManaRegenBoost());
             preparedStatement.setInt(8, artefact.getStaminaRegenBoost());
-            preparedStatement.setInt(9, artefact.getEvasionBoost());
-            preparedStatement.setInt(10, artefact.getArmorBoost());
-            preparedStatement.setString(11, artefact.getSkin());
-            preparedStatement.setInt(12, artefact.getId());
+            preparedStatement.setInt(9, artefact.getAttackBoost());
+            preparedStatement.setInt(10, artefact.getEvasionBoost());
+            preparedStatement.setInt(11, artefact.getArmorBoost());
+            preparedStatement.setString(12, artefact.getSkin());
+            preparedStatement.setInt(13, artefact.getId());
 
             preparedStatement.execute();
             preparedStatement.close();
