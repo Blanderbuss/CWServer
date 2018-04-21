@@ -47,9 +47,24 @@ public class Fighter implements Serializable{
     }
 
     public enum Action {
+        /**Deals damage to target; drains stamina from actor;
+         * If target was in DEFENDING he becomes in FREE
+         */
         ATTACK,
+
+        /**Buffs stamina regen, armor, evasion;Puts in DEFENDING
+         * Actor and Target must be the same
+         */
         DEFEND,
+
+        /**If targer in DEFEND, undoes what does defend
+         * Actor and Target must be the same
+         */
         FREE,
+
+        /**Deals damage to target; drains mana from actor;
+         *
+         */
         FIREBALL
     }
 
@@ -296,7 +311,23 @@ public class Fighter implements Serializable{
     }
 
     public final boolean rest(){
-        setCurSpeed(getCurSpeed() - 1);
+        this.regen();
+        this.setCurSpeed(this.getCurSpeed() - 1);
         return getCurSpeed() == 0;
+    }
+
+    private void regen(){
+        int possibleNewHp = this.getCurHp()*(100+this.getRegenHp());
+        int newHp = Math.min(possibleNewHp,this.getMaxHp());
+
+        int possibleNewStamina = this.getCurStamina()*100+this.getRegenStamina();
+        int newStamina = Math.min(possibleNewStamina,this.getMaxStamina());
+
+        int possibleNewMana = this.getCurMana()*100+this.getRegenMana();
+        int newMana = Math.min(possibleNewMana,this.getMaxMana());
+
+        this.setCurHp(newHp);
+        this.setCurStamina(newStamina);
+        this.setCurMana(newMana);
     }
 }
