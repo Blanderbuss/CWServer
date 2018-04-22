@@ -40,7 +40,11 @@ public class SetService implements SetServiceI {
 
     @Override
     public List<Set> getAllSetsByUserId(int id) {
-        return this.jdbcSetDAO.getAllSetsByUserId(id);
+        List<Set> allUserSets = this.jdbcSetDAO.getAllSetsByUserId(id);
+        for (Set set:allUserSets) {
+            set.setArtefacts(this.getAllSetArtefacts(set));
+        }
+        return allUserSets;
     }
 
     @Override
