@@ -72,7 +72,11 @@ CREATE TABLE IF NOT EXISTS `artefact_in_set` (
 
 INSERT INTO `artefact_in_set` (`id`, `id_set`, `id_artefact`) VALUES
 (1, 6, 1),
-(2, 6, 2);
+(2, 6, 2),
+(3, 7, 1),
+(4, 7, 2),
+(5, 9, 1),
+(6, 9, 2);
 
 -- --------------------------------------------------------
 
