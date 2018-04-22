@@ -1,7 +1,5 @@
 package com.cw.BattleLogic;
 
-
-
 import com.cw.entities.Artefact;
 import com.cw.entities.Set;
 import com.cw.factory.ActionExecutor;
@@ -13,65 +11,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Fighter implements Serializable{
-    //TODO More properties
-    public class ActTarget{
-        @NotNull
-        private Action action;
-        @Min(0)
-        private int target;
-
-        public ActTarget(Action action, int target) {
-            this.action = action;
-            this.target = target;
-        }
-
-        public Action getAction() {
-            return action;
-        }
-
-        public void setAction(Action action) {
-            this.action = action;
-        }
-
-        public int getTarget() {
-            return target;
-        }
-
-        public void setTarget(int target) {
-            this.target = target;
-        }
-
-    }
-
-    public enum Action {
-        /**Deals damage to target; drains stamina from actor;
-         * If target was in DEFENDING he becomes in FREE
-         */
-        ATTACK,
-
-        /**Buffs stamina regen, armor, evasion;Puts in DEFENDING
-         * Actor and Target must be the same
-         */
-        DEFEND,
-
-        /**If targer in DEFEND, undoes what does defend
-         * Actor and Target must be the same
-         */
-        FREE,
-
-        /**Deals damage to target; drains mana from actor;
-         *
-         */
-        FIREBALL
-    }
-
-    public enum Stance {
-        FREE,
-        DEFENDING
-    }
+public class Fighter implements FighterI{
 
     @Size(min=3, max=80)
     @NotNull
@@ -119,16 +62,14 @@ public class Fighter implements Serializable{
 
     private List<Artefact> artefacts;
 
-    public Fighter() {
-    }
-
     public Fighter(Set set){
         this.name=set.getName();
         //TODO add lvl to set
         this.lvl=/*set.getLvl()*/1;
         this.stance = Stance.FREE;
-        this.calculateStats();
+        this.artefacts = new ArrayList<>();
         this.artefacts.addAll(set.getArtefacts());
+        this.calculateStats();
         this.actionExecutor = FighterFactory.getActionDoer(String.valueOf(set.getId()),set.getCode());
     }
 
@@ -143,17 +84,19 @@ public class Fighter implements Serializable{
         this.setRegenHp(1);
         this.setRegenMana(1);
         this.setRegenStamina(1);
-        for(Artefact artefact:this.getArtefacts()){
-            this.setMaxHp(this.getMaxHp()+artefact.getHpBoost());
-            this.setMaxMana(this.getMaxMana()+artefact.getManaBoost());
-            this.setMaxStamina(this.getMaxStamina()+artefact.getStaminaBoost());
-            this.setEvasion(this.getAttack()+artefact.getAttackBoost());
-            this.setEvasion(this.getEvasion()+artefact.getEvasionBoost());
-            this.setArmor(this.getArmor()+artefact.getArmorBoost());
-            this.setRegenHp(this.getRegenHp()+artefact.getHpRegenBoost());
-            this.setRegenMana(this.getRegenMana()+artefact.getManaRegenBoost());
-            this.setRegenStamina(this.getRegenStamina()+artefact.getStaminaRegenBoost());
-        }
+        System.out.println(this.getArtefacts());
+        if(!this.getArtefacts().isEmpty())
+            for(Artefact artefact:this.getArtefacts()){
+                this.setMaxHp(this.getMaxHp()+artefact.getHpBoost());
+                this.setMaxMana(this.getMaxMana()+artefact.getManaBoost());
+                this.setMaxStamina(this.getMaxStamina()+artefact.getStaminaBoost());
+                this.setEvasion(this.getAttack()+artefact.getAttackBoost());
+                this.setEvasion(this.getEvasion()+artefact.getEvasionBoost());
+                this.setArmor(this.getArmor()+artefact.getArmorBoost());
+                this.setRegenHp(this.getRegenHp()+artefact.getHpRegenBoost());
+                this.setRegenMana(this.getRegenMana()+artefact.getManaRegenBoost());
+                this.setRegenStamina(this.getRegenStamina()+artefact.getStaminaRegenBoost());
+            }
         this.setCurHp(this.getMaxHp());
         this.setCurMana(this.getMaxMana());
         this.setCurStamina(this.getMaxStamina());
@@ -311,8 +254,8 @@ public class Fighter implements Serializable{
     }
 
     public final boolean rest(){
-        this.regen();
         this.setCurSpeed(this.getCurSpeed() - 1);
+        if (getCurSpeed()==0) regen();
         return getCurSpeed() == 0;
     }
 

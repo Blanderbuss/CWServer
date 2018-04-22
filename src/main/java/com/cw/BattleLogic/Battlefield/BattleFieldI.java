@@ -5,7 +5,9 @@ import com.cw.BattleLogic.Action.ActionImpl.ActionDefend;
 import com.cw.BattleLogic.Action.ActionImpl.ActionFireball;
 import com.cw.BattleLogic.Action.ActionImpl.ActionFree;
 import com.cw.BattleLogic.Fighter;
+import com.cw.BattleLogic.FighterI;
 import com.cw.BattleLogic.GameEnvironment;
+import com.cw.entities.Tuple;
 import com.cw.factory.ActionExecutor;
 
 import java.util.*;
@@ -13,7 +15,7 @@ import java.util.*;
 
 public abstract class BattleFieldI implements Runnable {
 
-    //TODO Method right after doAction for Blocking, chances, etc.
+    //TODO Method right after selectAction for Blocking, chances, etc.
 
     protected ArrayList<Fighter> fighters;
     public Date date;
@@ -62,7 +64,7 @@ public abstract class BattleFieldI implements Runnable {
                     ArrayList<Fighter> curEnemies = getCurrentEnemies(cur);
                     GameEnvironment env = new GameEnvironment(getDate(), curAllies, curEnemies);
                     ActionExecutor curActionExecutor = cur.getActionExecutor();
-                    Fighter.ActTarget curActTarget = curActionExecutor.doAction(cur, env);
+                    Tuple<FighterI.Action, FighterI> curActTarget = curActionExecutor.selectAction(cur, env);
                     String res = calcAction(cur, curActTarget);
                     //Adding new info to result
                     this.setResult(this.getResult()+res);
@@ -74,10 +76,9 @@ public abstract class BattleFieldI implements Runnable {
         //TODO Out results of fight
     }
 
-    private String calcAction(Fighter cur, Fighter.ActTarget at) {
-        Fighter.Action action = at.getAction();
-        int targetIndex = at.getTarget();
-        Fighter target = fighters.get(targetIndex);
+    private String calcAction(Fighter cur, Tuple<FighterI.Action, FighterI> actionTarget) {
+        FighterI.Action action = actionTarget.val1;
+        Fighter target = (Fighter) actionTarget.val2;
         String res;
 
         switch (action) {
@@ -105,7 +106,12 @@ public abstract class BattleFieldI implements Runnable {
 
     void outAll() {
         for (Fighter fighter : fighters) {
-            System.out.println("Fighter " + fighter.getName() + ": Stance[" + fighter.getStance() + "] HP[" + fighter.getCurHp() + "]");
+            System.out.println("Fighter " + fighter.getName() +
+                    ": Stance[" + fighter.getStance()
+                    + "] HP[" + fighter.getCurHp() + "/" +fighter.getMaxHp() + "]"
+                    + "] STM[" + fighter.getCurStamina() + "/" +fighter.getMaxStamina() + "]"
+                    + "] MNA[" + fighter.getCurMana() + "/" +fighter.getMaxMana() + "]"
+            );
         }
     }
 

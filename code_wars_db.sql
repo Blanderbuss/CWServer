@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `artefacts` (
   `stamina_regen_boost` int(11) DEFAULT NULL,
   `hp_regen_boost` int(11) DEFAULT NULL,
   `mana_regen_boost` int(11) DEFAULT NULL,
-  `atack_boost` int(11) DEFAULT NULL,
+  `attack_boost` int(11) DEFAULT NULL,
   `evasion_boost` int(11) DEFAULT NULL,
   `armor_boost` int(11) DEFAULT NULL,
   `skin` varchar(255) NOT NULL
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `artefacts` (
 -- Дамп данных таблицы `artefacts`
 --
 
-INSERT INTO `artefacts` (`id`, `name`, `type`, `hp_boost`, `mana_boost`, `stamina_boost`, `hp_regen_boost`, `mana_regen_boost`,`atack_boost`, `evasion_boost`, `armor_boost`, `skin`) VALUES
+INSERT INTO `artefacts` (`id`, `name`, `type`, `hp_boost`, `mana_boost`, `stamina_boost`, `hp_regen_boost`, `mana_regen_boost`,attack_boost, `evasion_boost`, `armor_boost`, `skin`) VALUES
 (1, 'art_1', 'type1', 678, 657, 67, 67, 67, 0, 67, 56, 'fgvdgh'),
 (2, 'art2', 'type2', 34, 43, 34, 43, 34, 0, 34, 43, 'fvb');
 
@@ -124,9 +124,34 @@ CREATE TABLE IF NOT EXISTS `sets` (
 --
 
 INSERT INTO `sets` (`id`, `name`, `user_id`, `code`) VALUES
-(6, 'set_2', 1, 'code_2'),
-(7, 'set_3', 2, 'code_3'),
-(9, 'set_1', 1, 'code_1');
+(6, 'set_2', 1, 'FighterI enemy =  env.getEnemies().get(0);
+return new Tuple<FighterI.Action,FighterI>(FighterI.Action.ATTACK,enemy);
+'),
+(7, 'set_3', 2, ' FighterI enemy = env.getEnemies().get(0);
+        if (enemy.getStance() == FighterI.Stance.FREE) {
+            if (self.getStance() == FighterI.Stance.DEFENDING) {
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+            } else if (self.getCurMana() >= 75) {
+                new Tuple<FighterI.Action, FighterI>(FighterI.Action.FIREBALL, env.getEnemies().get(0));
+            }
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, env.getEnemies().get(0));
+        } else if (enemy.getStance() == FighterI.Stance.DEFENDING) {
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
+        }
+        return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, enemy);'),
+(9, 'set_1', 1, 'FighterI enemy = env.getEnemies().get(0);
+        if (enemy.getStance() == FighterI.Stance.FREE) {
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
+        } else if (enemy.getStance() == FighterI.Stance.DEFENDING) {
+            if (self.getStance() == FighterI.Stance.DEFENDING) {
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+            } else if (self.getCurMana() >= 75) {
+                new Tuple<FighterI.Action, FighterI>(FighterI.Action.FIREBALL, env.getEnemies().get(0));
+            }
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, env.getEnemies().get(0));
+
+        }
+        return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK,enemy);');
 
 -- --------------------------------------------------------
 

@@ -189,8 +189,8 @@ public class DBTest {
         System.out.println(artefactForUpdate);
 
         // Delete Artefact
-        Artefact artefactForDelete_1 = new Artefact("Name_ForDelete_1", "Type_1", 10, 10, 10, 10, 10, 10, 10, 10, "Skin");
-        Artefact artefactForDelete_2 = new Artefact("Name_ForDelete_1", "Type_1", 10, 10, 10, 10, 10, 10, 10, 10, "Skin");
+        Artefact artefactForDelete_1 = new Artefact("Name_ForDelete_1", "Type_1", 10, 10, 10, 10, 10, 10, 10, 10,10, "Skin");
+        Artefact artefactForDelete_2 = new Artefact("Name_ForDelete_1", "Type_1", 10, 10, 10, 10, 10, 10, 10, 10,10, "Skin");
 
         artefactService.addArtefact(artefactForDelete_1);
         artefactService.addArtefact(artefactForDelete_2);

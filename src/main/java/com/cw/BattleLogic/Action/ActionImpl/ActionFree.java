@@ -44,6 +44,7 @@ public class ActionFree extends ActionAbstract{
 
     @Override
     protected String report() {
+        System.out.println(res);
         return res;
     }
 }

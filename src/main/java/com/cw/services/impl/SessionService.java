@@ -41,6 +41,20 @@ public class SessionService implements SessionServiceI {
     private FightServiceI fightService;
 
     @Override
+    public String test() throws FighterException, InterruptedException {
+        Set set1 = setService.getSetById(6);
+        System.out.println(set1);
+        Set set2 = setService.getSetById(6);
+        System.out.println(set2);
+        int accessId1 = fightService.readyForFight(set1, "Duel");
+        int accessId2 = fightService.readyForFight(set2, "Duel");
+        wait(1000);
+        String res = fightService.getResult(accessId1,"Duel");
+        System.out.println(res);
+        return res;
+    }
+
+    @Override
     public Tuple<String, User> login(String email, String pwd) throws UserNotFoundException {
         System.out.println("User " + email + " tries to log in");
         User userFromDb = userService.getUserByEmailAndPassword(email, pwd);

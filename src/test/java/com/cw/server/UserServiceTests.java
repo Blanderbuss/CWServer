@@ -47,8 +47,8 @@ public class UserServiceTests {
         sets.add(new Set("setname", "code:0xdeadbeef", userComplex));
         sets.add(new Set("setname2", "code:0xbeef", userComplex));
         artefacts = new LinkedList<>();
-        artefacts.add(new Artefact("artname", "clothes", 10, 10, 10, 10, 10, 10, 10, 10, "Skin"));
-        artefacts.add(new Artefact("artname2", "arm", 20, 20, 10, 10, 10, 10, 10, 10, "Skin"));
+        artefacts.add(new Artefact("artname", "clothes", 10, 10, 10, 10, 10, 10, 10, 10, 10, "Skin"));
+        artefacts.add(new Artefact("artname2", "arm", 20, 20, 10, 10, 10, 10, 10, 10, 10, "Skin"));
         userSimple = new User("asdfgh", "asdfgh", "qwe2@asd.cs", 10, 11);
     }
 

@@ -50,7 +50,7 @@ public class Set implements Serializable {
         this.name = other.name;
         this.code = other.code;
         this.artefacts = other.artefacts.stream()
-                .map(art -> new Artefact(art))
+                .map(Artefact::new)
                 .collect(Collectors.toList());
     }
 
@@ -119,7 +119,8 @@ public class Set implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", code='" + code + '\'' +
-                ", user=" + user.getEmail() +
+      //          ", user=" + user.getEmail() +
+                ", artefacts=" + artefacts +
                 '}';
     }
 }

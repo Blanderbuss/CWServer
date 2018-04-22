@@ -49,6 +49,7 @@ public class ActionFireball extends ActionAbstract{
 
     @Override
     protected String report() {
+        System.out.println(result.toString());
         return result.toString();
     }
 }

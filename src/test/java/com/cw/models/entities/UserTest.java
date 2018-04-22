@@ -23,8 +23,8 @@ public class UserTest {
         sets.add(new Set("setname2", "code:0xbeef", userComplex));
         userComplex.setSets(sets);
         List<Artefact> artefacts = new LinkedList<>();
-        artefacts.add(new Artefact("artname", "clothes", 10, 10, 10, 10, 10, 10, 10, 10, "Skin"));
-        artefacts.add(new Artefact("artname2", "arm", 20, 20, 10, 10, 10, 10, 10, 10, "Skin"));
+        artefacts.add(new Artefact("artname", "clothes", 10, 10, 10, 10, 10, 10, 10, 10, 10, "Skin"));
+        artefacts.add(new Artefact("artname2", "arm", 20, 20, 10, 10, 10, 10, 10, 10, 10, "Skin"));
         userComplex.setUserArtefacts(artefacts);
         userSimple = new User("asdfgh", "asdfgh", "qwe2@asd.cs", 10, 11);
     }

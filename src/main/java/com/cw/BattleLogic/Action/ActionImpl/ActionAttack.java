@@ -44,7 +44,7 @@ public class ActionAttack extends ActionAbstract {
             double damageReduction = this.getTarget().getArmor() * 0.05 / (1 + this.getTarget().getArmor() * 0.05);
             int damageToBeDone = (int) Math.floor(pureDamage * damageReduction);
             result.append("Target " + getTarget().toString() + " received " + damageToBeDone + " damage\n");
-            return damageToBeDone;
+            return -damageToBeDone;
         }
     }
 
@@ -60,6 +60,7 @@ public class ActionAttack extends ActionAbstract {
 
     @Override
     protected String report() {
+        System.out.println(result.toString());
         return result.toString();
     }
 }
