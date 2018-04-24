@@ -42,7 +42,7 @@ public class SessionService implements SessionServiceI {
 
     @Override
     public String test() throws FighterException, InterruptedException {
-        System.out.println(setService.getAllSetsByUserId(1));
+        //System.out.println(setService.getAllSetsByUserId(1));
         /*Set set1 = setService.getSetById(6);
         System.out.println(set1);
         Set set2 = setService.getSetById(6);
@@ -123,6 +123,14 @@ public class SessionService implements SessionServiceI {
         if (isUserRegistered(email))
             return false;
         return userService.addUser(new User(username, pwd, email));
+    }
+
+    @Override
+    public boolean updateUserSet(Set set, String accessToken){
+        if (!isLoggedInByToken(accessToken))
+            return false;
+        artService.addArtefactsToSet(set, set.getArtefacts());
+        return true;
     }
 
     @Override

@@ -20,8 +20,7 @@ public interface ArtefactServiceI {
     User addArtefactToUserBackpack(Artefact artefact, int user_id);
     boolean addArtefactToSet(Set set, Artefact artefact);
     Set addArtefactToSet(int set_id, Artefact artefact);
-    boolean addArtefactsToSet(Set set, List<Integer> artefactsId);
-    Set addArtefactsToSet(int set_id, List<Integer> artefactsId);
+    boolean addArtefactsToSet(Set set, List<Artefact> artefactsId);
 
     boolean updateArtefact(Artefact artefact);
 

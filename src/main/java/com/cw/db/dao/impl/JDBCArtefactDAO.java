@@ -186,10 +186,10 @@ public class JDBCArtefactDAO implements ArtefactDAO {
     }
 
     @Override
-    public boolean addArtefactsToSet(Set set, List<Integer> artefactsId) {
+    public boolean addArtefactsToSet(Set set, List<Artefact> artefacts) {
         String sql = "INSERT INTO `artefact_in_set` (`id_set`, `id_artefact`) VALUES";
 
-        for (int i = 0; i < artefactsId.size(); ++i) {
+        for (int i = 0; i < artefacts.size(); ++i) {
             sql += " (?, ?),";
         }
         sql = sql.substring(0, sql.length() - 1);
@@ -197,9 +197,9 @@ public class JDBCArtefactDAO implements ArtefactDAO {
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
             int indexes = 1;
-            for (int i = 0; i < artefactsId.size(); ++i) {
+            for (int i = 0; i < artefacts.size(); ++i) {
                 preparedStatement.setInt(indexes, set.getId());
-                preparedStatement.setInt(indexes + 1, artefactsId.get(i));
+                preparedStatement.setInt(indexes + 1, artefacts.get(i).getId());
                 indexes += 2;
             }
 

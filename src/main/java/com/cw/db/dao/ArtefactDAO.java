@@ -17,7 +17,7 @@ public interface ArtefactDAO {
     boolean addArtefact(Artefact artefact);
     boolean addArtefactToUserBackpack(User user, Artefact artefact);
     boolean addArtefactToSet(Set set, Artefact artefact);
-    boolean addArtefactsToSet(Set set, List<Integer> artefactsId);
+    boolean addArtefactsToSet(Set set, List<Artefact> artefacts);
 
     boolean updateArtefact(Artefact artefact);
 

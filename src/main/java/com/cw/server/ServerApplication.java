@@ -27,10 +27,10 @@ public class ServerApplication {
 
     public static void main(String[] args) throws FighterException, InterruptedException {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(ServerApplication.class, args);
-        SessionServiceI testSession = applicationContext.getBean(SessionServiceI.class);
+        /*SessionServiceI testSession = applicationContext.getBean(SessionServiceI.class);
         String res = null;
         res = testSession.test();
-        System.out.println(res);
+        System.out.println(res);*/
     }
 
 }
