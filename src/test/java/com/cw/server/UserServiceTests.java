@@ -94,7 +94,7 @@ public class UserServiceTests {
         }
         for (Set s : sets)
             assertTrue(ss.addSet(s, userComplex));
-        as.addArtefactsToSet(sets.get(0), artefacts.stream().map(a -> a.getId()).collect(Collectors.toList()));
+        as.addArtefactsToSet(sets.get(0), artefacts);
         assertEquals(userComplex, us.getUserById(userComplex.getId()));
         assertEquals(userComplex, us.getUserByEmail(userComplex.getEmail()));
         assertEquals(userComplex, us.getUserByUsername(userComplex.getUsername()));
