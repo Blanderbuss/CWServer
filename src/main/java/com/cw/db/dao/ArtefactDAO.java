@@ -19,6 +19,8 @@ public interface ArtefactDAO {
     boolean addArtefactToSet(Set set, Artefact artefact);
     boolean addArtefactsToSet(Set set, List<Artefact> artefacts);
 
+    boolean deleteAllArtefactsFromSet(Set set);
+
     boolean updateArtefact(Artefact artefact);
 
     boolean deleteArtefactById(int id);

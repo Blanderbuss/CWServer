@@ -24,6 +24,8 @@ public interface ArtefactServiceI {
 
     boolean updateArtefact(Artefact artefact);
 
+    boolean deleteAllArtefactsFromSet(Set set);
+
     boolean deleteArtefactById(int id);
     Artefact deleteArtefact(Artefact artefact);
     void closeConnection();

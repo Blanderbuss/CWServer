@@ -91,6 +91,11 @@ public class ArtefactService implements ArtefactServiceI {
     }
 
     @Override
+    public boolean deleteAllArtefactsFromSet(Set set) {
+        return this.jdbcArtefactDAO.deleteAllArtefactsFromSet(set);
+    }
+
+    @Override
     public boolean deleteArtefactById(int id) {
         return this.jdbcArtefactDAO.deleteArtefactById(id);
     }

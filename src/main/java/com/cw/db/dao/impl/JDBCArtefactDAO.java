@@ -35,6 +35,8 @@ public class JDBCArtefactDAO implements ArtefactDAO {
 
     private static final String UPDATE_ARTIFACT_BY_ID_SQL = "UPDATE `artefacts` SET `name` = ?, `type` = ?, `hp_boost` = ?, `mana_boost` = ?, `stamina_boost` = ?, `hp_regen_boost` = ?, `mana_regen_boost` = ?, `stamina_regen_boost` = ?,attack_boost = ?, `evasion_boost` = ?, `armor_boost` = ?, `skin` = ? WHERE `id` = ?";
 
+    private static final String DELETE_ALL_ARTEFACTS_FROM_SET_SQL = "DELETE FROM `artefact_in_set` WHERE `artefact_in_set`.`id_set` = ?";
+
     private static final String DELETE_ARTIFACT_BY_ID_SQL = "DELETE FROM `artefacts` WHERE `id` = ?";
 
     @Override
@@ -187,6 +189,7 @@ public class JDBCArtefactDAO implements ArtefactDAO {
 
     @Override
     public boolean addArtefactsToSet(Set set, List<Artefact> artefacts) {
+        if (artefacts.size() == 0 ) return true;
         String sql = "INSERT INTO `artefact_in_set` (`id_set`, `id_artefact`) VALUES";
 
         for (int i = 0; i < artefacts.size(); ++i) {
@@ -210,6 +213,21 @@ public class JDBCArtefactDAO implements ArtefactDAO {
             return false;
         }
         return false;
+    }
+
+    @Override
+    public boolean deleteAllArtefactsFromSet(Set set) {
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(JDBCArtefactDAO.DELETE_ALL_ARTEFACTS_FROM_SET_SQL);
+            preparedStatement.setInt(1, set.getId());
+
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 

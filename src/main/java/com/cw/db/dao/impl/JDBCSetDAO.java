@@ -1,6 +1,7 @@
 package com.cw.db.dao.impl;
 
 import com.cw.db.dao.SetDao;
+import com.cw.entities.Artefact;
 import com.cw.entities.Set;
 import com.cw.entities.User;
 
@@ -30,6 +31,8 @@ public class JDBCSetDAO implements SetDao {
     private static final String UPDATE_SET_SQL = "UPDATE `sets` SET `name` = ?, `code` = ? WHERE `id` = ?";
 
     private static final String DELETE_SET_BY_ID_SQL = "DELETE FROM `sets` WHERE `id` = ?";
+
+    private static final String DELETE_ALL_ARTEFACTS_FROM_SET_SQL = "DELETE FROM `artefact_in_set` WHERE `artefact_in_set`.`id_set` = ?";
 
     @Override
     public Set getSetById(int id) {

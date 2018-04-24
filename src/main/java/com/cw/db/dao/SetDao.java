@@ -14,7 +14,6 @@ public interface SetDao {
     List<Set> getAllSetsByUserId(int id);
 
     boolean addSet(Set set, User user);
-
     boolean updateSet(Set set);
 
     boolean deleteSetById(int id);

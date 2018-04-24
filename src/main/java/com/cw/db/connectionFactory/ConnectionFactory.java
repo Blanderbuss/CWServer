@@ -14,7 +14,7 @@ public class ConnectionFactory {
     private static Connection connection = null;
     public static final String URL = "jdbc:mysql://localhost:3306/code_wars_db";
     public static final String USER = "root";
-    public static final String PASS = "root";
+    public static final String PASS = "";
 
     public static Connection getConnection() {
         try {
