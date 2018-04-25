@@ -196,6 +196,11 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `experience`, `level
 (1, 'username_1', 'email1@mail.com', '1234', 100, 1),
 (2, 'username_2', 'emai2@mail.com', '1234', 2000, 1);
 
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `experience`, `level`) VALUES
+(3, 'Thor', 'thor@mail.com', 'root', 0, 1),
+(4, 'Louis the Musketeer', 'louis@mail.com', 'secret', 0, 1),
+(5, 'Leonid the King', 'leonid@mail.com', 'secret', 0, 1);
+
 --
 -- Индексы сохранённых таблиц
 --
@@ -303,3 +308,365 @@ ALTER TABLE `sets`
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
+
+
+/*
+SETS:
+
+Thor 
+has a
+Viking set:
+  Nordic iron helmet
+  Large sword of Odin
+  Leather boots of Valkyrie
+
+Louis the Musketeer
+has a
+Musketeer set:
+  Musket +100000 attack
+  Leather Cavalier Hat
+  Wool Cloak
+  Cavalier Boots
+
+Leonid the King
+has a
+Spartan set:
+  King Leonid's spear
+  Hoplite shield
+  Laconian boots
+  Ring of Apollo + 10000 healing
+
+-- TODO add code to sets
+-- TODO refactor types
+-- TODO what is skin?
+*/
+
+INSERT INTO `code_wars_db`.`artefacts`
+(`id`,
+`name`,
+`type`,
+`hp_boost`,
+`mana_boost`,
+`stamina_boost`,
+`stamina_regen_boost`,
+`hp_regen_boost`,
+`mana_regen_boost`,
+`attack_boost`,
+`evasion_boost`,
+`armor_boost`,
+`skin`)
+VALUES
+(10,
+'Nordic iron helmet',
+'head',
+0,
+0,
+0,
+0,
+10,
+20,
+0,
+50,
+80,
+'TODO');
+
+INSERT INTO `code_wars_db`.`artefacts`
+(`id`,
+`name`,
+`type`,
+`hp_boost`,
+`mana_boost`,
+`stamina_boost`,
+`stamina_regen_boost`,
+`hp_regen_boost`,
+`mana_regen_boost`,
+`attack_boost`,
+`evasion_boost`,
+`armor_boost`,
+`skin`)
+VALUES
+(11,
+'Large sword of Odin',
+'two arms',
+0,
+0,
+0,
+0,
+0,
+0,
+100,
+30,
+20,
+'TODO');
+
+INSERT INTO `code_wars_db`.`artefacts`
+(`id`,
+`name`,
+`type`,
+`hp_boost`,
+`mana_boost`,
+`stamina_boost`,
+`stamina_regen_boost`,
+`hp_regen_boost`,
+`mana_regen_boost`,
+`attack_boost`,
+`evasion_boost`,
+`armor_boost`,
+`skin`)
+VALUES
+(12,
+'Leather boots of Valkyrie',
+'legs',
+0,
+0,
+30,
+30,
+10,
+10,
+10,
+100,
+20,
+'TODO');
+
+INSERT INTO `code_wars_db`.`artefacts`
+(`id`,
+`name`,
+`type`,
+`hp_boost`,
+`mana_boost`,
+`stamina_boost`,
+`stamina_regen_boost`,
+`hp_regen_boost`,
+`mana_regen_boost`,
+`attack_boost`,
+`evasion_boost`,
+`armor_boost`,
+`skin`)
+VALUES
+(13,
+'Musket',
+'two arms',
+0,
+0,
+0,
+0,
+0,
+0,
+1000,
+50,
+0,
+'TODO');
+
+INSERT INTO `code_wars_db`.`artefacts`
+(`id`,
+`name`,
+`type`,
+`hp_boost`,
+`mana_boost`,
+`stamina_boost`,
+`stamina_regen_boost`,
+`hp_regen_boost`,
+`mana_regen_boost`,
+`attack_boost`,
+`evasion_boost`,
+`armor_boost`,
+`skin`)
+VALUES
+(14,
+'Wool Cloak',
+'torso',
+50,
+30,
+0,
+0,
+0,
+0,
+0,
+50,
+50,
+'TODO');
+
+INSERT INTO `code_wars_db`.`artefacts`
+(`id`,
+`name`,
+`type`,
+`hp_boost`,
+`mana_boost`,
+`stamina_boost`,
+`stamina_regen_boost`,
+`hp_regen_boost`,
+`mana_regen_boost`,
+`attack_boost`,
+`evasion_boost`,
+`armor_boost`,
+`skin`)
+VALUES
+(15,
+'Cavalier Boots',
+'legs',
+20,
+0,
+50,
+30,
+0,
+0,
+10,
+20,
+50,
+'TODO');
+
+INSERT INTO `code_wars_db`.`artefacts`
+(`id`,
+`name`,
+`type`,
+`hp_boost`,
+`mana_boost`,
+`stamina_boost`,
+`stamina_regen_boost`,
+`hp_regen_boost`,
+`mana_regen_boost`,
+`attack_boost`,
+`evasion_boost`,
+`armor_boost`,
+`skin`)
+VALUES
+(16,
+'King Leonid\'s spear',
+'right arm',
+0,
+0,
+0,
+0,
+0,
+0,
+100,
+50,
+0,
+'TODO');
+
+INSERT INTO `code_wars_db`.`artefacts`
+(`id`,
+`name`,
+`type`,
+`hp_boost`,
+`mana_boost`,
+`stamina_boost`,
+`stamina_regen_boost`,
+`hp_regen_boost`,
+`mana_regen_boost`,
+`attack_boost`,
+`evasion_boost`,
+`armor_boost`,
+`skin`)
+VALUES
+(17,
+'Hoplite shield',
+'left arm',
+50,
+50,
+0,
+0,
+100,
+20,
+10,
+40,
+100,
+'TODO');
+
+INSERT INTO `code_wars_db`.`artefacts`
+(`id`,
+`name`,
+`type`,
+`hp_boost`,
+`mana_boost`,
+`stamina_boost`,
+`stamina_regen_boost`,
+`hp_regen_boost`,
+`mana_regen_boost`,
+`attack_boost`,
+`evasion_boost`,
+`armor_boost`,
+`skin`)
+VALUES
+(18,
+'Laconian boots',
+'legs',
+50,
+0,
+100,
+20,
+20,
+20,
+10,
+40,
+30,
+'TODO');
+
+INSERT INTO `code_wars_db`.`artefacts`
+(`id`,
+`name`,
+`type`,
+`hp_boost`,
+`mana_boost`,
+`stamina_boost`,
+`stamina_regen_boost`,
+`hp_regen_boost`,
+`mana_regen_boost`,
+`attack_boost`,
+`evasion_boost`,
+`armor_boost`,
+`skin`)
+VALUES
+(19,
+'Toga of Apollo',
+'torso',
+70,
+30,
+50,
+50,
+100,
+10,
+0,
+30,
+0,
+'TODO');
+
+INSERT INTO `code_wars_db`.`sets`
+(`id`,
+`name`,
+`user_id`,
+`code`)
+VALUES
+(10, 'Viking set', 3, 'TODO code'),
+(11, 'Musketeer set', 4, 'TODO code'),
+(12, 'Spartan set', 5, 'TODO code');
+
+INSERT INTO `code_wars_db`.`backpack`
+(`user_id`,
+`artefact_id`)
+VALUES
+(3, 10),
+(3, 11),
+(3, 12),
+(4, 13),
+(4, 14),
+(4, 15),
+(5, 16),
+(5, 17),
+(5, 18),
+(5, 19);
+
+INSERT INTO `code_wars_db`.`artefact_in_set`
+(`id_set`,
+`id_artefact`)
+VALUES
+(10, 10),
+(10, 11),
+(10, 12),
+(11, 13),
+(11, 14),
+(11, 15),
+(12, 16),
+(12, 17),
+(12, 18),
+(12, 19);
