@@ -189,6 +189,8 @@ public class JDBCArtefactDAO implements ArtefactDAO {
 
     @Override
     public boolean addArtefactsToSet(Set set, List<Artefact> artefacts) {
+        System.out.println(set);
+        System.out.println(artefacts);
         if (artefacts.size() == 0 ) return true;
         String sql = "INSERT INTO `artefact_in_set` (`id_set`, `id_artefact`) VALUES";
 
@@ -212,7 +214,7 @@ public class JDBCArtefactDAO implements ArtefactDAO {
             e.printStackTrace();
             return false;
         }
-        return false;
+        return true;
     }
 
     @Override

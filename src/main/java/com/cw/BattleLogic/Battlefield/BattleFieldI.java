@@ -18,8 +18,10 @@ public abstract class BattleFieldI implements Runnable {
     //TODO Method right after selectAction for Blocking, chances, etc.
 
     protected ArrayList<Fighter> fighters;
-    public Date date;
+    private Date date;
     private String result;
+    private boolean isFinished;
+
 
     protected abstract ArrayList<Fighter> getCurrentAllies(Fighter cur);
 
@@ -27,6 +29,10 @@ public abstract class BattleFieldI implements Runnable {
 
     public Date getDate() {
         return date;
+    }
+
+    public boolean IsFinished(){
+        return isFinished;
     }
 
     public ArrayList<Fighter> getFighters() {
@@ -41,7 +47,7 @@ public abstract class BattleFieldI implements Runnable {
         return result;
     }
 
-    public void setResult(String result) {
+    private void setResult(String result) {
         this.result = result;
     }
 
@@ -54,10 +60,9 @@ public abstract class BattleFieldI implements Runnable {
     @Override
     public void run() {
         System.out.println("Battlefield started");
-        boolean notFinished = true;
-        while (notFinished) {
+        while (!isFinished) {
             Iterator<Fighter> iter = fighters.iterator();
-            while (iter.hasNext() && notFinished) {
+            while (iter.hasNext() && !isFinished) {
                 Fighter cur = iter.next();
                 if (cur.rest()) {
                     ArrayList<Fighter> curAllies = getCurrentAllies(cur);
@@ -69,7 +74,7 @@ public abstract class BattleFieldI implements Runnable {
                     //Adding new info to result
                     this.setResult(this.getResult()+res);
                     outAll();
-                    notFinished = isToFinish();
+                    isFinished = !isToFinish();
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.cw.services.impl;
 
+import com.cw.BattleLogic.Battlefield.BattleFieldI;
 import com.cw.services.FightServiceI;
 import com.cw.BattleLogic.Fighter;
 import com.cw.entities.Set;
@@ -74,9 +75,13 @@ public class FightService implements FightServiceI {
     public String getResult(int indexOfBattleField, String typeOfBattleField) {
         switch (typeOfBattleField){
             case "Duel":
-                return duelBattleFields.get(indexOfBattleField).getResult();
+                BattleFieldI selectedDuelBattleField = duelBattleFields.get(indexOfBattleField);
+                if(!selectedDuelBattleField.IsFinished()) return "Battle is not finished";
+                return selectedDuelBattleField.getResult();
             case "FFA":
-                return ffaBattleFields.get(indexOfBattleField).getResult();
+                BattleFieldI selectedFfaBattleField = ffaBattleFields.get(indexOfBattleField);
+                if(!selectedFfaBattleField.IsFinished()) return "Battle is not finished";
+                return selectedFfaBattleField.getResult();
             default:
                 throw new NoSuchElementException();
         }

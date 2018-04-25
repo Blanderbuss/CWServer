@@ -77,6 +77,15 @@ public class ArtefactService implements ArtefactServiceI {
     public boolean addArtefactsToSet(Set set, List<Artefact> artefacts) {
         return this.jdbcArtefactDAO.addArtefactsToSet(set, artefacts);
     }
+
+    @Override
+    public boolean updateSetArtifacts(Set set) {
+        boolean deleteSuccess = this.deleteAllArtefactsFromSet(set);
+        if(!deleteSuccess)return false;
+        boolean addSuccess = this.addArtefactsToSet(set, set.getArtefacts());
+        if(!addSuccess)return false;
+        return true;
+    }
 /*
     @Override
     public Set addArtefactsToSet(int set_id, List<Integer> artefactsId) {

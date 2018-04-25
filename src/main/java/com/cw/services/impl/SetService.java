@@ -66,16 +66,6 @@ public class SetService implements SetServiceI {
     }
 
     @Override
-    public boolean updateSetArtifacts(Set set) {
-        ArtefactService artefactService = new ArtefactService();
-        boolean deleteSuccess = artefactService.deleteAllArtefactsFromSet(set);
-        if(!deleteSuccess)return false;
-        boolean addSuccess = artefactService.addArtefactsToSet(set, set.getArtefacts());
-        if(!addSuccess)return false;
-        return true;
-    }
-
-    @Override
     public boolean deleteSetById(int id) {
         return this.jdbcSetDAO.deleteSetById(id);
     }

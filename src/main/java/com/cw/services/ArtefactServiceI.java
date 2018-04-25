@@ -22,6 +22,7 @@ public interface ArtefactServiceI {
     Set addArtefactToSet(int set_id, Artefact artefact);
     boolean addArtefactsToSet(Set set, List<Artefact> artefactsId);
 
+    boolean updateSetArtifacts(Set set);
     boolean updateArtefact(Artefact artefact);
 
     boolean deleteAllArtefactsFromSet(Set set);

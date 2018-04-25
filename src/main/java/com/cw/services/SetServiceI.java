@@ -17,8 +17,6 @@ public interface SetServiceI {
 
     boolean updateSet(Set set);
 
-    boolean updateSetArtifacts(Set set);
-
     boolean deleteSetById(int id);
     Set deleteSet(Set set);
 

@@ -50,9 +50,13 @@ CREATE TABLE IF NOT EXISTS `artefacts` (
 -- Дамп данных таблицы `artefacts`
 --
 
-INSERT INTO `artefacts` (`id`, `name`, `type`, `hp_boost`, `mana_boost`, `stamina_boost`, `hp_regen_boost`, `mana_regen_boost`,attack_boost, `evasion_boost`, `armor_boost`, `skin`) VALUES
-(1, 'art_1', 'type1', 678, 657, 67, 67, 67, 0, 67, 56, 'fgvdgh'),
-(2, 'art2', 'type2', 34, 43, 34, 43, 34, 0, 34, 43, 'fvb');
+INSERT INTO `artefacts` (`id`, `name`, `type`, `hp_boost`, `mana_boost`, `stamina_boost`, `hp_regen_boost`, `mana_regen_boost`,`stamina_regen_boost`,attack_boost, `evasion_boost`, `armor_boost`, `skin`) VALUES
+(1, 'helmet of despair', 'head', -10, -10, -10, 0, 0, 0, 20, 0, 0, 'fgvdgh'),
+(2, 'typical chestplate', 'body', 0, 0, 0, 0, 0, 0, 0, 8, 0, 'fvb'),
+(3, 'bracers of haste', 'arms', 0, 0, 0, 0, 0, 50, 0, 25, 0, 'fgvdgh'),
+(4, 'stylish leggins', 'legs', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'fvb'),
+(5, 'crown of horror', 'head', 20, 0, 0, 0, 0, 0, 15, 2, 0, 'fvb'),
+(6, 'pants of bard', 'legs', 1, 1, 1, 1, 1, 1, 0, 50, 0, 'fvb');
 
 -- --------------------------------------------------------
 
