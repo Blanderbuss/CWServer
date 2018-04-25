@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -168,10 +169,11 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public void startFightAgainstUsers(Set set, String accessToken, String stringBattleFieldType) throws FighterException {
+    public int startFightAgainstUsers(Set set, String accessToken, String stringBattleFieldType) throws FighterException {
         if (!isLoggedInByToken(accessToken))
-            return;
-        fightService.readyForFight(set, stringBattleFieldType);
+            //TODO throw exception
+            return -1;
+        return fightService.readyForFight(set, stringBattleFieldType);
     }
 
     @Override
@@ -193,10 +195,15 @@ public class SessionService implements SessionServiceI {
 
     @Override
     public List<User> getUsersReadyToFight() {
-        return tokensToUsers.values()
-                .stream()
-                //.filter(user -> user.getStatus().equals("readyToFight")) // TODO add status linking
-                .collect(Collectors.toList());
+        return new ArrayList<>(tokensToUsers.values());
+    }
+
+    @Override
+    public String getFightResultForDuel(String accessToken, int resultId){
+        if (!isLoggedInByToken(accessToken))
+            //TODO throw exception
+            return "";
+        return fightService.getResult(resultId, "Duel");
     }
 
     @Override

@@ -54,7 +54,8 @@ public interface SessionServiceI {
     // user - the one we want to fight against
     // accessToken - token of current user's session
     // set - set chosen by current user to use in fight
-    void startFightAgainstUsers(Set set, String accessToken, String stringBattleFieldType) throws FighterException;
+    // returns id for getting result
+    int startFightAgainstUsers(Set set, String accessToken, String stringBattleFieldType) throws FighterException;
 
     String getMyUserStatus(String accessToken);
 
@@ -63,6 +64,9 @@ public interface SessionServiceI {
 
     // returns all users that are online whose status is ready-to-fight
     List<User> getUsersReadyToFight();
+
+    //returns fight result
+    String getFightResultForDuel(String accessToken, int resultId);
 
     String getMyUserFightStatistics(String accessToken);
 }
