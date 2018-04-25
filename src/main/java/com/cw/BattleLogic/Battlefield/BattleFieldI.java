@@ -47,7 +47,7 @@ public abstract class BattleFieldI implements Runnable {
         return result;
     }
 
-    private void setResult(String result) {
+    public void setResult(String result) {
         this.result = result;
     }
 
@@ -70,6 +70,7 @@ public abstract class BattleFieldI implements Runnable {
                     GameEnvironment env = new GameEnvironment(getDate(), curAllies, curEnemies);
                     ActionExecutor curActionExecutor = cur.getActionExecutor();
                     Tuple<FighterI.Action, FighterI> curActTarget = curActionExecutor.selectAction(cur, env);
+
                     String res = calcAction(cur, curActTarget);
                     //Adding new info to result
                     this.setResult(this.getResult()+res);
@@ -78,7 +79,6 @@ public abstract class BattleFieldI implements Runnable {
                 }
             }
         }
-        //TODO Out results of fight
     }
 
     private String calcAction(Fighter cur, Tuple<FighterI.Action, FighterI> actionTarget) {

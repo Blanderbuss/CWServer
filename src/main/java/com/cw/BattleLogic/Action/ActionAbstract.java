@@ -7,6 +7,8 @@ public abstract class ActionAbstract {
     private Fighter actor;
     private Fighter target;
 
+    private boolean performFailed;
+
     public ActionAbstract(Fighter actor, Fighter target) {
         this.actor = actor;
         this.target = target;
@@ -28,9 +30,20 @@ public abstract class ActionAbstract {
         this.target = target;
     }
 
+    public boolean isPerformFailed() {
+        return performFailed;
+    }
+
+    public void setPerformFailed(boolean performFailed) {
+        this.performFailed = performFailed;
+    }
+
     //TODO apply stance bonuses before performing action and remove them after
     //Method that does all the calculation
     public String perform(){
+        if(performFailed)
+            return this.report();
+
         int possibleNewActorHp = actor.getCurHp()+this.getHpChangeForActor();
         int newActorHp = Math.min(possibleNewActorHp,actor.getMaxHp());
 

@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.lang.Thread.sleep;
+
 /*
 * This class lists all operations available to client side.
 * This is the class client side receives and operates with.
@@ -49,15 +51,15 @@ public class SessionService implements SessionServiceI {
         set1.setArtefacts(newArts);
         System.out.println(artService.updateSetArtifacts(set1));
         System.out.println(setService.updateSet(set1));*/
-        /*Set set1 = setService.getSetById(6);
+        Set set1 = setService.getSetById(1);
         System.out.println(set1);
-        Set set2 = setService.getSetById(6);
+        Set set2 = setService.getSetById(2);
         System.out.println(set2);
         int accessId1 = fightService.readyForFight(set1, "Duel");
         int accessId2 = fightService.readyForFight(set2, "Duel");
-        wait(1000);
+        sleep(1000);
         String res = fightService.getResult(accessId1,"Duel");
-        System.out.println(res);*/
+        System.out.println(res);
         return "";
     }
 

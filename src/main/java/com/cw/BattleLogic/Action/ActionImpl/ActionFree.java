@@ -14,9 +14,9 @@ public class ActionFree extends ActionAbstract{
     public ActionFree(Fighter actor, Fighter target){
         super(actor, target);
         if(actor!=target){
-            this.res = "Fighter " + this.getActor() + " tried to put in free position somebody else, but he can free only himself";
-            //TODO throw exception
-            return;
+            this.res = "Fighter " + this.getActor()
+                    + " tried to put in free position somebody else, but he can free only himself";
+            this.setPerformFailed(true);
         }
         this.res = "Fighter " + this.getActor() + " is in free position now";
     }
@@ -44,7 +44,6 @@ public class ActionFree extends ActionAbstract{
 
     @Override
     protected String report() {
-        System.out.println(res);
         return res;
     }
 }

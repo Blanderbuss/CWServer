@@ -17,15 +17,21 @@ public class ActionAttack extends ActionAbstract {
     public ActionAttack(Fighter actor, Fighter target) {
         super(actor, target);
         if(this.getActor().getStance()==Fighter.Stance.DEFENDING) {
-            result = new StringBuilder("Fighter " + this.getActor().getName() + " tried to attack, but he is in defending position, so he can`t\n");
-            //TODO throw exception
-            return;
+            result = new StringBuilder("Fighter " + this.getActor().getName()
+                    + " tried to attack, but he is in defending position, so he can`t\n");
+            this.setPerformFailed(true);
         }
-        result = new StringBuilder("Fighter " + this.getActor().getName() + " tries to attack\n");
+        else if(this.getActor().getCurStamina()<ATTACK_ACTOR_STAMINA_MODIFIER){
+            result = new StringBuilder("Fighter " + this.getActor().getName()
+                    + " tried to attack, but he hasn`t enough stamina\n");
+            this.setPerformFailed(true);
+        }
+        else result = new StringBuilder("Fighter " + this.getActor().getName()
+                    + " tries to attack\n");
     }
 
     protected int getStaminaChangeForActor(){
-        return ATTACK_ACTOR_STAMINA_MODIFIER;
+        return -ATTACK_ACTOR_STAMINA_MODIFIER;
     }
 
     @Override
@@ -42,7 +48,7 @@ public class ActionAttack extends ActionAbstract {
             double pureDamage = this.getActor().getAttack();
             //Armor formula
             double damageReduction = this.getTarget().getArmor() * 0.05 / (1 + this.getTarget().getArmor() * 0.05);
-            int damageToBeDone = (int) Math.floor(pureDamage * damageReduction);
+            int damageToBeDone = (int) Math.floor(pureDamage * (1 - damageReduction));
             result.append("Target " + getTarget().toString() + " received " + damageToBeDone + " damage\n");
             return -damageToBeDone;
         }
@@ -60,7 +66,6 @@ public class ActionAttack extends ActionAbstract {
 
     @Override
     protected String report() {
-        System.out.println(result.toString());
         return result.toString();
     }
 }

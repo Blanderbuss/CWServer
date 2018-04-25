@@ -17,16 +17,21 @@ public class ActionFireball extends ActionAbstract{
     public ActionFireball(Fighter actor, Fighter target) {
         super(actor, target);
         if(this.getActor().getStance()==Fighter.Stance.DEFENDING) {
-            result = new StringBuilder("Fighter " + this.getActor().getName() + " tried to throw fireball, but he is in defending position, so he can`t\n");
-            //TODO throw exception
-            return;
+            result = new StringBuilder("Fighter " + this.getActor().getName()
+                    + " tried to throw fireball, but he is in defending position, so he can`t\n");
+            this.setPerformFailed(true);
+        }
+        if(this.getActor().getCurMana()<FIREBALL_MANA_COST) {
+            result = new StringBuilder("Fighter " + this.getActor().getName()
+                    + " tried to throw fireball, but he hasn`t got enough mana\n");
+            this.setPerformFailed(true);
         }
         result = new StringBuilder("Fighter " + this.getActor().getName() + " tries to throw fireball\n");
 
     }
 
     protected int getStaminaChangeForActor(){
-        return FIREBALL_MANA_COST;
+        return -FIREBALL_MANA_COST;
     }
 
     @Override
@@ -49,7 +54,6 @@ public class ActionFireball extends ActionAbstract{
 
     @Override
     protected String report() {
-        System.out.println(result.toString());
         return result.toString();
     }
 }

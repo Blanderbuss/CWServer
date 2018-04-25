@@ -81,9 +81,9 @@ public class Fighter implements FighterI{
         this.setAttack(this.getLvl()*2+3);
         this.setEvasion(5);
         this.setArmor(0);
-        this.setRegenHp(1);
+        this.setRegenHp(2);
         this.setRegenMana(1);
-        this.setRegenStamina(1);
+        this.setRegenStamina(10);
         System.out.println(this.getArtefacts());
         if(!this.getArtefacts().isEmpty())
             for(Artefact artefact:this.getArtefacts()){
@@ -255,22 +255,31 @@ public class Fighter implements FighterI{
 
     public final boolean rest(){
         this.setCurSpeed(this.getCurSpeed() - 1);
-        if (getCurSpeed()==0) regen();
-        return getCurSpeed() == 0;
+        if(this.getCurSpeed() == 0){
+            regen();
+            this.setCurSpeed(this.getMaxSpeed());
+            return true;
+        }
+        return false;
     }
 
     private void regen(){
-        int possibleNewHp = this.getCurHp()*(100+this.getRegenHp());
+        int possibleNewHp = (int) Math.floor(this.getCurHp()+this.getMaxHp()*(this.getRegenHp()/100.));
         int newHp = Math.min(possibleNewHp,this.getMaxHp());
 
-        int possibleNewStamina = this.getCurStamina()*100+this.getRegenStamina();
+        int possibleNewStamina = (int) Math.floor(this.getCurStamina()+this.getMaxStamina()*(this.getRegenStamina()/100.));
         int newStamina = Math.min(possibleNewStamina,this.getMaxStamina());
 
-        int possibleNewMana = this.getCurMana()*100+this.getRegenMana();
+        int possibleNewMana = (int) Math.floor(this.getCurMana()+this.getMaxMana()*(this.getRegenMana()/100.));
         int newMana = Math.min(possibleNewMana,this.getMaxMana());
 
         this.setCurHp(newHp);
         this.setCurStamina(newStamina);
         this.setCurMana(newMana);
+    }
+
+    @Override
+    public String toString(){
+        return this.getName();
     }
 }

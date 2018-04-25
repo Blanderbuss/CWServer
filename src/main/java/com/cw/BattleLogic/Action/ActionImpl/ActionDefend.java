@@ -14,9 +14,9 @@ public class ActionDefend extends ActionAbstract{
     public ActionDefend(Fighter actor, Fighter target) {
         super(actor, target);
         if(actor!=target){
-            this.res = "Fighter " + this.getActor() + " tried to defend somebody else, but he can defend only himself";
-            //TODO throw exception
-            return;
+            this.res = "Fighter " + this.getActor()
+                    + " tried to defend somebody else, but he can defend only himself";
+            this.setPerformFailed(true);
         }
         this.res = "Fighter " + this.getActor() + " is in defending position now";
     }
@@ -44,7 +44,6 @@ public class ActionDefend extends ActionAbstract{
 
     @Override
     protected String report() {
-        System.out.println(res);
         return res;
     }
 }
