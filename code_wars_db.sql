@@ -56,7 +56,10 @@ INSERT INTO `artefacts` (`id`, `name`, `type`, `hp_boost`, `mana_boost`, `stamin
 (3, 'bracers of haste', 'arms', 0, 0, 0, 0, 0, 50, 0, 25, 0, 'fgvdgh'),
 (4, 'stylish leggins', 'legs', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'fvb'),
 (5, 'crown of horror', 'head', 20, 0, 0, 0, 0, 0, 15, 2, 0, 'fvb'),
-(6, 'pants of bard', 'legs', 1, 1, 1, 1, 1, 1, 0, 50, 0, 'fvb');
+(6, 'pants of bard', 'legs', 1, 1, 1, 1, 1, 1, 0, 50, 0, 'fvb'),
+(7, 'jacket', 'arms', 0, 0, 0, 0, 0, -1, 0, 0, 1, 'fvb'),
+(8, 'feet', 'arms', 0, 0, 0, 0, 0, 0, 4, 30, 0, 'fvb'),
+(9, 'dead pig', 'body', 300, 0, 0, 0, 0, 0, 0, 0, 5, 'fvb');
 
 -- --------------------------------------------------------
 
@@ -75,12 +78,12 @@ CREATE TABLE IF NOT EXISTS `artefact_in_set` (
 --
 
 INSERT INTO `artefact_in_set` (`id`, `id_set`, `id_artefact`) VALUES
-(1, 6, 1),
-(2, 6, 2),
-(3, 7, 1),
-(4, 7, 2),
-(5, 9, 1),
-(6, 9, 2);
+(1, 1, 9),
+(2, 1, 8),
+(3, 1, 1),
+(4, 2, 4),
+(5, 2, 7),
+(6, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -100,7 +103,16 @@ CREATE TABLE IF NOT EXISTS `backpack` (
 
 INSERT INTO `backpack` (`id`, `user_id`, `artefact_id`) VALUES
 (1, 1, 1),
-(2, 1, 2);
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5),
+(6, 1, 6),
+(7, 1, 7),
+(8, 1, 8),
+(9, 1, 9),
+(10, 2, 1),
+(11, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -132,10 +144,10 @@ CREATE TABLE IF NOT EXISTS `sets` (
 --
 
 INSERT INTO `sets` (`id`, `name`, `user_id`, `code`) VALUES
-(6, 'set_2', 1, 'FighterI enemy =  env.getEnemies().get(0);
+(1, 'set_2', 1, 'FighterI enemy =  env.getEnemies().get(0);
 return new Tuple<FighterI.Action,FighterI>(FighterI.Action.ATTACK,enemy);
 '),
-(7, 'set_3', 2, ' FighterI enemy = env.getEnemies().get(0);
+(2, 'set_3', 2, ' FighterI enemy = env.getEnemies().get(0);
         if (enemy.getStance() == FighterI.Stance.FREE) {
             if (self.getStance() == FighterI.Stance.DEFENDING) {
                 return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
@@ -147,7 +159,7 @@ return new Tuple<FighterI.Action,FighterI>(FighterI.Action.ATTACK,enemy);
             return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
         }
         return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, enemy);'),
-(9, 'set_1', 1, 'FighterI enemy = env.getEnemies().get(0);
+(3, 'set_1', 1, 'FighterI enemy = env.getEnemies().get(0);
         if (enemy.getStance() == FighterI.Stance.FREE) {
             return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
         } else if (enemy.getStance() == FighterI.Stance.DEFENDING) {
