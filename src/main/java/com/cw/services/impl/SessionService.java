@@ -129,7 +129,7 @@ public class SessionService implements SessionServiceI {
     public boolean updateUserSet(Set set, String accessToken) {
         if (!isLoggedInByToken(accessToken))
             return false;
-        boolean artefactsAdded = artService.addArtefactsToSet(set, set.getArtefacts());
+        boolean artefactsAdded = setService.updateSetArtifacts(set);
         return artefactsAdded && setService.updateSet(set);
     }
 
