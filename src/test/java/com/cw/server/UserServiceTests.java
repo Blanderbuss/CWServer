@@ -167,7 +167,7 @@ public class UserServiceTests {
 
     @Test
     public void verifyUserUpdate() {
-        assertTrue(false); // TODO
+        assertTrue(false);
     }
 
 }

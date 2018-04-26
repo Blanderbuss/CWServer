@@ -100,7 +100,6 @@ public class UserService implements UserServiceI {
         if (set.isEmpty())
             return this.jdbcUserDAO.addUser(user);
         else {
-            // TODO refactor printing to logging
             System.err.println("[WARNING] REGISTRATION: Constrains failed for object: " + user);
             set.forEach(System.out::println);
             return false;

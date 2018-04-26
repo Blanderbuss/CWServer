@@ -144,36 +144,51 @@ CREATE TABLE IF NOT EXISTS `sets` (
 --
 
 INSERT INTO `sets` (`id`, `name`, `user_id`, `code`) VALUES
-(1, 'set_2', 1, 'FighterI enemy =  env.getEnemies().get(0);
-return new Tuple<FighterI.Action,FighterI>(FighterI.Action.ATTACK,enemy);
-'),
-(2, 'set_3', 2, ' FighterI enemy = env.getEnemies().get(0);
-            if ((enemy.getStance() == FighterI.Stance.FREE && enemy.getCurHp() < enemy.getMaxHp() / 4) || (enemy.getStance() == FighterI.Stance.DEFENDING && enemy.getCurHp() < enemy.getMaxHp() / 4)) {
-                if (enemy.getStance() == FighterI.Stance.DEFENDING && self.getCurStamina() < self.getMaxStamina() / 4) {
-                    return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
-                } else if (self.getStance() == FighterI.Stance.DEFENDING) {
-                    return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
-                }
-                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, enemy);
-            } else if ((enemy.getStance() == FighterI.Stance.FREE && enemy.getCurHp() < enemy.getMaxHp() / 2) || (enemy.getStance() == FighterI.Stance.DEFENDING)) {
-                if (enemy.getStance() == FighterI.Stance.DEFENDING && self.getCurStamina() < self.getMaxStamina() / 2) {
-                    return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
-                } else if (self.getStance() == FighterI.Stance.DEFENDING) {
-                    return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
-                }
-                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FIREBALL, enemy);
-            } else if (enemy.getStance() == FighterI.Stance.DEFENDING) {
-                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
-            }
+(1, 'typical_fighter', 1, 'FighterI enemy = env.getEnemies().get(0);
+        if (enemy.getCurHp() == enemy.getMaxHp() / 6 && self.getCurHp() == self.getMaxHp() / 2) {
             if (self.getStance() == FighterI.Stance.DEFENDING) {
                 return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
             }
-            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FIREBALL, enemy);'),
-(3, 'set_1', 1, 'FighterI enemy = env.getEnemies().get(0);
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FIREBALL, enemy);
+        } else if (enemy.getCurHp() == enemy.getMaxHp() / 5) {
+            if (self.getStance() == FighterI.Stance.DEFENDING) {
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+            }
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, enemy);
+        } else if (self.getCurHp() == self.getMaxHp() / 2) {
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
+        }
+        if (self.getStance() == FighterI.Stance.DEFENDING) {
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+        }
+        return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, enemy);
+'),
+(2, 'fancy_fighter', 2, 'FighterI enemy = env.getEnemies().get(0);
         if (enemy.getStance() == FighterI.Stance.FREE) {
+            if (self.getStance() == FighterI.Stance.DEFENDING) {
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+            }
+            new Tuple<FighterI.Action, FighterI>(FighterI.Action.FIREBALL, enemy);
+        } else if (enemy.getStance() == FighterI.Stance.DEFENDING) {
+            if (self.getCurStamina() > self.getMaxStamina() / 3) {
+                if (self.getStance() == FighterI.Stance.DEFENDING) {
+                    return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+                }
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, enemy);
+            }
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
+        }
+        if (self.getStance() == FighterI.Stance.DEFENDING) {
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+        }
+        if (self.getCurStamina() > self.getMaxStamina() / 3) {
             return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, enemy);
         }
-        return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FIREBALL, enemy);');
+        return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);'),
+ (1, 'weak_fighter', 1, 'FighterI enemy = env.getEnemies().get(0);
+        if (self.getCurHp() < self.getMaxHp() / 2) return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
+        if (self.getStance() == FighterI.Stance.DEFENDING) return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+        return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, enemy);');
 
 -- --------------------------------------------------------
 

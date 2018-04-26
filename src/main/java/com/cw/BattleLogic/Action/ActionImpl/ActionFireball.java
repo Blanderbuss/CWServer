@@ -45,7 +45,6 @@ public class ActionFireball extends ActionAbstract{
         int randomInt = rand.nextInt(100) + 1;
         if(randomInt >= hitChance){
             System.out.println("evasion");
-            //TODO find out why is it yellow.
             result.append("Target "+ getTarget().toString() + " evaded the fireball\n");
             return 0;
         }

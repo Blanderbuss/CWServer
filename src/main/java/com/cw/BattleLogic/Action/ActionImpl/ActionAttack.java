@@ -40,7 +40,6 @@ public class ActionAttack extends ActionAbstract {
         int hitChance = 100 - getTarget().getEvasion();
         int randomInt = rand.nextInt(100) + 1;
         if(randomInt >= hitChance){
-            //TODO find out why is it yellow.
             result.append("Target "+ getTarget().toString() + " evaded the attack\n");
             return 0;
         }

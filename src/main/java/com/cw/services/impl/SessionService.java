@@ -185,7 +185,7 @@ public class SessionService implements SessionServiceI {
         if (!isLoggedInByToken(accessToken))
             throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
         User user = tokensToUsers.get(accessToken);
-        //return user.getStatus(); // TODO add status linking
+        //return user.getStatus();
         return null;
     }
 
@@ -213,7 +213,7 @@ public class SessionService implements SessionServiceI {
     public String getMyUserFightStatistics(String accessToken) throws IncorrectAccessTokenException {
         if (!isLoggedInByToken(accessToken))
             throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
-        //return user.getStatistics(); // TODO add stats linking
+        //return user.getStatistics();
         return null;
     }
 
