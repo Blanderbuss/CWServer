@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static java.lang.Thread.sleep;
 
@@ -53,13 +52,16 @@ public class SessionService implements SessionServiceI {
         System.out.println(artService.updateSetArtifacts(set1));
         System.out.println(setService.updateSet(set1));*/
         /*Set set1 = setService.getSetById(1);
-        System.out.println(set1);
-        Set set2 = setService.getSetById(2);
-        System.out.println(set2);
-        int accessId1 = fightService.readyForFight(set1, "Duel");
-        int accessId2 = fightService.readyForFight(set2, "Duel");
+        set1.setUser(userService.getUserById(1));
+        //System.out.println(set1);
+        Set set2 = setService.getSetById(10);
+        set2.setUser(userService.getUserById(3));
+        //System.out.println(set2);
+        int accessId1 = fightService.readyForFight(set1, "Bot");
+        int accessId2 = fightService.readyForFight(set2, "Bot");
+        //int accessId2 = fightService.readyForFight(set2, "Duel");
         sleep(1000);
-        String res = fightService.getResult(accessId1,"Duel");
+        String res = fightService.getResult(accessId1,"Bot");
         System.out.println(res);*/
         return "";
     }
@@ -160,11 +162,12 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public void startFightAgainstBot(Set set, String accessToken, String stringBattleFieldType) {
+    public int startFightAgainstBot(Set set, String accessToken, String stringBattleFieldType) throws FighterException {
         if (!isLoggedInByToken(accessToken))
-            return;
-        User userWhoStartsFight = tokensToUsers.get(accessToken);
-        // TODO start fight
+            return -1;
+        Set vikingSet = setService.getSetById(10);
+        fightService.readyForFight(vikingSet, stringBattleFieldType);
+        return fightService.readyForFight(set, stringBattleFieldType);
     }
 
     @Override

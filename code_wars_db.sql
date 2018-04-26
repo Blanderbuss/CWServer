@@ -59,7 +59,7 @@ INSERT INTO `artefacts` (`id`, `name`, `type`, `hp_boost`, `mana_boost`, `stamin
 (6, 'pants of bard', 'legs', 1, 1, 1, 1, 1, 1, 0, 50, 0, 'fvb'),
 (7, 'jacket', 'two arms', 0, 0, 0, 0, 0, -1, 0, 0, 1, 'fvb'),
 (8, 'feet', 'two arms', 0, 0, 0, 0, 0, 0, 4, 30, 0, 'fvb'),
-(9, 'dead pig', 'body', 300, 0, 0, 0, 0, 0, 0, 0, 5, 'fvb');
+(9, 'dead pig', 'body', 30, 0, 0, 0, 0, 0, 0, 0, 5, 'fvb');
 
 -- --------------------------------------------------------
 
@@ -196,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `experience`, `level`) VALUES
 (1, 'username_1', 'email1@mail.com', '1234', 100, 1),
-(2, 'username_2', 'emai2@mail.com', '1234', 2000, 1);
+(2, 'username_2', 'email2@mail.com', '1234', 2000, 1);
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `experience`, `level`) VALUES
 (3, 'Thor', 'thor@mail.com', 'root', 0, 1),
@@ -366,8 +366,8 @@ VALUES
 10,
 20,
 0,
-50,
-80,
+7,
+20,
 'TODO');
 
 INSERT INTO `code_wars_db`.`artefacts`
@@ -395,7 +395,7 @@ VALUES
 0,
 0,
 100,
-30,
+5,
 20,
 'TODO');
 
@@ -420,11 +420,11 @@ VALUES
 0,
 0,
 30,
-30,
+15,
+5,
 10,
 10,
 10,
-100,
 20,
 'TODO');
 
@@ -452,7 +452,7 @@ VALUES
 0,
 0,
 0,
-1000,
+100,
 50,
 0,
 'TODO');
@@ -481,7 +481,7 @@ VALUES
 0,
 0,
 0,
-1000,
+100,
 50,
 0,
 'TODO');
@@ -595,11 +595,11 @@ VALUES
 50,
 0,
 0,
-100,
+10,
 20,
 10,
 40,
-100,
+30,
 'TODO');
 
 INSERT INTO `code_wars_db`.`artefacts`
@@ -623,9 +623,9 @@ VALUES
 50,
 0,
 100,
-20,
-20,
-20,
+5,
+5,
+5,
 10,
 40,
 30,
@@ -652,9 +652,9 @@ VALUES
 70,
 30,
 50,
-50,
-100,
+5,
 10,
+3,
 0,
 30,
 0,
@@ -681,8 +681,8 @@ VALUES
 70,
 30,
 50,
-50,
-100,
+15,
+8,
 10,
 0,
 30,
@@ -695,9 +695,72 @@ INSERT INTO `code_wars_db`.`sets`
 `user_id`,
 `code`)
 VALUES
-(10, 'Viking set', 3, 'TODO code'),
-(11, 'Musketeer set', 4, 'TODO code'),
-(12, 'Spartan set', 5, 'TODO code');
+(10, 'Viking set', 3, 'FighterI enemy = env.getEnemies().get(0);
+        if ((enemy.getStance() == FighterI.Stance.FREE && enemy.getCurHp() < enemy.getMaxHp() / 4) || (enemy.getStance() == FighterI.Stance.DEFENDING && enemy.getCurHp() < enemy.getMaxHp() / 4)) {
+            if (enemy.getStance() == FighterI.Stance.DEFENDING && self.getCurStamina() < 10) {
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
+            }
+            if (self.getCurStamina() < 10) {
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
+            }
+            if (self.getStance() == FighterI.Stance.DEFENDING) {
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+            }
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, enemy);
+        } else if ((enemy.getStance() == FighterI.Stance.FREE && enemy.getCurHp() < enemy.getMaxHp() / 2) || (enemy.getStance() == FighterI.Stance.DEFENDING)) {
+            if (enemy.getStance() == FighterI.Stance.DEFENDING && self.getCurStamina() < self.getMaxStamina() / 2) {
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
+            }
+            if (self.getStance() == FighterI.Stance.DEFENDING) {
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+            }
+            if (self.getCurMana() >= 75) {
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FIREBALL, enemy);
+            }
+            if (self.getCurStamina() < 10) {
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
+            }
+            if (self.getStance() == FighterI.Stance.DEFENDING) {
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+            }
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, enemy);
+        } else if (enemy.getStance() == FighterI.Stance.DEFENDING) {
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
+        }
+        if (self.getStance() == FighterI.Stance.DEFENDING) {
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+        }
+        if (self.getCurMana() >= 75) {
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FIREBALL, enemy);
+        }
+        if (self.getCurStamina() < 10) {
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
+        }
+        if (self.getStance() == FighterI.Stance.DEFENDING) {
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+        }
+        return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, enemy);'),
+(11, 'Musketeer set', 4, 'FighterI enemy = env.getEnemies().get(0);
+        return new Tuple<FighterI.Action,FighterI>(FighterI.Action.ATTACK, enemy);'),
+(12, 'Spartan set', 5, 'FighterI enemy = env.getEnemies().get(0);
+        if (enemy.getStance() == FighterI.Stance.FREE) {
+            if (self.getCurStamina() <= 10) {
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
+            }
+            if (self.getStance() == FighterI.Stance.DEFENDING) {
+                return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+            }
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, enemy);
+        } else if (self.getCurMana() >= 75) {
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FIREBALL, enemy);
+        }
+        if (self.getCurStamina() <= 10) {
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.DEFEND, self);
+        }
+        if (self.getStance() == FighterI.Stance.DEFENDING) {
+            return new Tuple<FighterI.Action, FighterI>(FighterI.Action.FREE, self);
+        }
+        return new Tuple<FighterI.Action, FighterI>(FighterI.Action.ATTACK, enemy);');
 
 INSERT INTO `code_wars_db`.`backpack`
 (`user_id`,

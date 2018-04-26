@@ -88,7 +88,7 @@ public class Fighter implements FighterI{
                 this.setMaxHp(this.getMaxHp()+artefact.getHpBoost());
                 this.setMaxMana(this.getMaxMana()+artefact.getManaBoost());
                 this.setMaxStamina(this.getMaxStamina()+artefact.getStaminaBoost());
-                this.setEvasion(this.getAttack()+artefact.getAttackBoost());
+                this.setAttack(this.getAttack()+artefact.getAttackBoost());
                 this.setEvasion(this.getEvasion()+artefact.getEvasionBoost());
                 this.setArmor(this.getArmor()+artefact.getArmorBoost());
                 this.setRegenHp(this.getRegenHp()+artefact.getHpRegenBoost());

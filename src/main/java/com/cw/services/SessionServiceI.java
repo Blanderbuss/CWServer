@@ -45,7 +45,7 @@ public interface SessionServiceI {
 
     // starts a fight
     // accessToken - token of current user's session
-    void startFightAgainstBot(Set set, String accessToken, String stringBattleFieldType);
+    int startFightAgainstBot(Set set, String accessToken, String stringBattleFieldType) throws FighterException;
 
     // user - the one we want to fight against
     // accessToken - token of current user's session

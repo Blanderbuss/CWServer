@@ -20,12 +20,15 @@ import java.util.NoSuchElementException;
 public class FightService implements FightServiceI {
 
     private ArrayList<DuelBattleField> duelBattleFields = new ArrayList<>();
+    private ArrayList<DuelBattleField> botBattleFields = new ArrayList<>();
     private ArrayList<FFABattleField> ffaBattleFields = new ArrayList<>();
 
     private static ArrayList<Fighter> duelQueue = new ArrayList<>();
+    private static ArrayList<Fighter> botQueue = new ArrayList<>();
     private static ArrayList<Fighter> ffaQueue = new ArrayList<>();
 
     private final static int NUMBER_OF_FIGHTERS_IN_DUEL=2;
+    private final static int NUMBER_OF_FIGHTERS_IN_BOT_FIGHT=2;
     private final static int NUMBER_OF_FIGHTERS_IN_FFA=4;
 
     @Override
@@ -58,6 +61,20 @@ public class FightService implements FightServiceI {
                     ffaQueue.clear();
                 }
                 return ffaIndex;
+            case "Bot":
+                if(botQueue.contains(fighter))
+                    return -1;
+                botQueue.add(fighter);
+                int botIndex = botBattleFields.size();
+                if(botQueue.size()==NUMBER_OF_FIGHTERS_IN_BOT_FIGHT){
+                    String s;
+                    ArrayList<Fighter> fighters = new ArrayList<>(botQueue);
+                    DuelBattleField newBotBattleField = new DuelBattleField(fighters);
+                    botBattleFields.add(newBotBattleField);
+                    new Thread(newBotBattleField).start();
+                    botQueue.clear();
+                }
+                return botIndex;
             default:
                 throw new NoSuchElementException();
         }
@@ -71,6 +88,11 @@ public class FightService implements FightServiceI {
                 BattleFieldI selectedDuelBattleField = duelBattleFields.get(indexOfBattleField);
                 if(!selectedDuelBattleField.IsFinished()) return "";
                 return selectedDuelBattleField.getResult();
+            case "Bot":
+                if(botBattleFields.size()<indexOfBattleField+1) return "";
+                BattleFieldI selectedBotBattleField = botBattleFields.get(indexOfBattleField);
+                if(!selectedBotBattleField.IsFinished()) return "";
+                return selectedBotBattleField.getResult();
             case "FFA":
                 if(ffaBattleFields.size()<indexOfBattleField+1) return "";
                 BattleFieldI selectedFfaBattleField = ffaBattleFields.get(indexOfBattleField);
