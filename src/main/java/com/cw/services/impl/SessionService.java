@@ -4,7 +4,7 @@ import com.cw.entities.Artefact;
 import com.cw.entities.Set;
 import com.cw.entities.Tuple;
 import com.cw.entities.User;
-import com.cw.exceptions.FighterException;
+import com.cw.exceptions.IncorrectAccessTokenException;
 import com.cw.exceptions.UserNotFoundException;
 import com.cw.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class SessionService implements SessionServiceI {
     private FightServiceI fightService;
 
     @Override
-    public String test() throws FighterException, InterruptedException {
+    public String test() throws InterruptedException {
         //this.register("kek", "kek@kek.com", "kek1234");
         /*Set set1 = setService.getSetById(1);
         ArrayList<Artefact> newArts = new ArrayList<Artefact>();
@@ -67,7 +67,7 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public Tuple<String, User> login(String email, String pwd) throws UserNotFoundException {
+    public Tuple<String, User> login(String email, String pwd) throws UserNotFoundException, IncorrectAccessTokenException {
         User userFromDb = userService.getUserByEmailAndPassword(email, pwd);
         // deactivate active session of current user, who had logged in previously
         if (isLoggedIn(userFromDb)) {
@@ -92,7 +92,9 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public void logout(String accessToken) {
+    public void logout(String accessToken) throws IncorrectAccessTokenException {
+        if (!isLoggedInByToken(accessToken))
+            throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
         System.err.println("[INFO] TOKENGEN:Deactivated token: " + accessToken);
         tokensToUsers.remove(accessToken);
     }
@@ -113,40 +115,40 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public User getUser(User user, String accessToken) {
+    public User getUser(User user, String accessToken) throws IncorrectAccessTokenException {
         if (isLoggedInByToken(accessToken))
             return new User(userService.getUserByEmail(user.getEmail())); // safe: client can do anything, yet he will brake nothing
         else
-            return null;
+            throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
     }
 
     @Override
-    public boolean register(String username, String email, String pwd) {
+    public boolean register(String username, String email, String pwd) throws IncorrectAccessTokenException {
         if (isUserRegistered(email))
-            return false;
+            throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
         return userService.addUser(new User(username, pwd, email));
     }
 
     @Override
-    public boolean updateUserSet(Set set, String accessToken) {
+    public boolean updateUserSet(Set set, String accessToken) throws IncorrectAccessTokenException {
         if (!isLoggedInByToken(accessToken))
-            return false;
+            throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
         boolean artefactsAdded = artService.updateSetArtifacts(set);
         return artefactsAdded && setService.updateSet(set);
     }
 
     @Override
-    public void addNewSetToMyUser(Set set, String accessToken) {
+    public void addNewSetToMyUser(Set set, String accessToken) throws IncorrectAccessTokenException {
         if (!isLoggedInByToken(accessToken))
-            return;
+            throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
         User user = tokensToUsers.get(accessToken);
         setService.addSet(set, user);
     }
 
     @Override
-    public boolean addArtefactFromBackpackToSet(Artefact artefact, Set set, String accessToken) {
+    public boolean addArtefactFromBackpackToSet(Artefact artefact, Set set, String accessToken) throws IncorrectAccessTokenException {
         if (!isLoggedInByToken(accessToken))
-            return false;
+            throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
         User user = tokensToUsers.get(accessToken);
         boolean artifactIsInUserBackpack = user.getUserArtefacts().contains(artefact);
         if (!artifactIsInUserBackpack)
@@ -162,26 +164,26 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public int startFightAgainstBot(Set set, String accessToken, String stringBattleFieldType) throws FighterException {
+    public int startFightAgainstBot(Set set, String accessToken, String stringBattleFieldType) throws IncorrectAccessTokenException {
         if (!isLoggedInByToken(accessToken))
-            return -1;
+            throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
         Set vikingSet = setService.getSetById(10);
         fightService.readyForFight(vikingSet, stringBattleFieldType);
         return fightService.readyForFight(set, stringBattleFieldType);
     }
 
     @Override
-    public int startFightAgainstUsers(Set set, String accessToken, String stringBattleFieldType) throws FighterException {
-        if (!isLoggedInByToken(accessToken))
-            //TODO throw exception
-            return -1;
+    public int startFightAgainstUsers(Set set, String accessToken, String stringBattleFieldType) throws IncorrectAccessTokenException {
+        if (!isLoggedInByToken(accessToken)) {
+            throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
+        }
         return fightService.readyForFight(set, stringBattleFieldType);
     }
 
     @Override
-    public String getMyUserStatus(String accessToken) {
+    public String getMyUserStatus(String accessToken) throws IncorrectAccessTokenException {
         if (!isLoggedInByToken(accessToken))
-            return null;
+            throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
         User user = tokensToUsers.get(accessToken);
         //return user.getStatus(); // TODO add status linking
         return null;
@@ -201,17 +203,16 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public String getFightResultForDuel(String accessToken, int resultId){
+    public String getFightResultForDuel(String accessToken, int resultId) throws IncorrectAccessTokenException {
         if (!isLoggedInByToken(accessToken))
-            //TODO throw exception
-            return "";
+            throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
         return fightService.getResult(resultId, "Duel");
     }
 
     @Override
-    public String getMyUserFightStatistics(String accessToken) {
+    public String getMyUserFightStatistics(String accessToken) throws IncorrectAccessTokenException {
         if (!isLoggedInByToken(accessToken))
-            return null;
+            throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
         //return user.getStatistics(); // TODO add stats linking
         return null;
     }
