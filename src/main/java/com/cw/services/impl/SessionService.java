@@ -168,6 +168,7 @@ public class SessionService implements SessionServiceI {
         if (!isLoggedInByToken(accessToken))
             throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
         Set vikingSet = setService.getSetById(10);
+        vikingSet.setUser(userService.getUserById(3));
         fightService.readyForFight(vikingSet, stringBattleFieldType);
         return fightService.readyForFight(set, stringBattleFieldType);
     }
@@ -203,10 +204,10 @@ public class SessionService implements SessionServiceI {
     }
 
     @Override
-    public String getFightResultForDuel(String accessToken, int resultId) throws IncorrectAccessTokenException {
+    public String getFightResultForType(String accessToken, int resultId, String typeOfBattleField) throws IncorrectAccessTokenException {
         if (!isLoggedInByToken(accessToken))
             throw new IncorrectAccessTokenException("NO USER WITH SUCH TOKEN AUTHED");
-        return fightService.getResult(resultId, "Duel");
+        return fightService.getResult(resultId, typeOfBattleField);
     }
 
     @Override
