@@ -68,7 +68,6 @@ public class SessionService implements SessionServiceI {
     public Tuple<String, User> login(String email, String pwd) throws UserNotFoundException {
         User userFromDb = userService.getUserByEmailAndPassword(email, pwd);
         // deactivate active session of current user, who had logged in previously
-        // TODO write jUnit auto tests to verify it
         if (isLoggedIn(userFromDb)) {
             String userToken = tokensToUsers.entrySet()
                     .stream()
@@ -99,13 +98,6 @@ public class SessionService implements SessionServiceI {
     @Override
     public boolean isLoggedIn(User user) {
         return tokensToUsers.containsValue(user);
-    }
-
-    // TODO delete
-    @Override
-    @Deprecated
-    public boolean isLoggedInByEmail(String userEmail) {
-        return tokensToUsers.values().stream().anyMatch(u -> u.getEmail().equals(userEmail));
     }
 
     @Override
@@ -224,9 +216,9 @@ public class SessionService implements SessionServiceI {
     // author: https://github.com/davidadale
     private static class TokenGenerator {
 
-        protected static SecureRandom random = new SecureRandom();
+        static SecureRandom random = new SecureRandom();
 
-        public synchronized static String generateToken(String username) {
+        synchronized static String generateToken(String username) {
             long longToken = Math.abs(random.nextLong());
             String random = Long.toString(longToken, 16);
             return (username + ":" + random);

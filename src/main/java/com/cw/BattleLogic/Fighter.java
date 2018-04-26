@@ -64,8 +64,7 @@ public class Fighter implements FighterI{
 
     public Fighter(Set set){
         this.name=set.getName();
-        //TODO add lvl to set
-        this.lvl=/*set.getLvl()*/1;
+        this.lvl=set.getUser().getLvl();
         this.stance = Stance.FREE;
         this.artefacts = new ArrayList<>();
         this.artefacts.addAll(set.getArtefacts());

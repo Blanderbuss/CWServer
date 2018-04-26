@@ -337,9 +337,6 @@ Spartan set:
   Toga of Apollo + 10000 healing
   Greek helmet
 
--- TODO add code to sets
--- TODO refactor types
--- TODO what is skin?
 */
 
 INSERT INTO `code_wars_db`.`artefacts`

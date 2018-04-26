@@ -15,8 +15,6 @@ import java.util.*;
 
 public abstract class BattleFieldI implements Runnable {
 
-    //TODO Method right after selectAction for Blocking, chances, etc.
-
     protected ArrayList<Fighter> fighters;
     private Date date;
     private StringBuilder result;
@@ -47,7 +45,7 @@ public abstract class BattleFieldI implements Runnable {
         return result.toString();
     }
 
-    public void setResult(String text) {
+    private void addToResult(String text) {
         this.result.append(text);
     }
 
@@ -73,12 +71,12 @@ public abstract class BattleFieldI implements Runnable {
 
                     String res = calcAction(cur, curActTarget);
                     //Adding new info to result
-                    this.setResult(res);
+                    this.addToResult(res);
                     isFinished = !isToFinish();
                 }
             }
         }
-        this.setResult(getAlive());
+        this.addToResult(getAlive());
         System.err.println("[INFO] BATTLEFIELD: Finished");
     }
 
@@ -112,7 +110,6 @@ public abstract class BattleFieldI implements Runnable {
 
     String outAll() {
         StringBuilder res = new StringBuilder("");
-        res.append("Alive fighters:\n");
         for (Fighter fighter : fighters) {
             res.append("Fighter " + fighter.getName() +
                     ": Stance[" + fighter.getStance()
@@ -124,10 +121,11 @@ public abstract class BattleFieldI implements Runnable {
         return res.toString();
     }
 
-    String getAlive(){
+    private String getAlive(){
         StringBuilder res = new StringBuilder("");
+        res.append("Alive fighters:\n");
         for (Fighter fighter : fighters) {
-            if(fighter.isAlive())
+            if(!fighter.isAlive())
                 res.append("Fighter " + fighter.getName() +
                         ": Stance[" + fighter.getStance()
                         + "] HP[" + fighter.getCurHp() + "/" +fighter.getMaxHp() + "]"

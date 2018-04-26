@@ -23,7 +23,6 @@ public class FighterFactory {
 		try {
 			classLoader = URLClassLoader.newInstance(new URL[] { root.toURI().toURL() });
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -57,8 +56,8 @@ public class FighterFactory {
 					System.err.println( "[INFO] CODEFACTORY:("+suffix+")Code contains no errors. " );
 					return getActionDoer(suffix);
 				} else {
-					System.err.println( "[INFO] CODEFACTORY:("+suffix+")Error in your code! " );
-					return null; // TODO check
+					System.err.println( "[INFO] CODEFACTORY:("+suffix+")Error in the code! " );
+					return null;
 				}
 			} else
 				System.err.println("[INFO] CODEFACTORY:("+suffix+")failed to write ActionExecutor");
@@ -86,17 +85,10 @@ public class FighterFactory {
 		try {
 			Class<ActionExecutor> cls = (Class<ActionExecutor>) Class.forName( getClassName(suffix) , true, classLoader);
 			res = cls.newInstance();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
+		} catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
 			e.printStackTrace();
 		}
-		return res;
+        return res;
 	}
 
 	private static boolean writeActionDoer(String suffix, String code) {
@@ -107,7 +99,6 @@ public class FighterFactory {
 		try ( BufferedWriter w = new BufferedWriter(new FileWriter(f)) ) {
 			w.write(String.format(templateContent, getClassName(suffix), normalizedCode));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}

@@ -43,18 +43,6 @@ public class UserService implements UserServiceI {
         }
     }
 
-    @Override
-    //TODO this method. Add "throws AuthentificationException"
-    public void authentificate(User user) {
-
-    }
-
-    @Override
-    //TODO this method. Add "throws AuthentificationException"
-    public void register(User user) {
-
-    }
-
     private List<Set> getUserSets(User user) {
         List<Set> res = setService.getAllSetsByUserId(user.getId());
         res.forEach(s -> s.setUser(user));
@@ -113,8 +101,8 @@ public class UserService implements UserServiceI {
             return this.jdbcUserDAO.addUser(user);
         else {
             // TODO refactor printing to logging
-            System.out.println("constrains failed for object: " + user);
-            set.forEach(c -> System.out.println(c));
+            System.err.println("[WARNING] REGISTRATION: Constrains failed for object: " + user);
+            set.forEach(System.out::println);
             return false;
         }
     }

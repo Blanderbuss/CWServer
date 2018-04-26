@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Set implements Serializable {
-    //TODO field lvl from table users
     @NotNull
     private int id;
 

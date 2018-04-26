@@ -38,7 +38,6 @@ public abstract class ActionAbstract {
         this.performFailed = performFailed;
     }
 
-    //TODO apply stance bonuses before performing action and remove them after
     //Method that does all the calculation
     public String perform(){
         if(performFailed)
