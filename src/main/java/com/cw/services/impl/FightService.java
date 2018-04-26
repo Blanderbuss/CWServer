@@ -19,18 +19,6 @@ import java.util.NoSuchElementException;
 @Service
 public class FightService implements FightServiceI {
 
-    @Autowired
-    private static ArtefactServiceI artefactService;
-
-    @Autowired
-    private static BattleTypeServiceI battleTypeServiceI;
-
-    @Autowired
-    private static SetServiceI setService;
-
-    @Autowired
-    private static UserServiceI userService;
-
     private ArrayList<DuelBattleField> duelBattleFields = new ArrayList<>();
     private ArrayList<FFABattleField> ffaBattleFields = new ArrayList<>();
 
@@ -79,12 +67,14 @@ public class FightService implements FightServiceI {
     public String getResult(int indexOfBattleField, String typeOfBattleField) {
         switch (typeOfBattleField){
             case "Duel":
+                if(duelBattleFields.size()<indexOfBattleField+1) return "";
                 BattleFieldI selectedDuelBattleField = duelBattleFields.get(indexOfBattleField);
-                if(!selectedDuelBattleField.IsFinished()) return "Battle is not finished";
+                if(!selectedDuelBattleField.IsFinished()) return "";
                 return selectedDuelBattleField.getResult();
             case "FFA":
+                if(ffaBattleFields.size()<indexOfBattleField+1) return "";
                 BattleFieldI selectedFfaBattleField = ffaBattleFields.get(indexOfBattleField);
-                if(!selectedFfaBattleField.IsFinished()) return "Battle is not finished";
+                if(!selectedFfaBattleField.IsFinished()) return "";
                 return selectedFfaBattleField.getResult();
             default:
                 throw new NoSuchElementException();
