@@ -73,7 +73,7 @@ public abstract class BattleFieldI implements Runnable {
                     String res = calcAction(cur, curActTarget);
                     //Adding new info to result
                     this.addToResult(res);
-                    System.out.println(outAll());
+                    //System.out.println(outAll());
                     isFinished = !isToFinish();
                 }
             }
