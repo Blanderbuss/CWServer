@@ -19,7 +19,7 @@ public abstract class BattleFieldI implements Runnable {
 
     protected ArrayList<Fighter> fighters;
     private Date date;
-    private String result;
+    private StringBuilder result;
     private boolean isFinished;
 
 
@@ -44,22 +44,22 @@ public abstract class BattleFieldI implements Runnable {
     }
 
     public String getResult() {
-        return result;
+        return result.toString();
     }
 
-    public void setResult(String result) {
-        this.result = result;
+    public void setResult(String text) {
+        this.result.append(text);
     }
 
     public BattleFieldI(ArrayList<Fighter> fighters) {
+        this.result = new StringBuilder("");
         this.date = new Date();
-        System.out.println("Battlefield created");
         this.fighters = fighters;
     }
 
     @Override
     public void run() {
-        System.out.println("Battlefield started");
+        System.err.println("[INFO] BATTLEFIELD: Started");
         while (!isFinished) {
             Iterator<Fighter> iter = fighters.iterator();
             while (iter.hasNext() && !isFinished) {
@@ -73,12 +73,13 @@ public abstract class BattleFieldI implements Runnable {
 
                     String res = calcAction(cur, curActTarget);
                     //Adding new info to result
-                    this.setResult(this.getResult()+res);
-                    outAll();
+                    this.setResult(res);
                     isFinished = !isToFinish();
                 }
             }
         }
+        this.setResult(getAlive());
+        System.err.println("[INFO] BATTLEFIELD: Finished");
     }
 
     private String calcAction(Fighter cur, Tuple<FighterI.Action, FighterI> actionTarget) {
@@ -109,15 +110,32 @@ public abstract class BattleFieldI implements Runnable {
         return res;
     }
 
-    void outAll() {
+    String outAll() {
+        StringBuilder res = new StringBuilder("");
+        res.append("Alive fighters:\n");
         for (Fighter fighter : fighters) {
-            System.out.println("Fighter " + fighter.getName() +
+            res.append("Fighter " + fighter.getName() +
                     ": Stance[" + fighter.getStance()
                     + "] HP[" + fighter.getCurHp() + "/" +fighter.getMaxHp() + "]"
                     + "] STM[" + fighter.getCurStamina() + "/" +fighter.getMaxStamina() + "]"
-                    + "] MNA[" + fighter.getCurMana() + "/" +fighter.getMaxMana() + "]"
+                    + "] MNA[" + fighter.getCurMana() + "/" +fighter.getMaxMana() + "]\n"
             );
         }
+        return res.toString();
+    }
+
+    String getAlive(){
+        StringBuilder res = new StringBuilder("");
+        for (Fighter fighter : fighters) {
+            if(fighter.isAlive())
+                res.append("Fighter " + fighter.getName() +
+                        ": Stance[" + fighter.getStance()
+                        + "] HP[" + fighter.getCurHp() + "/" +fighter.getMaxHp() + "]"
+                        + "] STM[" + fighter.getCurStamina() + "/" +fighter.getMaxStamina() + "]"
+                        + "] MNA[" + fighter.getCurMana() + "/" +fighter.getMaxMana() + "]"
+                );
+        }
+        return res.toString();
     }
 
     protected abstract boolean isToFinish();

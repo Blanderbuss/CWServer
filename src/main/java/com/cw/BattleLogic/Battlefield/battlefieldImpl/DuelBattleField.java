@@ -17,7 +17,6 @@ public class DuelBattleField extends BattleFieldI {
     protected boolean isToFinish() {
         for (Fighter fighter : fighters)
             if (fighter.isAlive()) {
-                System.out.println("Fighter " + fighter.getName() + " is now dead");
                 return false;
             }
         return true;

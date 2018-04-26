@@ -54,16 +54,16 @@ public class FighterFactory {
 		if (isSafeCode(code)) {
 			if (writeActionDoer(suffix, code)) {
 				if (compileActionDoer(suffix)) {
-					System.out.println( "Code contains no errors. " );
+					System.err.println( "[INFO] CODEFACTORY:("+suffix+")Code contains no errors. " );
 					return getActionDoer(suffix);
 				} else {
-					System.out.println( "Error in your code! " );
+					System.err.println( "[INFO] CODEFACTORY:("+suffix+")Error in your code! " );
 					return null; // TODO check
 				}
 			} else
-				System.out.println("failed to write ActionExecutor");
+				System.err.println("[INFO] CODEFACTORY:("+suffix+")failed to write ActionExecutor");
 		} else {
-			System.out.println("aborted: your code is not safe, your actions "
+			System.err.println("[INFO] CODEFACTORY:("+suffix+")aborted: your code is not safe, your actions "
 					+ "will be reported");
 			//report(code);
 		}

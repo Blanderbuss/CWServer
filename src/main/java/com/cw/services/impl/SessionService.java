@@ -45,13 +45,14 @@ public class SessionService implements SessionServiceI {
 
     @Override
     public String test() throws FighterException, InterruptedException {
+        //this.register("kek", "kek@kek.com", "kek1234");
         /*Set set1 = setService.getSetById(1);
         ArrayList<Artefact> newArts = new ArrayList<Artefact>();
         newArts.add(artService.getArtefactById(1));
         set1.setArtefacts(newArts);
         System.out.println(artService.updateSetArtifacts(set1));
         System.out.println(setService.updateSet(set1));*/
-        Set set1 = setService.getSetById(1);
+        /*Set set1 = setService.getSetById(1);
         System.out.println(set1);
         Set set2 = setService.getSetById(2);
         System.out.println(set2);
@@ -59,13 +60,12 @@ public class SessionService implements SessionServiceI {
         int accessId2 = fightService.readyForFight(set2, "Duel");
         sleep(1000);
         String res = fightService.getResult(accessId1,"Duel");
-        System.out.println(res);
+        System.out.println(res);*/
         return "";
     }
 
     @Override
     public Tuple<String, User> login(String email, String pwd) throws UserNotFoundException {
-        System.out.println("User " + email + " tries to log in");
         User userFromDb = userService.getUserByEmailAndPassword(email, pwd);
         // deactivate active session of current user, who had logged in previously
         // TODO write jUnit auto tests to verify it
@@ -77,22 +77,22 @@ public class SessionService implements SessionServiceI {
                     .get()
                     .getKey();
             logout(userToken);
-            System.out.println("Deactivated token: " + userToken);
         }
         String token = "";
         // loop until unique token is found; ensures absence of hash collisions
         do {
             token = TokenGenerator.generateToken(userFromDb.getEmail());
-            System.out.println("Generated token: " + token);
+            System.err.println("[INFO] TOKENGEN:Generated token: " + token);
         } while (tokensToUsers.containsKey(token));
         final String newToken = token;
-        System.out.println("Activated token: " + newToken);
+        System.err.println("[INFO] TOKENGEN:Activated token: " + newToken);
         tokensToUsers.put(newToken, userFromDb);
         return new Tuple<>(token, userFromDb);
     }
 
     @Override
     public void logout(String accessToken) {
+        System.err.println("[INFO] TOKENGEN:Deactivated token: " + accessToken);
         tokensToUsers.remove(accessToken);
     }
 

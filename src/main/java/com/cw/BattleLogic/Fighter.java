@@ -84,7 +84,6 @@ public class Fighter implements FighterI{
         this.setRegenHp(2);
         this.setRegenMana(1);
         this.setRegenStamina(10);
-        System.out.println(this.getArtefacts());
         if(!this.getArtefacts().isEmpty())
             for(Artefact artefact:this.getArtefacts()){
                 this.setMaxHp(this.getMaxHp()+artefact.getHpBoost());
