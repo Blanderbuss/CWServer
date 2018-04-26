@@ -45,6 +45,8 @@ public class FightService implements FightServiceI {
         Fighter fighter = new Fighter(set);
         switch (stringBattleFieldType){
             case "Duel":
+                if(duelQueue.contains(fighter))
+                    return -1;
                 duelQueue.add(fighter);
                 int duelIndex = duelBattleFields.size();
                 if(duelQueue.size()==NUMBER_OF_FIGHTERS_IN_DUEL){
@@ -56,6 +58,8 @@ public class FightService implements FightServiceI {
                 }
                 return duelIndex;
             case "FFA":
+                if(ffaQueue.contains(fighter))
+                    return -1;
                 ffaQueue.add(fighter);
                 int ffaIndex = ffaBattleFields.size();
                 if(ffaQueue.size()==NUMBER_OF_FIGHTERS_IN_FFA){
