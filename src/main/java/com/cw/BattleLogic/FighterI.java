@@ -34,7 +34,7 @@ public interface FighterI extends Serializable{
         DEFENDING
     }
 
-    boolean isAlive();
+    boolean isDead();
 
     String getName();
 

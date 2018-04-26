@@ -10,5 +10,5 @@ public class ActionConstants {
     //Percents
     public final static int DEFEND_ARMOR_BOOST=5;
     public final static int FIREBALL_DAMAGE=8;
-    public final static int FIREBALL_MANA_COST=75;
+    public final static int FIREBALL_MANA_COST=30;
 }

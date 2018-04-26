@@ -18,7 +18,7 @@ public class FFABattleField extends BattleFieldI {
     protected boolean isToFinish() {
         int numberOfAlive = 0;
         for (Fighter fighter:fighters){
-            if(fighter.isAlive())numberOfAlive++;
+            if(fighter.isDead())numberOfAlive++;
             if(numberOfAlive==2)return false;
         }
         return true;

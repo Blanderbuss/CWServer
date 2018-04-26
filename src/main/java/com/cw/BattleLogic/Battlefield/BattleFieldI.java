@@ -58,6 +58,7 @@ public abstract class BattleFieldI implements Runnable {
     @Override
     public void run() {
         System.err.println("[INFO] BATTLEFIELD: Started");
+        this.addToResult(fighterList());
         while (!isFinished) {
             Iterator<Fighter> iter = fighters.iterator();
             while (iter.hasNext() && !isFinished) {
@@ -76,7 +77,7 @@ public abstract class BattleFieldI implements Runnable {
                 }
             }
         }
-        this.addToResult(getAlive());
+        this.addToResult(fighterList());
         System.err.println("[INFO] BATTLEFIELD: Finished");
     }
 
@@ -121,17 +122,18 @@ public abstract class BattleFieldI implements Runnable {
         return res.toString();
     }
 
-    private String getAlive(){
+    private String fighterList(){
         StringBuilder res = new StringBuilder("");
-        res.append("Alive fighters:\n");
+        res.append("Fighter list:\n");
         for (Fighter fighter : fighters) {
-            if(!fighter.isAlive())
-                res.append("Fighter " + fighter.getName() +
+            if(fighter.isDead())
+                res.append("Fighter " + fighter.getName() + " is dead\n");
+            res.append("Fighter " + fighter.getName() +
                         ": Stance[" + fighter.getStance()
                         + "] HP[" + fighter.getCurHp() + "/" +fighter.getMaxHp() + "]"
                         + "] STM[" + fighter.getCurStamina() + "/" +fighter.getMaxStamina() + "]"
-                        + "] MNA[" + fighter.getCurMana() + "/" +fighter.getMaxMana() + "]"
-                );
+                        + "] MNA[" + fighter.getCurMana() + "/" +fighter.getMaxMana() + "]\n"
+            );
         }
         return res.toString();
     }

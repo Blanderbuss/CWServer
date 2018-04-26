@@ -81,7 +81,7 @@ public class Fighter implements FighterI{
         this.setEvasion(5);
         this.setArmor(0);
         this.setRegenHp(2);
-        this.setRegenMana(1);
+        this.setRegenMana(35);
         this.setRegenStamina(10);
         if(!this.getArtefacts().isEmpty())
             for(Artefact artefact:this.getArtefacts()){
@@ -101,7 +101,7 @@ public class Fighter implements FighterI{
         this.setCurSpeed(this.getMaxSpeed());
     }
 
-    public boolean isAlive(){
+    public boolean isDead(){
         return this.getCurHp()<=0;
     }
 

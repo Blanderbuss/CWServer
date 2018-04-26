@@ -16,7 +16,7 @@ public class DuelBattleField extends BattleFieldI {
     @Override
     protected boolean isToFinish() {
         for (Fighter fighter : fighters)
-            if (fighter.isAlive()) {
+            if (fighter.isDead()) {
                 return false;
             }
         return true;
