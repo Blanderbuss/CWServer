@@ -43,30 +43,6 @@ public class SessionService implements SessionServiceI {
     private FightServiceI fightService;
 
     @Override
-    public String test() throws InterruptedException {
-        //this.register("kek", "kek@kek.com", "kek1234");
-        /*Set set1 = setService.getSetById(1);
-        ArrayList<Artefact> newArts = new ArrayList<Artefact>();
-        newArts.add(artService.getArtefactById(1));
-        set1.setArtefacts(newArts);
-        System.out.println(artService.updateSetArtifacts(set1));
-        System.out.println(setService.updateSet(set1));*/
-        /*Set set1 = setService.getSetById(1);
-        set1.setUser(userService.getUserById(1));
-        //System.out.println(set1);
-        Set set2 = setService.getSetById(10);
-        set2.setUser(userService.getUserById(3));
-        //System.out.println(set2);
-        int accessId1 = fightService.readyForFight(set1, "Bot");
-        int accessId2 = fightService.readyForFight(set2, "Bot");
-        //int accessId2 = fightService.readyForFight(set2, "Duel");
-        sleep(1000);
-        String res = fightService.getResult(accessId1,"Bot");
-        System.out.println(res);*/
-        return "";
-    }
-
-    @Override
     public Tuple<String, User> login(String email, String pwd) throws UserNotFoundException, IncorrectAccessTokenException {
         User userFromDb = userService.getUserByEmailAndPassword(email, pwd);
         // deactivate active session of current user, who had logged in previously

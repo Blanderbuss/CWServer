@@ -23,12 +23,8 @@ public class ServerApplication {
         return exporter;
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        ConfigurableApplicationContext applicationContext = SpringApplication.run(ServerApplication.class, args);
-        SessionServiceI testSession = applicationContext.getBean(SessionServiceI.class);
-        String res = null;
-        res = testSession.test();
-        System.out.println(res);
+    public static void main(String[] args) {
+        SpringApplication.run(ServerApplication.class, args);
     }
 
 }
